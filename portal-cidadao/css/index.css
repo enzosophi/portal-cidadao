@@ -3,6 +3,6 @@
 .hub a { display: block; text-decoration: none; color: var(--ink); }
 .hub .card { transition: .2s; height: 100%; }
 .hub .card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(11, 78, 162, 0.12); }
-body.hc .hub .card:hover { box-shadow: 0 8px 24px rgba(59, 130, 246, 0.22); }
+body.hc .hub .card:hover { box-shadow: 0 0 0 2px #fff; }
 .hub h3 { margin: .4rem 0; }
 .hub p { color: var(--muted); margin: 0; }

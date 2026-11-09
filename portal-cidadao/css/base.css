@@ -17,21 +17,21 @@
   --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-/* Modo escuro (ativado pelo botão ◐, que coloca a classe .hc no body) */
+/* Alto contraste preto e branco (ativado pelo botão ◐, que coloca .hc no body) */
 body.hc {
-  --blue: #3b82f6;
-  --blue-d: #2563eb;
-  --blue-l: rgba(59, 130, 246, 0.16);
-  --yellow: #f59e0b;
-  --green: #10b981;
-  --ink: #e8edf5;
-  --muted: #8e9cb2;
-  --bg: #0c121e;
-  --card: #131b2e;
-  --line: #222f46;
-  --danger: #f43f5e;
-  --ok: #10b981;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.38);
+  --blue: #ffffff;
+  --blue-d: #ffffff;
+  --blue-l: #1a1a1a;
+  --yellow: #ffffff;
+  --green: #ffffff;
+  --ink: #ffffff;
+  --muted: #d6d6d6;
+  --bg: #000000;
+  --card: #000000;
+  --line: #ffffff;
+  --danger: #ffffff;
+  --ok: #ffffff;
+  --shadow: 0 0 0 2px #ffffff;
 }
 
 body, .site-header, .card, .panel, .fact, .site-footer, .input, .icon-btn, .btn, .slide {

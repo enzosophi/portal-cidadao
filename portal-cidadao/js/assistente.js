@@ -1,7 +1,17 @@
-/* Assistente de navegação — só um ícone; ao clicar abre um card. 100% local (regras simples), sem IA real nem rede. */
+/* Assistente de navegação. A IA é opcional; sem chave, usa as regras locais. */
 (function () {
   'use strict';
   var page = document.body.getAttribute('data-page') || 'home';
+  var aiConfig = window.PC_AI_CONFIG || {};
+  var aiApiKey = aiConfig.apiKey || '';
+  var aiModel = aiConfig.model || 'gemini-2.0-flash';
+
+  var DESTINOS = {
+    login: { label: 'Abrir página de login', href: 'login.html' },
+    alistamento: { label: 'Abrir alistamento militar', href: 'alistamento.html' },
+    passaporte: { label: 'Ver serviço de passaporte', href: 'home.html#mais-acessados' },
+    busca: { label: 'Ir para a busca de serviços', href: 'home.html#busca' }
+  };
 
   var SUGESTOES = {
     home: [
@@ -42,10 +52,64 @@
     { k: ['documento', 'preciso ter', 'levar'], a: 'docs' },
     { k: ['iniciar', 'comecar'], a: 'iniciar' },
     { k: ['ouvidoria', 'reclama', 'denuncia', 'sugest', 'elogio'], a: 'ouvidoria' },
+    { k: ['viaj', 'passaporte', 'exterior', 'embarq', 'turismo'], a: 'passaporte' },
+    { k: ['imposto', 'renda', 'declar'], a: 'busca' },
+    { k: ['beneficio', 'aposent', 'inss', 'saude', 'sus'], a: 'busca' },
     { k: ['inicio', 'home', 'voltar'], a: 'home' }
   ];
 
   function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+  function localIntent(text) {
+    var n = norm(text), hit = null;
+    REGRAS.some(function (r) {
+      return r.k.some(function (k) {
+        if (n.indexOf(k) > -1) { hit = r.a; return true; }
+      });
+    });
+    return hit;
+  }
+
+  function destinationLink(destination) {
+    var target = DESTINOS[destination];
+    if (!target) return null;
+    var link = document.createElement('a');
+    link.className = 'assist-link'; link.href = target.href; link.textContent = target.label;
+    return link;
+  }
+
+  function suggest(destination, text) {
+    say(text);
+    var link = destinationLink(destination);
+    if (link) {
+      var wrap = document.createElement('div'); wrap.className = 'assist-destination';
+      wrap.appendChild(link); body.appendChild(wrap);
+    }
+  }
+
+  function askAI(question) {
+    if (!aiApiKey) return Promise.resolve(null);
+    var catalog = Object.keys(DESTINOS).join(', ');
+    var prompt = 'Você é o assistente do Portal Cidadão. Analise a pergunta em português e escolha no máximo um destino deste catálogo: ' + catalog + '. ' +
+      'Responda SOMENTE JSON válido no formato {"destination":"...","response":"..."}. ' +
+      'Use destination null se não houver relação. A resposta deve ser curta, cordial e não inventar serviços. ' +
+      'Exemplo: para "irei viajar em março", escolha passaporte e diga "Gostaria de realizar a requisição de um passaporte?". Pergunta: ' + question;
+    return fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(aiModel) + ':generateContent?key=' + encodeURIComponent(aiApiKey), {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Falha na API de IA');
+      return response.json();
+    }).then(function (data) {
+      var text = data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text;
+      if (!text) return null;
+      var match = text.match(/\{[\s\S]*\}/);
+      if (!match) return null;
+      var result = JSON.parse(match[0]);
+      if (!result.destination || !DESTINOS[result.destination] || typeof result.response !== 'string') return null;
+      return result;
+    }).catch(function () { return null; });
+  }
 
   // ---- DOM ----
   var fab = document.createElement('button');
@@ -64,7 +128,7 @@
     '<form class="assist-form" id="assist-form"><label class="sr-only" for="assist-q">Pergunte algo</label>' +
     '<input class="input" id="assist-q" placeholder="Ex.: esqueci minha senha" autocomplete="off">' +
     '<button class="btn btn-primary" type="submit">Enviar</button></form>' +
-    '<p class="assist-note">Protótipo: respostas por regras simples, sem IA real.</p>';
+    '<p class="assist-note">As perguntas podem ser analisadas por uma IA configurada pelo portal. Não envie dados pessoais.</p>';
   document.body.appendChild(card);
   document.body.appendChild(fab);
 
@@ -108,10 +172,15 @@
     e.preventDefault();
     var q = card.querySelector('#assist-q'); var txt = q.value.trim(); if (!txt) return;
     bubble(txt, 'me'); q.value = '';
-    var n = norm(txt), hit = null;
-    REGRAS.some(function (r) { return r.k.some(function (k) { if (n.indexOf(k) > -1) { hit = r.a; return true; } }); }) ;
-    if (hit) run(hit);
-    else { say('Não entendi bem. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
+    var pending = bubble('Analisando sua pergunta...', 'bot');
+    askAI(txt).then(function (result) {
+      pending.remove();
+      if (result) { suggest(result.destination, result.response); return; }
+      var hit = localIntent(txt);
+      if (hit === 'passaporte') suggest('passaporte', 'Gostaria de realizar a requisição de um passaporte?');
+      else if (hit) run(hit);
+      else { say('Não encontrei informações sobre o que você está buscando. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
+    });
   });
 
   // abre automaticamente via ?assistente=1 (usado pelo índice do protótipo)
