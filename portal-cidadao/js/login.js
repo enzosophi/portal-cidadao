@@ -40,8 +40,9 @@
   $('toggle-senha').addEventListener('click', function () {
     var show = senha.type === 'password';
     senha.type = show ? 'text' : 'password';
-    this.textContent = show ? 'Ocultar' : 'Mostrar';
+    this.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
     this.setAttribute('aria-pressed', show);
+    this.classList.toggle('is-on', show);
   });
   function caps(e) {
     if (e.getModifierState && e.getModifierState('CapsLock')) { $('senha-msg').textContent = '⚠ Caps Lock está ligado.'; $('senha-msg').className = 'msg warn'; }
@@ -62,6 +63,11 @@
     m.className = 'msg'; m.textContent = '✓ (simulação) Código enviado. Nenhum dado real foi usado.';
   });
   $('criar').addEventListener('click', function (e) { e.preventDefault(); window.PC.toast('Criar conta não faz parte deste protótipo.'); });
+
+  // outras opções de identificação (simuladas)
+  document.querySelectorAll('[data-alt]').forEach(function (b) {
+    b.addEventListener('click', function () { window.PC.toast(b.getAttribute('data-alt') + ': opção ilustrativa neste protótipo.'); });
+  });
 
   // envio simulado com feedback de status
   form.addEventListener('submit', function (e) {

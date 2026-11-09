@@ -4,36 +4,154 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Início — Portal Cidadão (protótipo)</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
 <body data-page="home">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
-<div class="proto-bar" role="note">Protótipo acadêmico de IHC — não é um site oficial. Conteúdo ilustrativo.</div>
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <nav class="tb-links" aria-label="Links institucionais">
+      <a href="#" data-soon>Acesso à informação</a>
+      <a href="#" data-soon>Legislação</a>
+      <a href="#" data-soon>Acessibilidade</a>
+    </nav>
+    <div class="tb-tools">
+      <div class="tb-item">
+        <button class="tb-trigger tb-lang" type="button" aria-expanded="false" aria-controls="dd-idioma" aria-label="Idioma: Português">
+          PT<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown dd-right dd-small" id="dd-idioma">
+          <ul>
+            <li><a href="#" aria-current="true">Português</a></li>
+            <li><a href="#" data-soon>English</a></li>
+            <li><a href="#" data-soon>Español</a></li>
+          </ul>
+        </div>
+      </div>
+      <span class="tb-sep" aria-hidden="true"></span>
+      <div class="tb-item">
+        <button class="tb-trigger tb-icon" type="button" aria-expanded="false" aria-controls="dd-cookies" aria-label="Preferências de cookies" data-tooltip="Preferências de cookies">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
+        </button>
+        <div class="dropdown dd-right dd-cookies" id="dd-cookies">
+          <p class="dd-text"><strong>Cookies</strong>Usamos cookies essenciais para o portal funcionar. Os de estatística são opcionais e ajudam a melhorar o site.</p>
+          <div class="dd-actions">
+            <button class="dd-btn" type="button" data-cookies="essenciais">Só essenciais</button>
+            <button class="dd-btn dd-btn-primary" type="button" data-cookies="todos">Aceitar todos</button>
+          </div>
+        </div>
+      </div>
+      <button class="tb-icon theme-toggle" type="button" data-hc aria-pressed="false" aria-label="Modo escuro" data-tooltip="Alternar entre modo claro e escuro">
+        <svg class="ico i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="ico i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</div><!-- /topbar -->
 
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="home.html"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
 
+    <nav class="nav-links" id="nav-links" aria-label="Principal">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-orgaos">Órgãos do governo<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown" id="dd-orgaos">
+            <ul>
+              <li><a href="#" data-soon>Presidência da República</a></li>
+              <li><a href="#" data-soon>Ministérios</a></li>
+              <li><a href="#" data-soon>Receita Federal</a></li>
+              <li><a href="#" data-soon>INSS — Previdência Social</a></li>
+              <li><a href="#" data-soon>Polícia Federal</a></li>
+              <li><a href="alistamento.html">Ministério da Defesa</a></li>
+              <li><a href="#" data-soon>Agências reguladoras</a></li>
+            </ul>
+            <a class="dd-all" href="#" data-soon>Ver todos os órgãos</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-servicos">Serviços<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown dd-wide" id="dd-servicos">
+            <div class="dd-cols">
+              <div>
+                <p class="dd-head">Por tema</p>
+                <ul>
+                  <li><a href="#" data-soon>Documentos e identidade</a></li>
+                  <li><a href="#" data-soon>Trabalho e previdência</a></li>
+                  <li><a href="#" data-soon>Saúde</a></li>
+                  <li><a href="#" data-soon>Educação</a></li>
+                  <li><a href="#" data-soon>Impostos e finanças</a></li>
+                  <li><a href="#" data-soon>Viagens e exterior</a></li>
+                </ul>
+              </div>
+              <div>
+                <p class="dd-head">Atalhos</p>
+                <ul>
+                  <li><a href="home.html#mais-acessados">Mais acessados</a></li>
+                  <li><a href="home.html#perfis">Serviços por perfil</a></li>
+                  <li><a href="alistamento.html">Alistamento militar</a></li>
+                  <li><a href="#" data-soon>Consultar CPF</a></li>
+                  <li><a href="#" data-soon>Carteira de Trabalho Digital</a></li>
+                </ul>
+              </div>
+            </div>
+            <a class="dd-all" href="#" data-soon>Ver todos os serviços</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-noticias">Notícias<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown" id="dd-noticias">
+            <ul>
+              <li><a href="#" data-soon>Últimas notícias</a></li>
+              <li><a href="home.html#destaques">Destaques da semana</a></li>
+              <li><a href="#" data-soon>Comunicados oficiais</a></li>
+              <li><a href="#" data-soon>Calendário de prazos</a></li>
+              <li><a href="#" data-soon>Notícias por órgão</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-ajuda">Ajuda<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown dd-right" id="dd-ajuda">
+            <ul>
+              <li><a href="home.html?assistente=1">Como usar o portal</a></li>
+              <li><a href="#" data-soon>Dúvidas frequentes</a></li>
+              <li><a href="#" data-soon>Acessibilidade</a></li>
+              <li><a href="#" data-soon>Contato e ouvidoria</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
     <div class="nav-search" id="nav-search">
       <form role="search" autocomplete="off">
         <label class="sr-only" for="busca">Buscar serviços</label>
-        <input id="busca" type="search" placeholder="O que você procura? (tecle / para buscar)" aria-controls="suggest" aria-expanded="false">
-        <button type="submit" aria-label="Buscar">🔍</button>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="busca" type="search" placeholder="Buscar serviço" aria-controls="suggest" aria-expanded="false">
+        <kbd aria-hidden="true">/</kbd>
       </form>
       <ul class="suggest" id="suggest" aria-label="Sugestões de serviços"></ul>
     </div>
 
-    <button class="icon-btn search-toggle" id="search-toggle" type="button" aria-label="Abrir busca" aria-expanded="false">🔍</button>
-    <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">☰</button>
-
-    <nav class="nav-links" id="nav-links" aria-label="Principal">
-      <a class="link" href="#destaques">Destaques</a>
-      <a class="link" href="#perfis">Por Perfil</a>
-      <a class="link" href="#mais-acessados">Mais acessados</a>
-      <a class="link" href="alistamento.html" data-tooltip="Página de serviço completa com checklist e passo a passo ilustrado">Exemplo: alistamento</a>
-      <button class="icon-btn" type="button" data-hc aria-pressed="false" aria-label="Alternar modo escuro" data-tooltip="Alternar entre modo claro e escuro">◐</button>
-      <a class="btn btn-primary" id="btn-entrar" href="login.html" data-tooltip="Acesse sua conta do Portal Cidadão / Gov.br"><span aria-hidden="true">👤</span> Entrar</a>
-    </nav>
+    <div class="nav-actions">
+      <button class="nav-icon search-toggle" id="search-toggle" type="button" aria-label="Abrir busca" aria-expanded="false">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+      <a class="nav-login" id="btn-entrar" href="login.html">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar
+      </a>
+      <button class="nav-icon menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+        <svg class="ico ico-menu" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+        <svg class="ico ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -42,22 +160,22 @@
     <h2 id="t-dest">Destaques</h2>
     <div class="carousel" id="carousel" role="region" aria-roledescription="carrossel" aria-label="Destaques do portal" tabindex="0">
       <div class="track" aria-live="off">
-        <article class="slide"><span class="tag">Finanças</span><h3>Entregue seu Imposto de Renda</h3><p>Veja o prazo, o que precisa ter em mãos e comece em poucos passos.</p><a class="btn" href="#mais-acessados" data-tooltip="Consulte prazos e faça o envio da sua declaração do IRPF">Ver serviço</a></article>
-        <article class="slide"><span class="tag">Novo · Finanças</span><h3>Renegociação de dívidas</h3><p>Condições para famílias organizarem as contas com mais tranquilidade.</p><a class="btn" href="#mais-acessados" data-tooltip="Acesse o programa de renegociação com descontos nos juros">Saiba mais</a></article>
-        <article class="slide"><span class="tag">Segurança</span><h3>Celular seguro</h3><p>Bloqueie o aparelho e registre ocorrência de forma rápida.</p><a class="btn" href="#mais-acessados" data-tooltip="Bloqueio imediato de linhas e contas em caso de furto ou roubo">Acessar</a></article>
-        <article class="slide"><span class="tag">Novo · Assistência social</span><h3>Consulte seu benefício</h3><p>Acompanhe datas, valores e pendências em um só lugar.</p><a class="btn" href="#mais-acessados" data-tooltip="Consulte datas de pagamento do Bolsa Família e benefícios sociais">Consultar</a></article>
+        <article class="slide"><span class="tag">Finanças</span><h3>Entregue seu Imposto de Renda</h3><p>Veja o prazo, o que precisa ter em mãos e comece em poucos passos.</p><a class="btn" href="#mais-acessados">Ver serviço</a></article>
+        <article class="slide"><span class="tag">Novo · Finanças</span><h3>Renegociação de dívidas</h3><p>Condições para famílias organizarem as contas com mais tranquilidade.</p><a class="btn" href="#mais-acessados">Saiba mais</a></article>
+        <article class="slide"><span class="tag">Segurança</span><h3>Celular seguro</h3><p>Bloqueie o aparelho e registre ocorrência de forma rápida.</p><a class="btn" href="#mais-acessados">Acessar</a></article>
+        <article class="slide"><span class="tag">Novo · Assistência social</span><h3>Consulte seu benefício</h3><p>Acompanhe datas, valores e pendências em um só lugar.</p><a class="btn" href="#mais-acessados">Consultar</a></article>
       </div>
-      <button class="car-btn prev" type="button" aria-label="Destaque anterior" data-tooltip="Ver destaque anterior">
+      <button class="car-btn prev" type="button" aria-label="Destaque anterior">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </button>
-      <button class="car-btn next" type="button" aria-label="Próximo destaque" data-tooltip="Ver próximo destaque">
+      <button class="car-btn next" type="button" aria-label="Próximo destaque">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </button>
-      <div class="car-ctrl"><div class="dots" role="group" aria-label="Escolher destaque"></div><button class="car-pause" type="button" aria-pressed="false" data-tooltip="Pausar ou retomar rotação automática">⏸ Pausar</button></div>
+      <div class="car-ctrl"><div class="dots" role="group" aria-label="Escolher destaque"></div></div>
     </div>
   </section>
 
@@ -72,47 +190,47 @@
     </div>
 
     <div class="perfil-carousel-wrap">
-      <button class="perfil-nav-btn prev" type="button" id="perfil-prev" aria-label="Perfil anterior" data-tooltip="Ver perfis anteriores">‹</button>
+      <button class="perfil-nav-btn prev" type="button" id="perfil-prev" aria-label="Perfil anterior">‹</button>
       
       <div class="perfil-track-container">
         <div class="perfil-track" id="perfil-track" role="tablist" aria-label="Seleção de perfil do cidadão">
           <!-- Item 1: Agricultor -->
-          <div class="perfil-item is-active" role="tab" aria-selected="true" data-perfil="agricultor" tabindex="0" data-tooltip="Serviços para o produtor rural familiar: Pronaf, CAR, DAP e Seguro Agrícola">
+          <div class="perfil-item is-active" role="tab" aria-selected="true" data-perfil="agricultor" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">🌾</div>
             <span class="perfil-name">Agricultor</span>
             <p class="perfil-tagline">Produtor rural e campo</p>
           </div>
 
           <!-- Item 2: Idoso -->
-          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="idoso" tabindex="0" data-tooltip="Serviços para a terceira idade: Prova de Vida Digital, Extrato INSS e Carteira do Idoso">
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="idoso" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">🧓</div>
             <span class="perfil-name">Idoso / Aposentado</span>
             <p class="perfil-tagline">Previdência e direitos</p>
           </div>
 
           <!-- Item 3: Estudante -->
-          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="estudante" tabindex="0" data-tooltip="Serviços para estudantes: ENEM, Prouni, FIES, Encceja e Meia-entrada">
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="estudante" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">🎓</div>
             <span class="perfil-name">Estudante</span>
             <p class="perfil-tagline">Educação e formação</p>
           </div>
 
           <!-- Item 4: MEI -->
-          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="mei" tabindex="0" data-tooltip="Serviços para Microempreendedor Individual: Emitir DAS, Declaração Anual e Notas Fiscais">
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="mei" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">💼</div>
             <span class="perfil-name">MEI</span>
             <p class="perfil-tagline">Empreendedor individual</p>
           </div>
 
           <!-- Item 5: Trabalhador -->
-          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="trabalhador" tabindex="0" data-tooltip="Serviços para o trabalhador CLT: Carteira Digital, Seguro-Desemprego, PIS e FGTS">
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="trabalhador" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">👷</div>
             <span class="perfil-name">Trabalhador</span>
             <p class="perfil-tagline">Emprego e carteira assinada</p>
           </div>
 
           <!-- Item 6: Turista -->
-          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="turista" tabindex="0" data-tooltip="Serviços para turistas e brasileiros no exterior: Passaporte, Alistamento Militar e Alfândega">
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="turista" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">✈️</div>
             <span class="perfil-name">Turista & Exterior</span>
             <p class="perfil-tagline">Viagens e consular</p>
@@ -120,12 +238,12 @@
         </div>
       </div>
 
-      <button class="perfil-nav-btn next" type="button" id="perfil-next" aria-label="Próximo perfil" data-tooltip="Ver mais perfis">›</button>
+      <button class="perfil-nav-btn next" type="button" id="perfil-next" aria-label="Próximo perfil">›</button>
     </div>
 
     <div class="perfil-bottom-actions">
       <div class="perfil-dots" id="perfil-dots" role="group" aria-label="Indicadores de perfil"></div>
-      <button class="btn btn-outline" type="button" id="btn-todos-perfis" style="min-height:38px;padding:.35rem 1.1rem;font-size:.9rem" data-tooltip="Ver todos os perfis disponíveis em uma visualização completa">Todos os Perfis</button>
+      <button class="perfil-all-btn" type="button" id="btn-todos-perfis">Ver todos os perfis</button>
     </div>
 
     <!-- Painel de Serviços do Perfil Selecionado -->
@@ -150,13 +268,52 @@
 
   <section class="section" id="mais-acessados" aria-labelledby="t-mais">
     <h2 id="t-mais">Mais acessados</h2>
-    <div class="grid grid-4">
-      <a class="card svc" href="alistamento.html" data-tooltip="Obrigação militar para jovens de 18 anos residindo no exterior. Processo 100% online com checklist guiado."><span class="ico" aria-hidden="true">🪖</span>Alistar-se no serviço militar</a>
-      <a class="card svc" href="#" data-tooltip="Assine contratos, termos e documentos digitais gratuitamente com validade jurídica oficial pelo portal."><span class="ico" aria-hidden="true">✍️</span>Assinatura eletrônica</a>
-      <a class="card svc" href="#" data-tooltip="Solicite ou renove seu passaporte brasileiro pela Polícia Federal. Requer formulário e pagamento de GRU."><span class="ico" aria-hidden="true">🛂</span>Obter passaporte</a>
-      <a class="card svc" href="#" data-tooltip="Consulte restituição do IRPF, malha fina e envie sua declaração anual com comprovante de entrega."><span class="ico" aria-hidden="true">💰</span>Consultar Imposto de Renda</a>
-      <a class="card svc" href="#" data-tooltip="Emita comprovante de situação cadastral e regularize pendências do seu CPF na Receita Federal."><span class="ico" aria-hidden="true">🪪</span>Consultar CPF</a>
-      <a class="card svc" href="#" data-tooltip="Emita o boleto mensal DAS para pagamento dos tributos e contribuição do INSS do Microempreendedor."><span class="ico" aria-hidden="true">🧾</span>Emitir guia do MEI</a>
+    <div class="svc-grid">
+      <a class="card svc" href="alistamento.html">
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+        <span class="svc-title">Alistamento militar</span>
+        <span class="svc-desc">Serviço militar no exterior</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></span>
+        <span class="svc-title">Assinatura eletrônica</span>
+        <span class="svc-desc">Assine documentos digitais</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span>
+        <span class="svc-title">Passaporte</span>
+        <span class="svc-desc">Solicite ou renove</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M16 14v4"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>
+        <span class="svc-title">Imposto de Renda</span>
+        <span class="svc-desc">Declaração e restituição</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></svg></span>
+        <span class="svc-title">Consultar CPF</span>
+        <span class="svc-desc">Situação cadastral</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg></span>
+        <span class="svc-title">Guia do MEI</span>
+        <span class="svc-desc">Emita o boleto DAS</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg></span>
+        <span class="svc-title">Carteira de Trabalho</span>
+        <span class="svc-desc">Contratos e histórico</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg></span>
+        <span class="svc-title">Saúde digital (SUS)</span>
+        <span class="svc-desc">Vacinas, exames e consultas</span>
+      </a>
+      <a class="card svc" href="#" data-soon>
+        <span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span>
+        <span class="svc-title">Benefícios sociais</span>
+        <span class="svc-desc">Datas e valores</span>
+      </a>
     </div>
   </section>
 </main>
@@ -166,7 +323,7 @@
     <div class="f-grid">
       <div class="f-brand">
         <a class="brand" href="home.html" style="color:#fff"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
-        <p>Protótipo acadêmico de IHC. Marca e conteúdo fictícios.</p>
+        <p>Serviços públicos em um só lugar.</p>
       </div>
       <details class="f-col"><summary>Serviços</summary><ul>
         <li><a href="#mais-acessados">Mais acessados</a></li><li><a href="#destaques">Destaques</a></li><li><a href="alistamento.html">Serviço militar</a></li></ul></details>
@@ -175,7 +332,7 @@
       <details class="f-col"><summary>Institucional</summary><ul>
         <li><a href="#">Acessibilidade</a></li><li><a href="#">Termos de uso</a></li><li><a href="#">Privacidade</a></li></ul></details>
     </div>
-    <div class="f-bottom"><span>© 2026 Protótipo acadêmico — Mackenzie Alphaville · IHC</span><span>Redes: Instagram · YouTube · WhatsApp</span></div>
+    <div class="f-bottom"><span>© 2026 Portal Cidadão</span><span>Redes: Instagram · YouTube · WhatsApp</span></div>
   </div>
 </footer>
 

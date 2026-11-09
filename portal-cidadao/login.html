@@ -4,62 +4,51 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Entrar — Portal Cidadão (protótipo)</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/login.css">
 </head>
 <body data-page="login">
 <a class="skip" href="#cpf">Ir para o formulário</a>
-<div class="proto-bar" role="note">Protótipo acadêmico de IHC — não é um site oficial e <strong>não envia nem guarda nenhum dado</strong>. Não digite dados reais.</div>
-
-    <header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="home.html"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
-    <div style="display:flex;align-items:center;gap:.5rem">
-      <a class="link" href="home.html" data-tooltip="Voltar para a página inicial"><span aria-hidden="true">🏠</span> Início</a>
-      <button class="icon-btn" type="button" data-hc aria-pressed="false" aria-label="Alternar modo escuro" data-tooltip="Alternar entre modo claro e escuro">◐</button>
-    </div>
-  </div>
-</header>
 
 <main class="login-page-wrap">
   <div class="login-split-card">
     <!-- Coluna Esquerda: Formulário de Autenticação -->
     <div class="login-form-pane">
-      <div class="login-brand-badge">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">Portal Cidadão</span>
-      </div>
+      <a class="brand login-brand-link" href="home.html">
+        <span class="brand-mark" aria-hidden="true"></span>Portal Cidadão
+      </a>
 
-      <div class="login-welcome-group">
-        <h1 class="login-main-title">Olá,<br>Bem-vindo de volta</h1>
-        <p class="login-sub-title">Acesse com segurança todos os seus serviços e consultas do governo.</p>
-      </div>
+      <h1 class="login-main-title">Identifique-se no PDC</h1>
 
       <form id="form-login" novalidate>
         <div class="field">
-          <label for="cpf"><span aria-hidden="true">🪪</span> CPF</label>
-          <input class="input" id="cpf" name="cpf" inputmode="numeric" autocomplete="username" placeholder="000.000.000-00" maxlength="14" aria-describedby="cpf-msg" data-tooltip="Digite os 11 dígitos do seu CPF regular" required>
+          <label for="cpf">CPF</label>
+          <input class="input" id="cpf" name="cpf" inputmode="numeric" autocomplete="username" placeholder="000.000.000-00" maxlength="14" aria-describedby="cpf-msg" required>
           <div class="msg" id="cpf-msg" aria-live="polite"></div>
         </div>
 
         <div class="field">
-          <label for="senha"><span aria-hidden="true">🔑</span> Senha</label>
+          <label for="senha">Senha</label>
           <div class="input-row">
-            <input class="input" id="senha" name="senha" type="password" autocomplete="current-password" aria-describedby="senha-msg" style="padding-right:5.5rem" data-tooltip="Digite sua senha cadastrada no gov.br" required>
-            <button class="toggle" type="button" id="toggle-senha" aria-controls="senha" aria-pressed="false" data-tooltip="Mostrar ou ocultar senha">Mostrar</button>
+            <input class="input input-with-btn" id="senha" name="senha" type="password" autocomplete="current-password" aria-describedby="senha-msg" required>
+            <button class="toggle" type="button" id="toggle-senha" aria-controls="senha" aria-pressed="false" aria-label="Mostrar senha" data-tooltip="Mostrar ou ocultar senha">
+              <svg class="eye-ico eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-ico eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.7 3.6M6.6 6.6A17.4 17.4 0 0 0 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
+            </button>
           </div>
           <div class="msg" id="senha-msg" aria-live="polite"></div>
         </div>
 
-        <!-- Linha: Lembrar meu CPF e Esqueci minha senha (como na imagem de referência) -->
         <div class="login-remember-row">
-          <label class="remember-box" data-tooltip="Salvar CPF neste navegador para futuros acessos">
+          <label class="remember-box">
             <input type="checkbox" id="lembrar-cpf" checked>
             <span class="custom-chk" aria-hidden="true">
               <svg viewBox="0 0 16 16"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </span>
             <span>Lembrar meu CPF</span>
           </label>
-          <button class="link-btn forgot-link" type="button" id="btn-esqueci" aria-expanded="false" aria-controls="recover" data-tooltip="Receba código via SMS ou e-mail sem perder o que já digitou">Esqueceu a senha?</button>
+          <button class="link-btn forgot-link" type="button" id="btn-esqueci" aria-expanded="false" aria-controls="recover">Esqueceu a senha?</button>
         </div>
 
         <!-- Recuperação inline (mantém todos os IDs) -->
@@ -70,11 +59,11 @@
             <li>Escolha onde receber o código (e-mail ou SMS).</li>
             <li>Digite o código e crie uma nova senha.</li>
           </ol>
-          <button class="btn btn-outline" type="button" id="btn-enviar-codigo" data-tooltip="Enviar código de validação de 6 dígitos">Enviar código</button>
+          <button class="btn btn-outline" type="button" id="btn-enviar-codigo">Enviar código</button>
           <div class="msg" id="recover-msg" aria-live="polite"></div>
         </div>
 
-        <button class="btn btn-primary btn-block btn-login-submit" type="submit" id="btn-entrar" data-tooltip="Autenticar e acessar os serviços do Portal Cidadão">
+        <button class="btn btn-primary btn-block btn-login-submit" type="submit" id="btn-entrar">
           Entrar na conta
         </button>
         <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -82,31 +71,60 @@
 
       <div class="divider">ou acesse com biometria</div>
 
-      <button class="btn btn-outline btn-block btn-facial-opt" type="button" id="btn-facial" data-tooltip="Posicione o rosto na câmera para entrar sem digitar senha">
-        <span aria-hidden="true" style="font-size:1.1rem">📸</span>
+      <button class="login-alt-btn" type="button" id="btn-facial">
+        <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
         <span>Entrar com reconhecimento facial</span>
       </button>
 
+      <!-- Outras opções de identificação -->
+      <nav class="login-alt" aria-labelledby="login-alt-title">
+        <h2 class="login-alt-title" id="login-alt-title">Outras opções de identificação</h2>
+        <ul class="login-alt-list">
+          <li>
+            <button class="login-alt-btn is-featured" type="button" data-alt="Login com seu banco" data-tooltip="Use o acesso do seu banco para entrar e elevar o nível da sua conta">
+              <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>
+              <span>Login com seu banco</span>
+              <span class="alt-badge">Sua conta será prata</span>
+            </button>
+          </li>
+          <li>
+            <button class="login-alt-btn" type="button" data-alt="Login com QR code" data-tooltip="Leia o QR code com o aplicativo no celular em que você já está conectado">
+              <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 21h1M21 14v1"/></svg>
+              <span>Login com QR code</span>
+            </button>
+          </li>
+          <li>
+            <button class="login-alt-btn" type="button" data-alt="Certificado digital" data-tooltip="Conecte seu token ou cartão com certificado digital ICP-Brasil">
+              <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="8" height="13" rx="2"/><path d="M10 8V3h4v5"/><path d="M12 12.5v4"/></svg>
+              <span>Seu certificado digital</span>
+            </button>
+          </li>
+          <li>
+            <button class="login-alt-btn" type="button" data-alt="Certificado digital em nuvem" data-tooltip="Entre com o certificado digital guardado em um provedor de nuvem">
+              <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 19a4.5 4.5 0 0 1-.7-8.95A6 6 0 0 1 17.8 9 4.75 4.75 0 0 1 17.5 19z"/><path d="M9.5 14.5l2 2 3.5-3.5"/></svg>
+              <span>Seu certificado digital em nuvem</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
       <p class="login-signup-prompt">
-        Ainda não tem conta? <a href="#" id="criar" data-tooltip="Crie sua conta gov.br gratuita em menos de 2 minutos">Criar conta</a>
+        Ainda não tem conta? <a href="#" id="criar">Criar conta</a>
       </p>
     </div>
 
-    <!-- Coluna Direita: Painel Visual com Ilustração (Figma/Dribbble Style) -->
+    <!-- Coluna Direita: Painel Visual com Ilustração -->
     <div class="login-visual-pane" aria-hidden="true">
-      <!-- Nuvens no fundo -->
       <div class="cloud cloud-top-left"></div>
       <div class="cloud cloud-top-right"></div>
       <div class="cloud cloud-bottom"></div>
 
-      <!-- Balão flutuante com checkmark -->
       <div class="float-bubble">
         <svg viewBox="0 0 24 24" class="bubble-check-icon">
           <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </div>
 
-      <!-- Cadeado flutuante com fechadura -->
       <div class="float-padlock">
         <svg viewBox="0 0 48 56" class="padlock-svg">
           <rect x="6" y="20" width="36" height="32" rx="8" fill="#ffffff" />
@@ -116,9 +134,7 @@
         </svg>
       </div>
 
-      <!-- Smartphone + Personagem interagindo -->
       <div class="phone-character-scene">
-        <!-- Smartphone Mockup -->
         <div class="mock-phone">
           <div class="phone-notch">
             <span class="phone-cam"></span>
@@ -133,11 +149,10 @@
               <span class="gov-pill">gov.br</span>
               <span class="menu-dots">•••</span>
             </div>
-            
+
             <div class="phone-biometric-display">
               <div class="sensor-brackets">
                 <div class="sensor-radar"></div>
-                <!-- Fingerprint / Biometria SVG -->
                 <svg class="fingerprint-svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M24 6c-8.8 0-16 7.2-16 16 0 3.5 1.1 6.8 3 9.5" />
                   <path d="M40 22c0-8.8-7.2-16-16-16" />
@@ -156,25 +171,18 @@
           </div>
         </div>
 
-        <!-- Personagem Ilustrado (estilo Dribbble com jaqueta amarela e calça branca) -->
         <svg class="character-vector" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Pernas / Calça branca -->
           <path d="M85 160L72 230L90 234L105 170" fill="#ffffff"/>
           <path d="M105 160L125 220L145 210L120 155" fill="#ffffff"/>
-          <!-- Sapatos escuros com solado branco -->
           <path d="M68 230L60 248C58 252 64 256 75 254L93 244L88 232Z" fill="#1e1b4b"/>
           <path d="M60 250L75 255L92 246" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
           <path d="M125 218L138 238C142 242 150 240 154 234L150 216Z" fill="#1e1b4b"/>
           <path d="M136 238L152 234" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- Tronco / Jaqueta Amarela (conforme referência) -->
           <path d="M78 85C70 95 68 115 70 145C72 158 85 165 110 165C130 165 138 155 135 140L130 95C125 82 100 80 78 85Z" fill="#f59e0b"/>
-          <!-- Alça e Bolsa Transversal -->
           <path d="M68 98L112 165" stroke="#1e1b4b" stroke-width="7" stroke-linecap="round"/>
           <path d="M52 135C45 145 48 175 62 185C72 190 78 175 75 155C72 140 60 132 52 135Z" fill="#1e1b4b"/>
-          <!-- Cabeça & Cabelo -->
           <circle cx="106" cy="58" r="14" fill="#fed7aa"/>
           <path d="M96 52C94 40 108 34 118 38C124 41 126 50 122 55C118 52 110 50 106 54C102 58 100 62 96 52Z" fill="#1e1b4b"/>
-          <!-- Braço estendido tocando o leitor biométrico do celular -->
           <path d="M125 95C138 98 152 105 168 115C178 122 190 120 195 114" stroke="#f59e0b" stroke-width="14" stroke-linecap="round"/>
           <path d="M188 116L198 110" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
         </svg>

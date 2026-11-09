@@ -1,0 +1,377 @@
+/* Tela de serviço: Alistamento militar (alistamento.html) */
+
+.lc-i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* =========================================================================
+   "Você está em": caminho da página, fixo logo abaixo da navbar
+   ========================================================================= */
+.crumbs-bar {
+  position: sticky;
+  top: 61px;
+  z-index: 40;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.crumbs { display: flex; align-items: center; gap: .75rem; min-height: 44px; font-size: .92rem; }
+.crumbs-label { display: inline-flex; align-items: center; gap: .35rem; flex: none; color: var(--muted); font-weight: 600; }
+.crumbs-label .lc-i { color: var(--blue); }
+body.hc .crumbs-label .lc-i { color: #60a5fa; }
+.crumbs-list { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+.crumbs-list::-webkit-scrollbar { display: none; }
+.crumbs-list li { display: inline-flex; align-items: center; }
+.crumbs-list li + li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin: 0 .7rem 0 .55rem;
+  border-top: 2px solid var(--muted);
+  border-right: 2px solid var(--muted);
+  transform: rotate(45deg);
+  opacity: .6;
+  flex: none;
+}
+.crumbs-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .15rem;
+  color: var(--blue);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.crumbs-list a:hover { text-decoration-thickness: 2px; }
+body.hc .crumbs-list a { color: #60a5fa; }
+.crumbs-list [aria-current="page"] {
+  padding: .3rem .75rem;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+}
+body.hc .crumbs-list [aria-current="page"] { background: #2563eb; }
+
+/* =========================================================================
+   Cabeçalho do serviço
+   ========================================================================= */
+.svc-head { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: flex-end; padding: 1.5rem 0 1.25rem; }
+.svc-meta { margin: 0 0 .3rem; font-size: .88rem; font-weight: 600; color: var(--ok); }
+.svc-head h1 { margin: 0; font-size: clamp(1.4rem, 2.8vw, 1.85rem); line-height: 1.2; letter-spacing: -.01em; }
+.svc-lead { margin: .35rem 0 0; color: var(--muted); font-size: 1rem; }
+.svc-start { min-height: 46px; border-radius: 10px; padding: .55rem 1.2rem; }
+.svc-start .lc-i { transition: transform .2s ease; }
+.svc-start:hover .lc-i { transform: translateX(3px); }
+
+.svc-layout { display: grid; grid-template-columns: 1fr 270px; gap: 1.5rem; align-items: start; }
+
+/* Painéis */
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.25rem 1.35rem; margin-bottom: 1rem; scroll-margin-top: 120px; }
+.panel h2 { margin: 0 0 .5rem; font-size: 1.15rem; }
+.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.panel-head h2 { margin: 0; }
+.panel-sub { margin: .2rem 0 .75rem; color: var(--muted); font-size: .95rem; }
+
+/* Resumo em uma grade única, sem caixinhas separadas */
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; }
+.facts > div { padding: .8rem 1rem; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); }
+.facts > div:nth-child(3n+1) { padding-left: 0; border-left: 0; }
+.facts > div:nth-last-child(-n+3) { border-bottom: 0; }
+.facts dt { font-size: .82rem; font-weight: 600; color: var(--muted); }
+.facts dd { margin: .15rem 0 0; font-size: 1rem; font-weight: 700; line-height: 1.35; }
+.facts small { display: block; margin-top: .15rem; font-size: .82rem; font-weight: 500; color: var(--muted); }
+.facts-note { margin: .75rem 0 0; padding-top: .7rem; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+
+/* Progresso do checklist */
+.prog-txt { margin: 0; font-size: .9rem; font-weight: 700; color: var(--muted); }
+.progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 0 0 .5rem; }
+.progress i { display: block; height: 100%; width: 0; background: var(--green); transition: width .35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Dúvidas frequentes (acordeão) */
+.acc button { width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: .85rem 0; font: 600 1rem var(--font); color: var(--ink); cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; }
+.acc button:hover { color: var(--blue); }
+.acc button::after { content: "+"; font-size: 1.3rem; line-height: 1; color: var(--blue); }
+.acc button[aria-expanded="true"]::after { content: "–"; }
+.acc .pane { display: none; padding: .75rem 0; color: var(--muted); }
+.acc .pane.open { display: block; animation: accIn .25s ease both; }
+@keyframes accIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Ouvidoria */
+.ouv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; }
+.ouv-btn {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  padding: .5rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color .2s ease, background .2s ease;
+}
+.ouv-btn:hover { border-color: var(--blue); background: var(--blue-l); }
+body.hc .ouv-btn { color: #60a5fa; }
+
+/* "Esta página ajudou?" no fim do conteúdo */
+.feedback { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; padding: .5rem 0 0; }
+.feedback-btns { display: flex; gap: .5rem; }
+.fb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 40px;
+  padding: 0 .9rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: 600 .95rem var(--font);
+  cursor: pointer;
+}
+.fb-btn:hover { border-color: var(--blue); color: var(--blue); }
+.feedback-date { margin-left: auto; font-size: .82rem; color: var(--muted); }
+
+/* Coluna lateral: "Nesta página" acompanha a rolagem */
+.aside-box { position: sticky; top: 120px; display: grid; gap: 1rem; }
+.aside-box .card { box-shadow: none; padding: 1rem 1.1rem; }
+.aside-box h2 { margin: 0 0 .5rem; font-size: .95rem; }
+.toc ol { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+.toc a {
+  display: block;
+  margin-left: -2px;
+  padding: .4rem .75rem;
+  border-left: 2px solid transparent;
+  color: var(--muted);
+  font-size: .93rem;
+  text-decoration: none;
+  transition: color .2s ease, border-color .2s ease;
+}
+.toc a:hover { color: var(--blue); }
+.toc a[aria-current="true"] { border-left-color: var(--blue); color: var(--blue); font-weight: 700; }
+body.hc .toc a:hover, body.hc .toc a[aria-current="true"] { color: #60a5fa; border-left-color: #60a5fa; }
+.related ul { list-style: none; margin: 0; padding: 0; }
+.related li a { display: block; padding: .5rem 0; border-bottom: 1px solid var(--line); font-size: .93rem; text-decoration: none; }
+.related li:last-child a { border-bottom: 0; }
+.related li a:hover { text-decoration: underline; }
+
+.cta-bar { display: none; }
+
+/* =========================================================================
+   SpringCheck (caixa de confirmação animada pelo spring-check.js)
+   ========================================================================= */
+.spring-check {
+  --sc-ink: var(--ink, #1b2430);
+  --sc-fill: var(--blue, #0b4ea2);
+  --sc-check: #ffffff;
+  --sc-box: 26px;
+  --sc-radius: 8px;
+  --sc-font: 16px;
+  --sc-ring: 2px;
+  --sc-gap: 12px;
+  --sc-row: 44px;
+  --sc-rule: 1.5px;
+  --sc-origin: left center;
+  --sc-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sc-gap);
+  min-height: var(--sc-row);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sc-ink);
+  font-family: inherit;
+  font-size: var(--sc-font);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  outline: none;
+}
+
+body.hc .spring-check {
+  --sc-ink: var(--ink, #e8edf5);
+  --sc-fill: #38bdf8;
+  --sc-check: #0a1120;
+}
+
+.spring-check:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spring-check__press {
+  flex: none;
+  width: var(--sc-box);
+  height: var(--sc-box);
+  border-radius: var(--sc-radius);
+  transition: transform 160ms var(--sc-ease-out);
+}
+
+.spring-check[data-pressed] .spring-check__press {
+  transform: scale(0.92);
+}
+
+.spring-check:focus-visible .spring-check__press {
+  outline: 2px solid color-mix(in srgb, var(--sc-fill) 60%, transparent);
+  outline-offset: 3px;
+}
+
+.spring-check__box {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  transform-origin: center;
+  background: var(--card);
+}
+
+.spring-check__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--sc-ring) var(--line);
+  opacity: 0.85;
+  transition: opacity 120ms ease, box-shadow 120ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spring-check:not(:disabled):hover .spring-check__ring {
+    box-shadow: inset 0 0 0 var(--sc-ring) var(--sc-fill);
+    opacity: 1;
+  }
+}
+
+.spring-check__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--sc-fill);
+  transform-origin: center;
+  transform: scale(0);
+}
+
+.spring-check__tick {
+  position: relative;
+  width: 68%;
+  height: 68%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--sc-check);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.spring-check__label {
+  position: relative;
+  display: inline-block;
+}
+
+.spring-check__word {
+  display: inline-block;
+  transition: opacity 160ms ease;
+}
+
+.spring-check__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--sc-rule);
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: var(--sc-origin);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* =========================================================================
+   Checklist de documentos: lista simples, sem ícones decorativos
+   ========================================================================= */
+.checklist-list { display: grid; }
+.checklist-card {
+  padding: .7rem .75rem;
+  margin: 0 -.75rem;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.checklist-card:last-child { border-bottom: 0; }
+.checklist-card:hover { background: var(--bg); }
+.checklist-card.is-checked { background: var(--blue-l); }
+body.hc .checklist-card.is-checked { background: rgba(56, 189, 248, 0.08); }
+.checklist-hint { margin: 0 0 0 36px; font-size: .9rem; line-height: 1.45; color: var(--muted); }
+
+/* =========================================================================
+   Passo a passo: linha do tempo numerada
+   ========================================================================= */
+.steps { list-style: none; margin: .25rem 0 0; padding: 0; }
+.step-item { position: relative; display: grid; grid-template-columns: 34px 1fr; gap: 1rem; padding-bottom: 1.1rem; }
+.step-item:last-child { padding-bottom: 0; }
+.step-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 36px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--line);
+}
+.step-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--blue-l);
+  color: var(--blue);
+  font-weight: 800;
+  font-size: .95rem;
+  border: 2px solid var(--blue);
+  transition: background .2s ease, color .2s ease;
+}
+.step-item:hover .step-num { background: var(--blue); color: #fff; }
+body.hc .step-num { color: #60a5fa; border-color: #3b82f6; }
+body.hc .step-item:hover .step-num { background: #2563eb; color: #fff; }
+.step-title { margin: .3rem 0 .2rem; font-size: 1.02rem; font-weight: 700; }
+.step-desc { margin: 0; font-size: .95rem; line-height: 1.5; color: var(--muted); }
+.step-need { margin: .35rem 0 0; font-size: .9rem; line-height: 1.45; color: var(--ink); }
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .svc-layout { grid-template-columns: 1fr; }
+  .aside-box { position: static; }
+  .toc { display: none; }
+}
+@media (max-width: 768px) {
+  .crumbs-label span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .crumbs { font-size: .88rem; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .facts > div,
+  .facts > div:nth-child(3n+1) { padding: .7rem .75rem; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .facts > div:nth-child(2n+1) { padding-left: 0; border-left: 0; }
+  .facts > div:nth-last-child(-n+2) { border-bottom: 0; }
+  .ouv-grid { grid-template-columns: 1fr 1fr; }
+  .feedback-date { margin-left: 0; flex-basis: 100%; }
+  .cta-bar { display: block; position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); padding: .7rem 1rem; box-shadow: 0 -2px 10px rgba(0, 0, 0, .15); z-index: 90; }
+  body.has-cta { padding-bottom: 76px; }
+  body.has-cta .fab { bottom: 92px; }
+  body.has-cta .assist { bottom: 164px; }
+  .svc-head .btn-desktop { display: none; }
+}

@@ -1,0 +1,112 @@
+/* Portal Cidadão — base: variáveis, modo escuro, reset, utilitários e animações compartilhadas. */
+:root {
+  --blue: #0b4ea2;
+  --blue-d: #073a7a;
+  --blue-l: #e8f0fb;
+  --yellow: #f2b705;
+  --green: #17784a;
+  --ink: #1b2430;
+  --muted: #566170;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --line: #d5dce6;
+  --danger: #b3261e;
+  --ok: #17784a;
+  --radius: 14px;
+  --shadow: 0 2px 10px rgba(16, 32, 64, 0.10);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Modo escuro (ativado pelo botão ◐, que coloca a classe .hc no body) */
+body.hc {
+  --blue: #3b82f6;
+  --blue-d: #2563eb;
+  --blue-l: rgba(59, 130, 246, 0.16);
+  --yellow: #f59e0b;
+  --green: #10b981;
+  --ink: #e8edf5;
+  --muted: #8e9cb2;
+  --bg: #0c121e;
+  --card: #131b2e;
+  --line: #222f46;
+  --danger: #f43f5e;
+  --ok: #10b981;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.38);
+}
+
+body, .site-header, .card, .panel, .fact, .site-footer, .input, .icon-btn, .btn, .slide {
+  transition: background-color .28s ease, border-color .28s ease, color .28s ease, box-shadow .28s ease;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  font-size: 1rem;
+}
+a { color: var(--blue); }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; border-radius: 4px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--yellow); color: #000; padding: .6rem 1rem; z-index: 100; }
+.skip:focus { left: 8px; top: 8px; }
+.container { width: min(1120px, 100% - 32px); margin-inline: auto; }
+.section { margin-block: 2rem; }
+.section h2 { font-size: 1.35rem; margin: 0 0 1rem; }
+.grid { display: grid; gap: 1rem; }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* Destaque temporário (PC.highlight) */
+.hl { animation: pulse 1.2s ease 3; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(242, 183, 5, 0); } 50% { box-shadow: 0 0 0 8px rgba(242, 183, 5, .75); } }
+
+/* =========================================================================
+   Animações de entrada das telas (a tela de login não usa estes elementos)
+   ========================================================================= */
+@keyframes screenEntrance {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardSmoothFade {
+  0% { opacity: 0; transform: translateY(12px) scale(0.988); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+main.container,
+main#conteudo,
+.section {
+  animation: screenEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.carousel,
+.svc-head {
+  animation: screenEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.grid .card,
+.hub .card,
+.facts .fact,
+.panel {
+  animation: cardSmoothFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Efeito de cascata */
+.grid .card:nth-child(1), .hub a:nth-child(1) .card, .facts .fact:nth-child(1) { animation-delay: 0.04s; }
+.grid .card:nth-child(2), .hub a:nth-child(2) .card, .facts .fact:nth-child(2) { animation-delay: 0.08s; }
+.grid .card:nth-child(3), .hub a:nth-child(3) .card, .facts .fact:nth-child(3) { animation-delay: 0.12s; }
+.grid .card:nth-child(4), .hub a:nth-child(4) .card, .facts .fact:nth-child(4) { animation-delay: 0.16s; }
+.grid .card:nth-child(5), .hub a:nth-child(5) .card, .facts .fact:nth-child(5) { animation-delay: 0.20s; }
+.grid .card:nth-child(6), .hub a:nth-child(6) .card, .facts .fact:nth-child(6) { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

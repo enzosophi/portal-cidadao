@@ -29,10 +29,10 @@
 
     if (txt) {
       if (n === total) {
-        txt.innerHTML = '<strong>' + n + ' de ' + total + ' itens separados</strong> — tudo pronto para iniciar! 🎉';
+        txt.textContent = 'Tudo pronto para iniciar';
         txt.style.color = 'var(--ok)';
       } else {
-        txt.textContent = n + ' de ' + total + ' itens separados';
+        txt.textContent = n + ' de ' + total + ' separados';
         txt.style.color = 'var(--muted)';
       }
     }
@@ -101,6 +101,31 @@
       window.PC.toast(a.getAttribute('data-ouv') + ': canal ilustrativo neste protótipo.');
     });
   });
+
+  // "Você está em" no celular: mostra o fim do caminho (a página atual)
+  var crumbs = document.getElementById('crumbs-list');
+  if (crumbs) crumbs.scrollLeft = crumbs.scrollWidth;
+
+  // "Nesta página": destaca a seção que está sendo lida
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+  var tocSections = tocLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  function marcarSecao() {
+    var linha = 140, atual = 0;
+    tocSections.forEach(function (sec, i) {
+      if (sec && sec.getBoundingClientRect().top <= linha) atual = i;
+    });
+    // chegou ao fim da página: a última seção é a atual
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) atual = tocSections.length - 1;
+    tocLinks.forEach(function (a, i) {
+      if (i === atual) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  if (tocLinks.length) {
+    marcarSecao();
+    window.addEventListener('scroll', marcarSecao, { passive: true });
+    window.addEventListener('resize', marcarSecao);
+  }
 
   document.querySelectorAll('[data-fb]').forEach(function (b) {
     b.addEventListener('click', function () {
