@@ -4,7 +4,7 @@ Protótipo navegável de um portal de serviços públicos, feito para a discipli
 
 ## Acesse o site
 
-**🔗 https://enzosophi.github.io/portal-cidadao/**
+🔗 **[enzosophi.github.io/portal-cidadao](https://enzosophi.github.io/portal-cidadao/)**
 
 | Tela | Link |
 |---|---|
