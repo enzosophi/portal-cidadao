@@ -78,8 +78,7 @@ body.hc .theme-toggle .i-sun { display: block; }
 .nav { display: flex; align-items: center; gap: 1rem; min-height: 60px; position: relative; }
 
 .site-header .brand { font-size: 1.1rem; white-space: nowrap; flex: none; }
-.site-header .brand-mark { width: 26px; height: 26px; border-radius: 8px; }
-.site-header .brand-mark::after { width: 10px; height: 10px; }
+.site-header .brand-logo { height: 1.75rem; }
 
 .ico {
   width: 20px;
@@ -333,3 +332,9 @@ body.hc .f-bottom { border-top-color: var(--line); color: var(--muted); }
 }
 /* Painel do ☰ aberto: o cabeçalho rola por dentro, sem empurrar a página para fora da tela */
 html.menu-open .site-header { max-height: 100vh; max-height: 100dvh; overflow-y: auto; }
+
+/* Celular bem estreito (ou texto grande): fica só o logo gov.br; o nome continua para leitores de tela */
+@media (max-width: 400px) {
+  .site-header .brand-sep { display: none; }
+  .site-header .brand-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
