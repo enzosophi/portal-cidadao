@@ -15,9 +15,9 @@ Protótipo navegável de um portal de serviços públicos, feito para a discipli
 
 Funciona no computador e no celular. Sem a IA ativada, nenhum dado é enviado ou guardado: o login, o reconhecimento facial e os serviços são apenas simulações.
 
-## Assistente com IA
+## Assistente de navegação
 
-O assistente pode usar o Gemini 2.0 Flash no plano gratuito para interpretar perguntas em linguagem natural. Para ativar a integração, crie uma chave no [Google AI Studio](https://aistudio.google.com/apikey) e preencha `apiKey` em `portal-cidadao/js/assistente-config.js`. A chave não deve ser publicada em um site real: em produção, mova essa chamada para um backend ou função serverless. Sem chave, o assistente usa regras locais e informa quando não encontra o assunto.
+O assistente funciona localmente no navegador, usando regras para interpretar perguntas comuns e levar o usuário ao serviço correspondente. Nenhum dado é enviado para uma API externa.
 
 ## O que observar em cada tela
 

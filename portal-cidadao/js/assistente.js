@@ -1,10 +1,7 @@
-/* Assistente de navegação. A IA é opcional; sem chave, usa as regras locais. */
+/* Assistente de navegação com regras locais. */
 (function () {
   'use strict';
   var page = document.body.getAttribute('data-page') || 'home';
-  var aiConfig = window.PC_AI_CONFIG || {};
-  var aiApiKey = aiConfig.apiKey || '';
-  var aiModel = aiConfig.model || 'gemini-2.0-flash';
 
   var DESTINOS = {
     login: { label: 'Abrir página de login', href: 'login.html' },
@@ -87,30 +84,6 @@
     }
   }
 
-  function askAI(question) {
-    if (!aiApiKey) return Promise.resolve(null);
-    var catalog = Object.keys(DESTINOS).join(', ');
-    var prompt = 'Você é o assistente do Portal Cidadão. Analise a pergunta em português e escolha no máximo um destino deste catálogo: ' + catalog + '. ' +
-      'Responda SOMENTE JSON válido no formato {"destination":"...","response":"..."}. ' +
-      'Use destination null se não houver relação. A resposta deve ser curta, cordial e não inventar serviços. ' +
-      'Exemplo: para "irei viajar em março", escolha passaporte e diga "Gostaria de realizar a requisição de um passaporte?". Pergunta: ' + question;
-    return fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(aiModel) + ':generateContent?key=' + encodeURIComponent(aiApiKey), {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    }).then(function (response) {
-      if (!response.ok) throw new Error('Falha na API de IA');
-      return response.json();
-    }).then(function (data) {
-      var text = data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text;
-      if (!text) return null;
-      var match = text.match(/\{[\s\S]*\}/);
-      if (!match) return null;
-      var result = JSON.parse(match[0]);
-      if (!result.destination || !DESTINOS[result.destination] || typeof result.response !== 'string') return null;
-      return result;
-    }).catch(function () { return null; });
-  }
-
   // ---- DOM ----
   var fab = document.createElement('button');
   fab.className = 'fab'; fab.type = 'button'; fab.id = 'assist-fab';
@@ -128,7 +101,7 @@
     '<form class="assist-form" id="assist-form"><label class="sr-only" for="assist-q">Pergunte algo</label>' +
     '<input class="input" id="assist-q" placeholder="Ex.: esqueci minha senha" autocomplete="off">' +
     '<button class="btn btn-primary" type="submit">Enviar</button></form>' +
-    '<p class="assist-note">As perguntas podem ser analisadas por uma IA configurada pelo portal. Não envie dados pessoais.</p>';
+    '<p class="assist-note">O assistente funciona localmente no seu navegador. Não envie dados pessoais.</p>';
   document.body.appendChild(card);
   document.body.appendChild(fab);
 
@@ -172,15 +145,10 @@
     e.preventDefault();
     var q = card.querySelector('#assist-q'); var txt = q.value.trim(); if (!txt) return;
     bubble(txt, 'me'); q.value = '';
-    var pending = bubble('Analisando sua pergunta...', 'bot');
-    askAI(txt).then(function (result) {
-      pending.remove();
-      if (result) { suggest(result.destination, result.response); return; }
-      var hit = localIntent(txt);
-      if (hit === 'passaporte') suggest('passaporte', 'Gostaria de realizar a requisição de um passaporte?');
-      else if (hit) run(hit);
-      else { say('Não encontrei informações sobre o que você está buscando. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
-    });
+    var hit = localIntent(txt);
+    if (hit === 'passaporte') suggest('passaporte', 'Gostaria de realizar a requisição de um passaporte?');
+    else if (hit) run(hit);
+    else { say('Não encontrei informações sobre o que você está buscando. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
   });
 
   // abre automaticamente via ?assistente=1 (usado pelo índice do protótipo)
