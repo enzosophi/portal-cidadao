@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alistamento militar — Portal Cidadão (protótipo)</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="alistamento" class="has-cta">
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<div class="proto-bar" role="note">Protótipo acadêmico de IHC — conteúdo ilustrativo. Confirme regras e prazos no canal oficial antes de agir.</div>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="home.html"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+    <div class="nav-search" id="nav-search">
+      <form role="search" autocomplete="off">
+        <label class="sr-only" for="busca">Buscar serviços</label>
+        <input id="busca" type="search" placeholder="O que você procura?" aria-controls="suggest" aria-expanded="false">
+        <button type="submit" aria-label="Buscar">🔍</button>
+      </form>
+      <ul class="suggest" id="suggest" aria-label="Sugestões de serviços"></ul>
+    </div>
+    <button class="icon-btn search-toggle" id="search-toggle" type="button" aria-label="Abrir busca" aria-expanded="false">🔍</button>
+    <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">☰</button>
+    <nav class="nav-links" id="nav-links" aria-label="Principal">
+      <a class="link" href="home.html">Início</a>
+      <button class="icon-btn" type="button" data-hc aria-pressed="false" aria-label="Alternar modo escuro" data-tooltip="Alternar entre modo claro e escuro">◐</button>
+      <a class="btn btn-primary" href="login.html" data-tooltip="Acesse sua conta do Portal Cidadão / Gov.br"><span aria-hidden="true">👤</span> Entrar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo" class="container">
+  <nav class="crumbs" aria-label="Você está em"><a href="home.html">Início</a> › Documentação e serviço militar › <strong>Alistamento no exterior</strong></nav>
+
+  <div class="svc-head">
+    <div>
+      <div class="tags"><span class="tag-pill">Serviço militar</span><span class="tag-pill">100% online</span></div>
+      <h1>Alistar-se no serviço militar no exterior</h1>
+      <p style="margin:.25rem 0;color:var(--muted)">Cadastre-se para cumprir a obrigação militar estando fora do país.</p>
+    </div>
+    <button class="btn btn-primary btn-desktop" type="button" id="btn-iniciar" style="min-width:170px" data-tooltip="Clique para iniciar o preenchimento online do seu alistamento militar consular"><span aria-hidden="true">🚀</span> Iniciar serviço</button>
+  </div>
+
+  <div class="svc-layout">
+    <div>
+      <!-- tudo o que o usuário quer saber logo de cara -->
+      <section aria-label="Resumo do serviço">
+        <div class="facts">
+          <div class="fact" data-tooltip="Destinado aos cidadãos brasileiros do sexo masculino no ano em que completam 18 anos"><span>Quem pode</span><strong>Cidadãos brasileiros no exterior</strong></div>
+          <div class="fact" data-tooltip="De 1º de janeiro a 30 de junho do ano em que completa 18 anos"><span>Quando</span><strong>No ano em que completa 18 anos</strong></div>
+          <div class="fact" data-tooltip="Serviço público gratuito prestado pelos consulados brasileiros"><span>Custo</span><strong>Gratuito</strong></div>
+          <div class="fact" data-tooltip="Preenchimento do formulário online e envio de fotos dos documentos"><span>Tempo estimado</span><strong>Cerca de 10 minutos</strong></div>
+          <div class="fact" data-tooltip="Atendimento online com apoio da rede consular brasileira"><span>Onde</span><strong>Online, com apoio consular</strong></div>
+          <div class="fact" data-tooltip="Certificado de Alistamento Militar (CAM) digital com código de autenticidade"><span>Resultado</span><strong>Comprovante de alistamento</strong></div>
+        </div>
+        <div class="notice">Valores, prazos e requisitos acima são <strong>ilustrativos</strong> neste protótipo.</div>
+      </section>
+
+      <section class="panel" aria-labelledby="t-docs">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem">
+          <h2 id="t-docs" style="margin:0">Antes de começar, tenha em mãos</h2>
+          <span class="doc-pill" data-tooltip="Marque cada item à medida que você os separar">📋 Checklist interativo</span>
+        </div>
+        <p style="margin:0 0 .75rem;color:var(--muted);font-size:.92rem">Clique nas caixas animadas para confirmar os documentos que você já tem em mãos:</p>
+        
+        <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+        <p id="prog-txt" style="margin:0 0 .9rem;color:var(--muted);font-weight:600" aria-live="polite">0 de 4 itens separados</p>
+
+        <div class="checklist-list" id="checklist" role="group" aria-label="Lista de verificação de documentos com SpringCheck">
+          <!-- Item 1: Documento com foto -->
+          <div class="checklist-card" data-tooltip="Documento oficial de identidade com foto nítida: RG original, CNH válida ou Passaporte brasileiro.">
+            <div class="checklist-icon-box" aria-hidden="true">🪪</div>
+            <div class="checklist-main">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked="false"
+                class="spring-check"
+                data-spring-check
+                aria-label="Documento de identificação com foto"
+                style="--sc-box: 24px; --sc-radius: 7px; --sc-font: 1.02rem; --sc-gap: 10px;"
+              >
+                <span class="spring-check__press">
+                  <span class="spring-check__box">
+                    <span class="spring-check__ring" aria-hidden="true"></span>
+                    <span class="spring-check__fill"></span>
+                    <svg class="spring-check__tick" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 14L8.5 17.5L19 6.5" pathLength="1" strokeDasharray="1" style="stroke-dashoffset: 1;" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="spring-check__label">
+                  <span class="spring-check__word">Documento de identificação com foto</span>
+                  <span class="spring-check__rule" aria-hidden="true"></span>
+                </span>
+              </button>
+              <div class="checklist-hint">
+                <span class="doc-pill">📄 Documento exigido</span>
+                <span>RG original, CNH válida ou Passaporte brasileiro</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: CPF -->
+          <div class="checklist-card" data-tooltip="Caso seu RG ou CNH já contenha o número do seu CPF, nenhum cartão ou comprovante extra é necessário.">
+            <div class="checklist-icon-box" aria-hidden="true">🔢</div>
+            <div class="checklist-main">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked="false"
+                class="spring-check"
+                data-spring-check
+                aria-label="Cadastro de Pessoa Física (CPF regular)"
+                style="--sc-box: 24px; --sc-radius: 7px; --sc-font: 1.02rem; --sc-gap: 10px;"
+              >
+                <span class="spring-check__press">
+                  <span class="spring-check__box">
+                    <span class="spring-check__ring" aria-hidden="true"></span>
+                    <span class="spring-check__fill"></span>
+                    <svg class="spring-check__tick" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 14L8.5 17.5L19 6.5" pathLength="1" strokeDasharray="1" style="stroke-dashoffset: 1;" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="spring-check__label">
+                  <span class="spring-check__word">Cadastro de Pessoa Física (CPF regular)</span>
+                  <span class="spring-check__rule" aria-hidden="true"></span>
+                </span>
+              </button>
+              <div class="checklist-hint">
+                <span class="doc-pill">💳 Número oficial</span>
+                <span>Cartão CPF, comprovante da Receita Federal ou número no RG</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: Comprovante de residência no exterior -->
+          <div class="checklist-card" data-tooltip="Documento emitido no país de residência (últimos 90 dias): conta de luz, água, internet, contrato de moradia ou declaração consular.">
+            <div class="checklist-icon-box" aria-hidden="true">🏠</div>
+            <div class="checklist-main">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked="false"
+                class="spring-check"
+                data-spring-check
+                aria-label="Comprovante de residência no exterior"
+                style="--sc-box: 24px; --sc-radius: 7px; --sc-font: 1.02rem; --sc-gap: 10px;"
+              >
+                <span class="spring-check__press">
+                  <span class="spring-check__box">
+                    <span class="spring-check__ring" aria-hidden="true"></span>
+                    <span class="spring-check__fill"></span>
+                    <svg class="spring-check__tick" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 14L8.5 17.5L19 6.5" pathLength="1" strokeDasharray="1" style="stroke-dashoffset: 1;" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="spring-check__label">
+                  <span class="spring-check__word">Comprovante de residência no exterior</span>
+                  <span class="spring-check__rule" aria-hidden="true"></span>
+                </span>
+              </button>
+              <div class="checklist-hint">
+                <span class="doc-pill">📑 Comprovante de endereço</span>
+                <span>Conta de luz/água, contrato de aluguel ou declaração</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: Conta de acesso ao portal -->
+          <div class="checklist-card" data-tooltip="Conta única do Portal Cidadão / Gov.br. Se você ainda não tem senha, você poderá criá-la em 2 minutos na tela de login.">
+            <div class="checklist-icon-box" aria-hidden="true">👤</div>
+            <div class="checklist-main">
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked="false"
+                class="spring-check"
+                data-spring-check
+                aria-label="Conta de acesso ao portal (login unificado)"
+                style="--sc-box: 24px; --sc-radius: 7px; --sc-font: 1.02rem; --sc-gap: 10px;"
+              >
+                <span class="spring-check__press">
+                  <span class="spring-check__box">
+                    <span class="spring-check__ring" aria-hidden="true"></span>
+                    <span class="spring-check__fill"></span>
+                    <svg class="spring-check__tick" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 14L8.5 17.5L19 6.5" pathLength="1" strokeDasharray="1" style="stroke-dashoffset: 1;" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="spring-check__label">
+                  <span class="spring-check__word">Conta de acesso ao portal (login unificado)</span>
+                  <span class="spring-check__rule" aria-hidden="true"></span>
+                </span>
+              </button>
+              <div class="checklist-hint">
+                <span class="doc-pill">🔑 Acesso gov.br</span>
+                <span>CPF + senha cadastrada ou reconhecimento facial na hora</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="t-passos">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem">
+          <h2 id="t-passos" style="margin:0">Passo a passo do alistamento</h2>
+          <span class="doc-pill" data-tooltip="Passe o cursor ou toque em cada etapa para ver os documentos exigidos e orientações">ℹ️ Guia explicativo</span>
+        </div>
+        <p style="margin:0 0 1rem;color:var(--muted);font-size:.92rem">Cada etapa indica a ação e os documentos que você precisará apresentar:</p>
+
+        <ol class="steps-revamp">
+          <!-- Passo 1: Entre na sua conta (ícone de pessoa) -->
+          <li class="step-item" data-tooltip="Acesse com CPF e senha ou reconhecimento facial para garantir que a emissão do seu documento militar seja feita de forma protegida.">
+            <div class="step-visual-col">
+              <span class="step-badge-num">1</span>
+              <div class="step-icon-avatar" aria-hidden="true">👤</div>
+            </div>
+            <div class="step-info-col">
+              <div class="step-header-row">
+                <h3 class="step-title">Entre na sua conta</h3>
+                <span class="step-tag">🔐 Acesso seguro</span>
+              </div>
+              <p class="step-desc">Faça login com seu CPF e senha ou use o reconhecimento facial pelo celular sem sair desta página.</p>
+              <div class="step-doc-box">
+                <span aria-hidden="true">🪪</span>
+                <span><strong>Identificação:</strong> CPF cadastrado e senha do portal</span>
+              </div>
+            </div>
+          </li>
+
+          <!-- Passo 2: Confirme seus dados -->
+          <li class="step-item" data-tooltip="Confira se seu nome completo, data de nascimento, filiação e endereço no país estrangeiro estão corretos antes de emitir o documento.">
+            <div class="step-visual-col">
+              <span class="step-badge-num">2</span>
+              <div class="step-icon-avatar" aria-hidden="true">📋</div>
+            </div>
+            <div class="step-info-col">
+              <div class="step-header-row">
+                <h3 class="step-title">Confirme seus dados pessoais</h3>
+                <span class="step-tag">✍️ Conferência</span>
+              </div>
+              <p class="step-desc">Valide as informações básicas carregadas automaticamente e informe seu endereço e contato no país estrangeiro.</p>
+              <div class="step-doc-box">
+                <span aria-hidden="true">🏠</span>
+                <span><strong>Documento:</strong> Endereço e telefone atualizado no exterior</span>
+              </div>
+            </div>
+          </li>
+
+          <!-- Passo 3: Envie os documentos (foto de documento) -->
+          <li class="step-item" data-tooltip="Tire fotos nítidas dos seus documentos originais ou anexe arquivos em formato digital (PDF, JPG ou PNG) sem cortes e bem iluminados.">
+            <div class="step-visual-col">
+              <span class="step-badge-num">3</span>
+              <div class="step-icon-avatar" aria-hidden="true">📸</div>
+            </div>
+            <div class="step-info-col">
+              <div class="step-header-row">
+                <h3 class="step-title">Envie os documentos</h3>
+                <span class="step-tag">📎 Fotos / PDFs</span>
+              </div>
+              <p class="step-desc">Tire uma foto nítida do seu documento com foto e do comprovante de endereço no exterior.</p>
+              <div class="step-doc-box">
+                <span aria-hidden="true">📄</span>
+                <span><strong>Fotos exigidas:</strong> Identidade (frente e verso) e Comprovante de moradia</span>
+              </div>
+            </div>
+          </li>
+
+          <!-- Passo 4: Receba o comprovante -->
+          <li class="step-item" data-tooltip="Ao concluir, seu Certificado de Alistamento Militar (CAM) digital é emitido na hora com código de autenticação e QR Code.">
+            <div class="step-visual-col">
+              <span class="step-badge-num">4</span>
+              <div class="step-icon-avatar" aria-hidden="true">📜</div>
+            </div>
+            <div class="step-info-col">
+              <div class="step-header-row">
+                <h3 class="step-title">Receba o comprovante oficial</h3>
+                <span class="step-tag">✅ Certificado pronto</span>
+              </div>
+              <p class="step-desc">Baixe e guarde seu Certificado de Alistamento Militar digital assinado com QR Code de autenticação jurídica.</p>
+              <div class="step-doc-box">
+                <span aria-hidden="true">⬇️</span>
+                <span><strong>Resultado:</strong> Certificado de Alistamento Militar (CAM) em PDF</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="panel acc" aria-labelledby="t-mais">
+        <h2 id="t-mais">Mais informações</h2>
+        <button type="button" aria-expanded="false" aria-controls="p1" id="b1">O que é o alistamento?</button>
+        <div class="pane" id="p1" role="region" aria-labelledby="b1">Registro obrigatório que formaliza a situação militar do cidadão. Texto ilustrativo do protótipo.</div>
+        <button type="button" aria-expanded="false" aria-controls="p2" id="b2">E se eu perder o prazo?</button>
+        <div class="pane" id="p2" role="region" aria-labelledby="b2">O portal deve explicar aqui, em linguagem simples, as consequências e como regularizar. Texto ilustrativo.</div>
+        <button type="button" aria-expanded="false" aria-controls="p3" id="b3">Preciso de ajuda com o login</button>
+        <div class="pane" id="p3" role="region" aria-labelledby="b3">Na tela de entrada você recupera a senha sem sair da página. <a href="login.html">Ir para a entrada</a>.</div>
+      </section>
+
+      <section class="panel" id="ouvidoria" aria-labelledby="t-ouv" tabindex="-1">
+        <h2 id="t-ouv">Ouvidoria</h2>
+        <div class="grid grid-4">
+          <a class="btn btn-outline" href="#" data-ouv="Denúncia" data-tooltip="Relatar irregularidades, conduta inadequada ou descumprimento de normas">📢 Denúncia</a>
+          <a class="btn btn-outline" href="#" data-ouv="Reclamação" data-tooltip="Manifestar insatisfação sobre o atendimento ou falha no serviço público">👎 Reclamação</a>
+          <a class="btn btn-outline" href="#" data-ouv="Elogio" data-tooltip="Registrar elogio ao atendimento dos servidores e qualidade do serviço">👍 Elogio</a>
+          <a class="btn btn-outline" href="#" data-ouv="Sugestão" data-tooltip="Enviar ideia para melhoria contínua dos processos do portal">💬 Sugestão</a>
+        </div>
+      </section>
+    </div>
+
+    <aside class="aside-box" aria-label="Serviços recomendados">
+      <div class="card">
+        <h2 style="font-size:1rem;margin:0 0 .5rem">Serviços relacionados</h2>
+        <ul>
+          <li><a href="#" data-tooltip="Emissão de certidão comprobatória para quem já cumpriu ou foi dispensado">Obter comprovante de situação militar no exterior</a></li>
+          <li><a href="#" data-tooltip="Apresentação obrigatória para reservistas em dia nos consulados">Apresentação da Reserva</a></li>
+          <li><a href="#" data-tooltip="Solicite segunda via em caso de perda, roubo ou danificação">Segunda via de documento militar</a></li>
+          <li><a href="#" data-tooltip="Regularize seu título eleitoral brasileiro residindo no exterior">Inscrição eleitoral no exterior</a></li>
+        </ul>
+        <p style="font-size:.8rem;color:var(--muted);margin:.75rem 0 0">Última atualização: 15/12/2025 (exemplo)</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <strong>Esta página ajudou?</strong>
+        <div style="display:flex;gap:.5rem;margin-top:.5rem">
+          <button class="btn btn-outline" type="button" data-fb="sim" data-tooltip="Indique que as instruções foram claras e ajudaram você">👍 Sim</button>
+          <button class="btn btn-outline" type="button" data-fb="nao" data-tooltip="Indique que você teve dúvidas ou sentiu falta de informações">👎 Não</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="cta-bar"><button class="btn btn-primary btn-block" type="button" id="btn-iniciar-m" data-tooltip="Iniciar o preenchimento online do seu alistamento militar"><span aria-hidden="true">🚀</span> Iniciar serviço</button></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a class="brand" href="home.html" style="color:#fff"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+        <p>Protótipo acadêmico de IHC. Marca e conteúdo fictícios.</p>
+      </div>
+      <details class="f-col"><summary>Serviços</summary><ul><li><a href="home.html#mais-acessados">Mais acessados</a></li><li><a href="home.html#destaques">Destaques</a></li></ul></details>
+      <details class="f-col"><summary>Ajuda</summary><ul><li><a href="#">Dúvidas frequentes</a></li><li><a href="login.html">Recuperar senha</a></li></ul></details>
+      <details class="f-col"><summary>Institucional</summary><ul><li><a href="#">Acessibilidade</a></li><li><a href="#">Privacidade</a></li></ul></details>
+    </div>
+    <div class="f-bottom"><span>© 2026 Protótipo acadêmico — Mackenzie Alphaville · IHC</span></div>
+  </div>
+</footer>
+
+<script src="js/anime.umd.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/spring-check.js"></script>
+<script src="js/alistamento.js"></script>
+<script src="js/assistente.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Início — Portal Cidadão (protótipo)</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<div class="proto-bar" role="note">Protótipo acadêmico de IHC — não é um site oficial. Conteúdo ilustrativo.</div>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="home.html"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+
+    <div class="nav-search" id="nav-search">
+      <form role="search" autocomplete="off">
+        <label class="sr-only" for="busca">Buscar serviços</label>
+        <input id="busca" type="search" placeholder="O que você procura? (tecle / para buscar)" aria-controls="suggest" aria-expanded="false">
+        <button type="submit" aria-label="Buscar">🔍</button>
+      </form>
+      <ul class="suggest" id="suggest" aria-label="Sugestões de serviços"></ul>
+    </div>
+
+    <button class="icon-btn search-toggle" id="search-toggle" type="button" aria-label="Abrir busca" aria-expanded="false">🔍</button>
+    <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">☰</button>
+
+    <nav class="nav-links" id="nav-links" aria-label="Principal">
+      <a class="link" href="#destaques">Destaques</a>
+      <a class="link" href="#perfis">Por Perfil</a>
+      <a class="link" href="#mais-acessados">Mais acessados</a>
+      <a class="link" href="alistamento.html" data-tooltip="Página de serviço completa com checklist e passo a passo ilustrado">Exemplo: alistamento</a>
+      <button class="icon-btn" type="button" data-hc aria-pressed="false" aria-label="Alternar modo escuro" data-tooltip="Alternar entre modo claro e escuro">◐</button>
+      <a class="btn btn-primary" id="btn-entrar" href="login.html" data-tooltip="Acesse sua conta do Portal Cidadão / Gov.br"><span aria-hidden="true">👤</span> Entrar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo" class="container">
+  <section class="section" id="destaques" aria-labelledby="t-dest">
+    <h2 id="t-dest">Destaques</h2>
+    <div class="carousel" id="carousel" role="region" aria-roledescription="carrossel" aria-label="Destaques do portal" tabindex="0">
+      <div class="track" aria-live="off">
+        <article class="slide"><span class="tag">Finanças</span><h3>Entregue seu Imposto de Renda</h3><p>Veja o prazo, o que precisa ter em mãos e comece em poucos passos.</p><a class="btn" href="#mais-acessados" data-tooltip="Consulte prazos e faça o envio da sua declaração do IRPF">Ver serviço</a></article>
+        <article class="slide"><span class="tag">Novo · Finanças</span><h3>Renegociação de dívidas</h3><p>Condições para famílias organizarem as contas com mais tranquilidade.</p><a class="btn" href="#mais-acessados" data-tooltip="Acesse o programa de renegociação com descontos nos juros">Saiba mais</a></article>
+        <article class="slide"><span class="tag">Segurança</span><h3>Celular seguro</h3><p>Bloqueie o aparelho e registre ocorrência de forma rápida.</p><a class="btn" href="#mais-acessados" data-tooltip="Bloqueio imediato de linhas e contas em caso de furto ou roubo">Acessar</a></article>
+        <article class="slide"><span class="tag">Novo · Assistência social</span><h3>Consulte seu benefício</h3><p>Acompanhe datas, valores e pendências em um só lugar.</p><a class="btn" href="#mais-acessados" data-tooltip="Consulte datas de pagamento do Bolsa Família e benefícios sociais">Consultar</a></article>
+      </div>
+      <button class="car-btn prev" type="button" aria-label="Destaque anterior" data-tooltip="Ver destaque anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      <button class="car-btn next" type="button" aria-label="Próximo destaque" data-tooltip="Ver próximo destaque">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </button>
+      <div class="car-ctrl"><div class="dots" role="group" aria-label="Escolher destaque"></div><button class="car-pause" type="button" aria-pressed="false" data-tooltip="Pausar ou retomar rotação automática">⏸ Pausar</button></div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SERVIÇOS DIGITAIS POR PERFIL (gov.br style)
+       ========================================================================= -->
+  <section class="section perfil-section" id="perfis" aria-labelledby="t-perfis">
+    <div class="perfil-heading-wrap">
+      <span class="perfil-badge-kicker">💼 Atendimento personalizado</span>
+      <h2 id="t-perfis">Serviços Digitais por Perfil</h2>
+      <p>Encontre os serviços e orientações específicos com base no seu perfil de acesso. Clique em qualquer perfil para ver as consultas sob medida:</p>
+    </div>
+
+    <div class="perfil-carousel-wrap">
+      <button class="perfil-nav-btn prev" type="button" id="perfil-prev" aria-label="Perfil anterior" data-tooltip="Ver perfis anteriores">‹</button>
+      
+      <div class="perfil-track-container">
+        <div class="perfil-track" id="perfil-track" role="tablist" aria-label="Seleção de perfil do cidadão">
+          <!-- Item 1: Agricultor -->
+          <div class="perfil-item is-active" role="tab" aria-selected="true" data-perfil="agricultor" tabindex="0" data-tooltip="Serviços para o produtor rural familiar: Pronaf, CAR, DAP e Seguro Agrícola">
+            <div class="perfil-avatar-circle" aria-hidden="true">🌾</div>
+            <span class="perfil-name">Agricultor</span>
+            <p class="perfil-tagline">Produtor rural e campo</p>
+          </div>
+
+          <!-- Item 2: Idoso -->
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="idoso" tabindex="0" data-tooltip="Serviços para a terceira idade: Prova de Vida Digital, Extrato INSS e Carteira do Idoso">
+            <div class="perfil-avatar-circle" aria-hidden="true">🧓</div>
+            <span class="perfil-name">Idoso / Aposentado</span>
+            <p class="perfil-tagline">Previdência e direitos</p>
+          </div>
+
+          <!-- Item 3: Estudante -->
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="estudante" tabindex="0" data-tooltip="Serviços para estudantes: ENEM, Prouni, FIES, Encceja e Meia-entrada">
+            <div class="perfil-avatar-circle" aria-hidden="true">🎓</div>
+            <span class="perfil-name">Estudante</span>
+            <p class="perfil-tagline">Educação e formação</p>
+          </div>
+
+          <!-- Item 4: MEI -->
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="mei" tabindex="0" data-tooltip="Serviços para Microempreendedor Individual: Emitir DAS, Declaração Anual e Notas Fiscais">
+            <div class="perfil-avatar-circle" aria-hidden="true">💼</div>
+            <span class="perfil-name">MEI</span>
+            <p class="perfil-tagline">Empreendedor individual</p>
+          </div>
+
+          <!-- Item 5: Trabalhador -->
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="trabalhador" tabindex="0" data-tooltip="Serviços para o trabalhador CLT: Carteira Digital, Seguro-Desemprego, PIS e FGTS">
+            <div class="perfil-avatar-circle" aria-hidden="true">👷</div>
+            <span class="perfil-name">Trabalhador</span>
+            <p class="perfil-tagline">Emprego e carteira assinada</p>
+          </div>
+
+          <!-- Item 6: Turista -->
+          <div class="perfil-item" role="tab" aria-selected="false" data-perfil="turista" tabindex="0" data-tooltip="Serviços para turistas e brasileiros no exterior: Passaporte, Alistamento Militar e Alfândega">
+            <div class="perfil-avatar-circle" aria-hidden="true">✈️</div>
+            <span class="perfil-name">Turista & Exterior</span>
+            <p class="perfil-tagline">Viagens e consular</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="perfil-nav-btn next" type="button" id="perfil-next" aria-label="Próximo perfil" data-tooltip="Ver mais perfis">›</button>
+    </div>
+
+    <div class="perfil-bottom-actions">
+      <div class="perfil-dots" id="perfil-dots" role="group" aria-label="Indicadores de perfil"></div>
+      <button class="btn btn-outline" type="button" id="btn-todos-perfis" style="min-height:38px;padding:.35rem 1.1rem;font-size:.9rem" data-tooltip="Ver todos os perfis disponíveis em uma visualização completa">Todos os Perfis</button>
+    </div>
+
+    <!-- Painel de Serviços do Perfil Selecionado -->
+    <div class="perfil-display-card" id="perfil-display" role="tabpanel" aria-live="polite">
+      <!-- Injetado dinamicamente pelo JavaScript com serviços interativos -->
+    </div>
+  </section>
+
+  <!-- Modal Todos os Perfis -->
+  <div class="modal" id="modal-todos-perfis" role="dialog" aria-modal="true" aria-labelledby="t-modal-perfis">
+    <div class="modal-box" style="width:min(600px, 100%)">
+      <h2 id="t-modal-perfis" style="margin:0">Escolha o seu Perfil</h2>
+      <p style="color:var(--muted);margin:.3rem 0 1rem;font-size:.92rem">Selecione o perfil que mais combina com a sua consulta no Portal Cidadão:</p>
+      
+      <div class="all-profiles-grid" id="modal-profiles-list">
+        <!-- Renderizado dinamicamente -->
+      </div>
+      
+      <button class="btn btn-outline" type="button" id="modal-perfis-fechar" style="margin-top:1.25rem">Fechar</button>
+    </div>
+  </div>
+
+  <section class="section" id="mais-acessados" aria-labelledby="t-mais">
+    <h2 id="t-mais">Mais acessados</h2>
+    <div class="grid grid-4">
+      <a class="card svc" href="alistamento.html" data-tooltip="Obrigação militar para jovens de 18 anos residindo no exterior. Processo 100% online com checklist guiado."><span class="ico" aria-hidden="true">🪖</span>Alistar-se no serviço militar</a>
+      <a class="card svc" href="#" data-tooltip="Assine contratos, termos e documentos digitais gratuitamente com validade jurídica oficial pelo portal."><span class="ico" aria-hidden="true">✍️</span>Assinatura eletrônica</a>
+      <a class="card svc" href="#" data-tooltip="Solicite ou renove seu passaporte brasileiro pela Polícia Federal. Requer formulário e pagamento de GRU."><span class="ico" aria-hidden="true">🛂</span>Obter passaporte</a>
+      <a class="card svc" href="#" data-tooltip="Consulte restituição do IRPF, malha fina e envie sua declaração anual com comprovante de entrega."><span class="ico" aria-hidden="true">💰</span>Consultar Imposto de Renda</a>
+      <a class="card svc" href="#" data-tooltip="Emita comprovante de situação cadastral e regularize pendências do seu CPF na Receita Federal."><span class="ico" aria-hidden="true">🪪</span>Consultar CPF</a>
+      <a class="card svc" href="#" data-tooltip="Emita o boleto mensal DAS para pagamento dos tributos e contribuição do INSS do Microempreendedor."><span class="ico" aria-hidden="true">🧾</span>Emitir guia do MEI</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a class="brand" href="home.html" style="color:#fff"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+        <p>Protótipo acadêmico de IHC. Marca e conteúdo fictícios.</p>
+      </div>
+      <details class="f-col"><summary>Serviços</summary><ul>
+        <li><a href="#mais-acessados">Mais acessados</a></li><li><a href="#destaques">Destaques</a></li><li><a href="alistamento.html">Serviço militar</a></li></ul></details>
+      <details class="f-col"><summary>Ajuda</summary><ul>
+        <li><a href="#">Dúvidas frequentes</a></li><li><a href="#">Recuperar senha</a></li><li><a href="#">Contato e ouvidoria</a></li></ul></details>
+      <details class="f-col"><summary>Institucional</summary><ul>
+        <li><a href="#">Acessibilidade</a></li><li><a href="#">Termos de uso</a></li><li><a href="#">Privacidade</a></li></ul></details>
+    </div>
+    <div class="f-bottom"><span>© 2026 Protótipo acadêmico — Mackenzie Alphaville · IHC</span><span>Redes: Instagram · YouTube · WhatsApp</span></div>
+  </div>
+</footer>
+
+<script src="js/anime.umd.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/assistente.js"></script>
+</body>
+</html>
