@@ -62,9 +62,9 @@ body {
   --field-bg: #f8fafd;
 }
 body.hc .login-form-pane {
-  --field-border: #4a5b78;
-  --field-border-hover: #7287a8;
-  --field-bg: #0d1424;
+  --field-border: #fff;
+  --field-border-hover: #fff;
+  --field-bg: #000;
 }
 
 .login-form-pane .field { margin-bottom: 1.25rem; }
@@ -96,7 +96,7 @@ body.hc .login-form-pane {
   background: var(--card);
   box-shadow: 0 0 0 4px rgba(11, 78, 162, .18);
 }
-body.hc .login-form-pane .input:focus { box-shadow: 0 0 0 4px rgba(59, 130, 246, .3); }
+body.hc .login-form-pane .input:focus { box-shadow: 0 0 0 4px #fff; }
 
 /* Estados de validação: cor + mensagem em texto (nunca só a cor) */
 .login-form-pane .input.invalid { border-color: var(--danger); }
@@ -127,7 +127,7 @@ body.hc .login-form-pane .input:focus { box-shadow: 0 0 0 4px rgba(59, 130, 246,
 .login-form-pane .toggle:focus-visible { outline-offset: 0; }
 .login-form-pane .toggle.is-on { color: var(--blue); }
 body.hc .login-form-pane .toggle:hover,
-body.hc .login-form-pane .toggle.is-on { color: #60a5fa; }
+body.hc .login-form-pane .toggle.is-on { color: #fff; }
 .eye-ico {
   width: 24px;
   height: 24px;
@@ -198,8 +198,9 @@ body.hc .login-form-pane .toggle.is-on { color: #60a5fa; }
 }
 
 body.hc .remember-box input[type="checkbox"]:checked + .custom-chk {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #fff;
+  border-color: #fff;
+  color: #000;
 }
 
 .forgot-link {
@@ -216,7 +217,7 @@ body.hc .remember-box input[type="checkbox"]:checked + .custom-chk {
   text-decoration: underline;
 }
 body.hc .forgot-link {
-  color: #60a5fa;
+  color: #fff;
 }
 
 /* ---------- Recuperar senha: escondido até clicar em "Esqueceu a senha?" ---------- */
@@ -252,8 +253,9 @@ body.hc .forgot-link {
   box-shadow: 0 8px 22px rgba(11, 78, 162, 0.38);
 }
 body.hc .btn-login-submit {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4);
+  background: #fff;
+  color: #000;
+  box-shadow: none;
 }
 .login-form-pane .status { font-size: .88rem; min-height: 0; margin-top: .6rem; text-align: center; }
 .login-form-pane .status:empty { display: none; }
@@ -311,7 +313,7 @@ body.hc .btn-login-submit {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-body.hc .login-alt-ico { color: #60a5fa; }
+body.hc .login-alt-ico { color: #fff; }
 .login-alt-btn.is-featured,
 .login-alt-btn.is-featured .login-alt-ico { color: var(--ok); }
 .alt-badge {

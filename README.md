@@ -13,7 +13,11 @@ Protótipo navegável de um portal de serviços públicos, feito para a discipli
 | Entrar (login) | https://enzosophi.github.io/portal-cidadao/portal-cidadao/login.html |
 | Página de serviço: Alistamento militar | https://enzosophi.github.io/portal-cidadao/portal-cidadao/alistamento.html |
 
-Funciona no computador e no celular. Nenhum dado é enviado ou guardado: o login, o reconhecimento facial e os serviços são apenas simulações.
+Funciona no computador e no celular. Sem a IA ativada, nenhum dado é enviado ou guardado: o login, o reconhecimento facial e os serviços são apenas simulações.
+
+## Assistente de navegação
+
+O assistente funciona localmente no navegador, usando regras para interpretar perguntas comuns e levar o usuário ao serviço correspondente. Nenhum dado é enviado para uma API externa.
 
 ## O que observar em cada tela
 

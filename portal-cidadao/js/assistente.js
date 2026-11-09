@@ -1,7 +1,14 @@
-/* Assistente de navegação — só um ícone; ao clicar abre um card. 100% local (regras simples), sem IA real nem rede. */
+/* Assistente de navegação com regras locais. */
 (function () {
   'use strict';
   var page = document.body.getAttribute('data-page') || 'home';
+
+  var DESTINOS = {
+    login: { label: 'Abrir página de login', href: 'login.html' },
+    alistamento: { label: 'Abrir alistamento militar', href: 'alistamento.html' },
+    passaporte: { label: 'Ver serviço de passaporte', href: 'home.html#mais-acessados' },
+    busca: { label: 'Ir para a busca de serviços', href: 'home.html#busca' }
+  };
 
   var SUGESTOES = {
     home: [
@@ -42,10 +49,40 @@
     { k: ['documento', 'preciso ter', 'levar'], a: 'docs' },
     { k: ['iniciar', 'comecar'], a: 'iniciar' },
     { k: ['ouvidoria', 'reclama', 'denuncia', 'sugest', 'elogio'], a: 'ouvidoria' },
+    { k: ['viaj', 'passaporte', 'exterior', 'embarq', 'turismo'], a: 'passaporte' },
+    { k: ['imposto', 'renda', 'declar'], a: 'busca' },
+    { k: ['beneficio', 'aposent', 'inss', 'saude', 'sus'], a: 'busca' },
     { k: ['inicio', 'home', 'voltar'], a: 'home' }
   ];
 
   function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+  function localIntent(text) {
+    var n = norm(text), hit = null;
+    REGRAS.some(function (r) {
+      return r.k.some(function (k) {
+        if (n.indexOf(k) > -1) { hit = r.a; return true; }
+      });
+    });
+    return hit;
+  }
+
+  function destinationLink(destination) {
+    var target = DESTINOS[destination];
+    if (!target) return null;
+    var link = document.createElement('a');
+    link.className = 'assist-link'; link.href = target.href; link.textContent = target.label;
+    return link;
+  }
+
+  function suggest(destination, text) {
+    say(text);
+    var link = destinationLink(destination);
+    if (link) {
+      var wrap = document.createElement('div'); wrap.className = 'assist-destination';
+      wrap.appendChild(link); body.appendChild(wrap);
+    }
+  }
 
   // ---- DOM ----
   var fab = document.createElement('button');
@@ -64,7 +101,7 @@
     '<form class="assist-form" id="assist-form"><label class="sr-only" for="assist-q">Pergunte algo</label>' +
     '<input class="input" id="assist-q" placeholder="Ex.: esqueci minha senha" autocomplete="off">' +
     '<button class="btn btn-primary" type="submit">Enviar</button></form>' +
-    '<p class="assist-note">Protótipo: respostas por regras simples, sem IA real.</p>';
+    '<p class="assist-note">O assistente funciona localmente no seu navegador. Não envie dados pessoais.</p>';
   document.body.appendChild(card);
   document.body.appendChild(fab);
 
@@ -108,10 +145,10 @@
     e.preventDefault();
     var q = card.querySelector('#assist-q'); var txt = q.value.trim(); if (!txt) return;
     bubble(txt, 'me'); q.value = '';
-    var n = norm(txt), hit = null;
-    REGRAS.some(function (r) { return r.k.some(function (k) { if (n.indexOf(k) > -1) { hit = r.a; return true; } }); }) ;
-    if (hit) run(hit);
-    else { say('Não entendi bem. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
+    var hit = localIntent(txt);
+    if (hit === 'passaporte') suggest('passaporte', 'Gostaria de realizar a requisição de um passaporte?');
+    else if (hit) run(hit);
+    else { say('Não encontrei informações sobre o que você está buscando. Tente uma destas opções:'); chips(SUGESTOES[page] || SUGESTOES.home); }
   });
 
   // abre automaticamente via ?assistente=1 (usado pelo índice do protótipo)
