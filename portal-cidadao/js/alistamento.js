@@ -77,17 +77,55 @@
   });
 
   // Iniciar: avisa se faltar item, mas deixa continuar (usuário no controle)
+  // Iniciar: se faltar documento, mostra um popup do site (não o confirm do navegador)
+  // com cada item que falta e um botão "Já tenho" para marcar ali mesmo.
   function iniciar() {
-    var faltam = 0;
+    var faltando = [];
     springChecks.forEach(function (btn) {
-      if (!isItemChecked(btn)) faltam++;
+      if (!isItemChecked(btn)) faltando.push(btn);
     });
+    if (!faltando.length) { location.href = 'login.html'; return; }
 
-    if (faltam && !confirm('Ainda faltam ' + faltam + ' item(ns) na lista de documentos. Deseja continuar mesmo assim?')) {
-      window.PC.highlight('#checklist');
-      return;
-    }
-    location.href = 'login.html';
+    var restam = faltando.length;
+    window.PC.dialog({
+      type: 'warning',
+      title: 'Faltam documentos',
+      message: 'Você ainda não marcou estes itens. Já tem algum deles em mãos?',
+      items: faltando.map(function (btn) {
+        return {
+          text: btn.getAttribute('aria-label'),
+          fix: 'Já tenho',
+          keepOpen: true,
+          onClick: function (li, ctl) {
+            if (btn._springCheck && !isItemChecked(btn)) btn._springCheck.toggle();
+            upd();
+            li.classList.add('done');
+            var fix = li.querySelector('.pcd-fix');
+            var tag = document.createElement('span');
+            tag.className = 'pcd-done-tag';
+            tag.textContent = '✓ Marcado';
+            fix.replaceWith(tag);
+            restam--;
+            if (restam === 0) {
+              ctl.close('pronto', true);
+              window.PC.toast('Tudo pronto! Agora é só iniciar.');
+              var desk = document.getElementById('btn-iniciar');
+              window.PC.highlight(desk && desk.offsetParent ? '#btn-iniciar' : '#btn-iniciar-m');
+            } else {
+              var next = ctl.box.querySelector('.pcd-fix') || ctl.box.querySelector('.btn-primary');
+              if (next) next.focus();
+            }
+          }
+        };
+      }),
+      actions: [
+        { label: 'Separar documentos', value: 'voltar', primary: true },
+        { label: 'Continuar mesmo assim', value: 'continuar' }
+      ]
+    }).then(function (v) {
+      if (v === 'continuar') location.href = 'login.html';
+      else if (v === 'voltar') window.PC.highlight('#checklist');
+    });
   }
 
   ['btn-iniciar', 'btn-iniciar-m'].forEach(function (id) {
@@ -98,13 +136,10 @@
   document.querySelectorAll('[data-ouv]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
-      window.PC.toast(a.getAttribute('data-ouv') + ': canal ilustrativo neste protótipo.');
+      window.PC.toast('Este canal é só ilustração neste protótipo.');
     });
   });
 
-  // "Você está em" no celular: mostra o fim do caminho (a página atual)
-  var crumbs = document.getElementById('crumbs-list');
-  if (crumbs) crumbs.scrollLeft = crumbs.scrollWidth;
 
   // "Nesta página": destaca a seção que está sendo lida
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));

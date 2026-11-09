@@ -41,11 +41,11 @@
   };
 
   var REGRAS = [
-    { k: ['login', 'entrar', 'acessar conta', 'cpf'], a: 'login' },
-    { k: ['senha', 'esqueci', 'recuper'], a: 'esqueci' },
-    { k: ['rosto', 'facial', 'biometria'], a: 'facial' },
-    { k: ['buscar', 'pesquis', 'procur', 'servico'], a: 'busca' },
-    { k: ['alist', 'militar', 'exercito'], a: 'alistamento' },
+    { k: ['login', 'entrar', 'acessar conta', 'cpf', 'sign in', 'iniciar sesion'], a: 'login' },
+    { k: ['senha', 'esqueci', 'recuper', 'password', 'forgot', 'contrasena', 'olvide'], a: 'esqueci' },
+    { k: ['rosto', 'facial', 'biometria', 'face', 'cara'], a: 'facial' },
+    { k: ['buscar', 'pesquis', 'procur', 'servico', 'search', 'find', 'service'], a: 'busca' },
+    { k: ['alist', 'militar', 'exercito', 'military', 'army'], a: 'alistamento' },
     { k: ['documento', 'preciso ter', 'levar'], a: 'docs' },
     { k: ['iniciar', 'comecar'], a: 'iniciar' },
     { k: ['ouvidoria', 'reclama', 'denuncia', 'sugest', 'elogio'], a: 'ouvidoria' },
@@ -101,13 +101,14 @@
     '<form class="assist-form" id="assist-form"><label class="sr-only" for="assist-q">Pergunte algo</label>' +
     '<input class="input" id="assist-q" placeholder="Ex.: esqueci minha senha" autocomplete="off">' +
     '<button class="btn btn-primary" type="submit">Enviar</button></form>' +
-    '<p class="assist-note">O assistente funciona localmente no seu navegador. Não envie dados pessoais.</p>';
+    '<p class="assist-note">Não digite dados pessoais aqui.</p>';
   document.body.appendChild(card);
   document.body.appendChild(fab);
 
   var body = card.querySelector('#assist-body');
   function bubble(text, who) {
     var b = document.createElement('div'); b.className = 'bubble ' + who; b.textContent = text;
+    if (who === 'me') b.setAttribute('translate', 'no');
     body.appendChild(b); body.scrollTop = body.scrollHeight; return b;
   }
   function say(text) { bubble(text, 'bot'); }

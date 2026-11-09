@@ -305,15 +305,18 @@ body.hc .perfil-line-active { stroke: #fff; }
   user-select: none;
 }
 
+/* Círculo em rem: cresce junto com o emoji quando o texto aumenta (92px no tamanho normal) */
 .perfil-avatar-circle {
-  width: 92px;
-  height: 92px;
+  width: 5.75rem;
+  height: 5.75rem;
   border-radius: 50%;
   background: var(--card);
   border: 2px solid var(--line);
   display: grid;
   place-items: center;
   font-size: 2.9rem;
+  line-height: 1;
+  overflow: hidden;
   margin-bottom: 1.6rem; /* espaço para o anel da linha não encostar no nome */
   box-shadow: 0 6px 16px rgba(16, 32, 64, 0.08);
   position: relative;
@@ -523,7 +526,8 @@ body.hc .pd-tip .lc { color: #fff; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .75rem;
+  flex-wrap: wrap;
+  gap: .4rem .75rem;
   margin-top: auto;
   padding-top: .9rem;
 }
@@ -548,7 +552,7 @@ body.hc .pd-go { color: #fff; }
   .perfil-display-card { padding: 1.25rem; }
   .pd-head { flex-direction: column; align-items: flex-start; }
   .pd-list { grid-template-columns: 1fr; }
-  .pd-item { grid-template-columns: 44px 1fr; gap: .85rem; padding: 1rem; }
+  .pd-item { grid-template-columns: 44px minmax(0, 1fr); gap: .85rem; padding: 1rem; }
   .pd-ico { width: 44px; height: 44px; border-radius: 12px; }
   .pd-ico .lc { width: 22px; height: 22px; }
 }
@@ -603,3 +607,147 @@ body.hc .all-profile-btn:hover {
 @media (max-width: 600px) {
   .perfil-item { flex: 0 0 100%; }
 }
+
+/* Celular com texto grande: "Mais acessados" passa de 3 para 2 colunas */
+@media (max-width: 340px) {
+  .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pd-item { grid-template-columns: minmax(0, 1fr); }
+  .pd-ico { display: none; }
+}
+
+/* =========================================================================
+   Tópicos da tela inicial em faixas de cor (de ponta a ponta da tela)
+   Destaques: branco · Serviços por perfil: cinza · Mais acessados: azul claro
+   ========================================================================= */
+.band-destaques { --band: #ffffff; --band-accent: var(--blue); }
+.band-perfis    { --band: #e8ecf1; --band-accent: #566170; }
+.band-mais      { --band: #eaf2fc; --band-accent: #0b62c4; }
+
+.home-band {
+  position: relative;
+  margin-block: 0;
+  padding-block: 2.5rem;
+  background: var(--band);
+  /* a cor passa da largura do conteúdo e vai até as bordas da tela, sem criar rolagem lateral */
+  box-shadow: 0 0 0 100vmax var(--band);
+  clip-path: inset(0 -100vmax);
+}
+.home-band.perfil-section { margin-block: 0; }
+/* linha divisória discreta entre as faixas */
+.home-band + .home-band { border-top: 1px solid rgba(16, 32, 64, .06); }
+
+/* título de cada tópico com um traço na cor da faixa */
+.home-band > h2,
+.home-band .perfil-heading-wrap h2 { position: relative; }
+.home-band > h2::after,
+.home-band .perfil-heading-wrap h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 4px;
+  margin-top: .45rem;
+  border-radius: 4px;
+  background: var(--band-accent);
+}
+.home-band .perfil-heading-wrap h2::after { margin-inline: auto; }
+
+/* no cinza, o selo "Feito para você" ganha fundo branco para não sumir */
+.band-perfis .perfil-badge-kicker { background: #ffffff; }
+.band-perfis .perfil-nav-btn { background: #ffffff; }
+
+/* o rodapé encosta na última faixa */
+body[data-page="home"] .site-footer { margin-top: 0; }
+
+/* Alto contraste: faixas pretas separadas por uma linha branca */
+body.hc .home-band { --band: #000000; --band-accent: #ffffff; }
+body.hc .home-band + .home-band { border-top: 2px solid #ffffff; }
+body.hc .band-perfis .perfil-badge-kicker,
+body.hc .band-perfis .perfil-nav-btn { background: #000; }
+
+@media (max-width: 640px) {
+  .home-band { padding-block: 1.75rem; }
+}
+
+/* =========================================================================
+   Aplicativos do governo (mesma cor de fundo da faixa de Destaques)
+   ========================================================================= */
+.band-apps { --band: #ffffff; --band-accent: var(--blue); text-align: center; }
+.home-band > h2.apps-title::after { margin-inline: auto; }
+.home-band .apps-title { font-size: clamp(1.35rem, 2.6vw, 1.85rem); line-height: 1.25; color: var(--blue-d); max-width: 30ch; margin: 0 auto .75rem; }
+.apps-lead { margin: .25rem auto 1.75rem; color: var(--muted); }
+
+.apps-grid {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.app-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1rem 1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(16, 32, 64, .06);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.app-card:hover { transform: translateY(-3px); border-color: var(--blue); box-shadow: 0 12px 26px rgba(16, 32, 64, .12); }
+/* "Ícone do app": quadrado grande, como na loja de aplicativos */
+.app-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  margin-bottom: .6rem;
+  color: #fff;
+}
+.app-tile svg { width: 42%; height: 42%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.app-name { font-weight: 800; font-size: 1.05rem; line-height: 1.3; }
+.app-desc { color: var(--muted); font-size: .9rem; line-height: 1.4; }
+
+.apps-more { margin-top: 1.75rem; }
+.apps-gallery {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 1.75rem;
+  border: 1.5px solid var(--blue-d);
+  border-radius: 999px;
+  color: var(--blue-d);
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.apps-gallery:hover { background: var(--blue-d); color: #fff; }
+
+body.hc .apps-title { color: #fff; }
+body.hc .app-card { border-color: #fff; }
+body.hc .app-tile { background: #000; border: 2px solid #fff; }
+body.hc .apps-gallery { border-color: #fff; color: #fff; }
+body.hc .apps-gallery:hover { background: #fff; color: #000; }
+
+/* tablet: 3 cartões menores · celular (ou texto grande): um embaixo do outro, com ícone ao lado */
+@media (max-width: 640px) {
+  .apps-grid { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+  .app-card { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 1rem; text-align: left; align-items: center; padding: .85rem; }
+  .app-tile { grid-row: 1 / 3; width: 4.5rem; margin: 0; border-radius: 14px; }
+  .app-desc { grid-column: 2; }
+}
+
+/* Ícones oficiais dos aplicativos (imagens em img/apps/) */
+.app-tile-img { background: #ffffff; border: 1px solid var(--line); overflow: hidden; }
+.app-tile-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+body.hc .app-tile-img { background: #ffffff; border: 2px solid #fff; }

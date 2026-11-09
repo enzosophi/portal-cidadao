@@ -321,7 +321,6 @@ body.hc .login-alt-ico { color: #fff; }
   font-weight: 800;
   letter-spacing: .03em;
   text-transform: uppercase;
-  white-space: nowrap;
   background: var(--ok);
   color: #fff;
   padding: .2rem .4rem;
@@ -673,8 +672,63 @@ body.hc .login-visual-pane {
 
 /* ---------- Telas menores: só o formulário ---------- */
 @media (max-width: 960px) {
-  .login-split-card { grid-template-columns: 1fr; }
+  .login-split-card { grid-template-columns: minmax(0, 1fr); }
   .login-visual-pane { display: none; }
   .login-form-pane { padding: 5rem 1.25rem 2rem; }
   .login-brand-link { left: 1.25rem; }
 }
+
+/* Idioma e acessibilidade no topo do login */
+.login-tools {
+  position: absolute;
+  top: 1.35rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.login-form-pane > .login-tools { width: auto; }
+.login-lang {
+  height: 36px;
+  padding: 0 .5rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font: 600 .9rem var(--font);
+}
+.login-a11y-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  height: 36px;
+  padding: 0 .6rem;
+  border-radius: 8px;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: .9rem;
+  text-decoration: none;
+}
+.login-a11y-link:hover { background: var(--blue-l); }
+.login-a11y-link svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+body.hc .login-a11y-link { color: #fff; }
+@media (max-width: 960px) {
+  .login-tools { right: 1.25rem; }
+}
+/* Em tela estreita (ou com texto grande) a barra desce para baixo do logo, sem sobrepor */
+@media (max-width: 640px) {
+  .login-form-pane > .login-tools {
+    position: static;
+    width: min(430px, 100%);
+    justify-content: flex-end;
+    margin-bottom: 1.25rem;
+  }
+}
+@media (max-width: 420px) {
+  .login-a11y-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+}
+
+/* Texto grande: botões de outras formas de entrar quebram a linha em vez de alargar a coluna */
+.login-form-pane { min-width: 0; }
+.login-alt-btn { flex-wrap: wrap; }
+.login-alt-btn > span:not(.alt-badge) { flex: 1 1 8rem; min-width: 0; }

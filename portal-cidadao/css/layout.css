@@ -245,6 +245,7 @@ body.hc .nav-search form:focus-within { background: #000; box-shadow: 0 0 0 3px 
   transition: background .2s ease;
 }
 .nav-login:hover { background: var(--blue-d); }
+body.hc .nav-login { color: #000; }
 .nav-login .ico { width: 18px; height: 18px; }
 .menu-toggle, .search-toggle { display: none; }
 .menu-toggle .ico-close { display: none; }
@@ -316,3 +317,19 @@ body.hc .f-bottom { border-top-color: var(--line); color: var(--muted); }
   .f-col summary::after { content: "+"; float: right; }
   .f-col[open] summary::after { content: "–"; }
 }
+
+/* ---------- Telas bem estreitas ou texto muito grande ---------- */
+/* (os px destes @media crescem junto com o tamanho do texto escolhido; ver js/prefs.js)
+   360px: num celular comum com texto normal o "Entrar" continua escrito; só vira ícone
+   em tela muito pequena ou com o texto aumentado */
+@media (max-width: 360px) {
+  .nav { gap: .35rem; }
+  .nav-actions { gap: .15rem; }
+  /* "Entrar" vira só o ícone; o texto continua para leitores de tela */
+  .nav-login { width: 40px; padding: 0; justify-content: center; }
+  .nav-login-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .site-header .brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .tb-sep { margin: 0 .15rem; }
+}
+/* Painel do ☰ aberto: o cabeçalho rola por dentro, sem empurrar a página para fora da tela */
+html.menu-open .site-header { max-height: 100vh; max-height: 100dvh; overflow-y: auto; }

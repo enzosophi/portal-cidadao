@@ -66,7 +66,7 @@
 
     // Event listeners
     var viaPointer = false;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduce = (window.PC && window.PC.reduceMotion) ? window.PC.reduceMotion() : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     el.addEventListener('pointerdown', function (e) {
       if (e.button !== 0 || el.disabled) return;
@@ -117,7 +117,7 @@
     this.el.classList.toggle('is-checked', this.on);
 
     var targetT = this.on ? 1 : 0;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduce = (window.PC && window.PC.reduceMotion) ? window.PC.reduceMotion() : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (reduce || animate === false) {
       if (this.rafId) cancelAnimationFrame(this.rafId);

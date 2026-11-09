@@ -34,7 +34,7 @@ body.hc {
   --shadow: 0 0 0 2px #ffffff;
 }
 
-body, .site-header, .card, .panel, .fact, .site-footer, .input, .icon-btn, .btn, .slide {
+body, .site-header, .card, .panel, .site-footer, .input, .btn, .slide {
   transition: background-color .28s ease, border-color .28s ease, color .28s ease, box-shadow .28s ease;
 }
 
@@ -57,8 +57,6 @@ img, svg { max-width: 100%; }
 .container { width: min(1120px, 100% - 32px); margin-inline: auto; }
 .section { margin-block: 2rem; }
 .section h2 { font-size: 1.35rem; margin: 0 0 1rem; }
-.grid { display: grid; gap: 1rem; }
-.grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
 /* Destaque temporário (PC.highlight) */
 .hl { animation: pulse 1.2s ease 3; }
@@ -88,20 +86,18 @@ main#conteudo,
   animation: screenEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.grid .card,
 .hub .card,
-.facts .fact,
 .panel {
   animation: cardSmoothFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Efeito de cascata */
-.grid .card:nth-child(1), .hub a:nth-child(1) .card, .facts .fact:nth-child(1) { animation-delay: 0.04s; }
-.grid .card:nth-child(2), .hub a:nth-child(2) .card, .facts .fact:nth-child(2) { animation-delay: 0.08s; }
-.grid .card:nth-child(3), .hub a:nth-child(3) .card, .facts .fact:nth-child(3) { animation-delay: 0.12s; }
-.grid .card:nth-child(4), .hub a:nth-child(4) .card, .facts .fact:nth-child(4) { animation-delay: 0.16s; }
-.grid .card:nth-child(5), .hub a:nth-child(5) .card, .facts .fact:nth-child(5) { animation-delay: 0.20s; }
-.grid .card:nth-child(6), .hub a:nth-child(6) .card, .facts .fact:nth-child(6) { animation-delay: 0.24s; }
+.hub a:nth-child(1) .card { animation-delay: 0.04s; }
+.hub a:nth-child(2) .card { animation-delay: 0.08s; }
+.hub a:nth-child(3) .card { animation-delay: 0.12s; }
+.hub a:nth-child(4) .card { animation-delay: 0.16s; }
+.hub a:nth-child(5) .card { animation-delay: 0.20s; }
+.hub a:nth-child(6) .card { animation-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -110,3 +106,43 @@ main#conteudo,
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Preferências da tela de acessibilidade (js/prefs.js põe as classes no <html>) ---------- */
+/* Daltonismo: troca as cores que carregam significado (certo / erro / atenção) por pares fáceis de diferenciar */
+html.cb-protan,
+html.cb-deutan { --ok: #0072b2; --green: #0072b2; --danger: #a84b00; }
+html.cb-tritan { --ok: #17784a; --green: #17784a; --danger: #b3261e; --yellow: #c2185b; }
+html.cb-mono { filter: grayscale(1); }
+/* Sem cor, o erro também aparece pela borda tracejada e mais grossa */
+html.cb-protan .input.invalid, html.cb-deutan .input.invalid,
+html.cb-tritan .input.invalid, html.cb-mono .input.invalid { border-style: dashed; border-width: 3px; }
+html.cb-mono a:not([class]) { text-decoration: underline; }
+
+/* Sublinhar links */
+html.links-underline a:not(.btn):not(.card):not(.svc):not(.pd-item):not(.brand):not(.nav-login):not(.tb-icon):not(.ouv-btn) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Mais espaço no texto (WCAG 1.4.12) */
+html.text-spacing body * {
+  line-height: 1.75 !important;
+  letter-spacing: .04em !important;
+  word-spacing: .12em !important;
+}
+html.text-spacing p { margin-bottom: 1em; }
+
+/* Reduzir animações */
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- Texto grande: nada pode empurrar a página para fora da tela ---------- */
+/* Palavras muito longas quebram em vez de alargar a coluna */
+h1, h2, h3, .svc-title, .pd-name, .opt-name, .step-title { overflow-wrap: anywhere; hyphens: auto; }
+img, svg, video { max-width: 100%; }
+
+/* Página em outro idioma: fica escondida só até a tradução ser aplicada (js/i18n.js) */
+html.i18n-pending body { visibility: hidden; }
