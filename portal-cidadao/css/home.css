@@ -179,25 +179,6 @@ body.hc .svc:hover { box-shadow: 0 0 0 2px #fff; }
   text-align: center;
   margin-bottom: 1.75rem;
 }
-.perfil-badge-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blue);
-  background: var(--blue-l);
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  margin-bottom: 0.5rem;
-}
-body.hc .perfil-badge-kicker {
-  color: #fff;
-  background: #000;
-  border: 1px solid #fff;
-}
 .perfil-heading-wrap h2 {
   font-size: clamp(1.4rem, 3.2vw, 1.95rem);
   margin: 0 0 0.4rem;
@@ -651,8 +632,7 @@ body.hc .all-profile-btn:hover {
 }
 .home-band .perfil-heading-wrap h2::after { margin-inline: auto; }
 
-/* no cinza, o selo "Feito para você" ganha fundo branco para não sumir */
-.band-perfis .perfil-badge-kicker { background: #ffffff; }
+/* no cinza, as setas dos perfis ganham fundo branco para não sumir */
 .band-perfis .perfil-nav-btn { background: #ffffff; }
 
 /* o rodapé encosta na última faixa */
@@ -661,7 +641,6 @@ body[data-page="home"] .site-footer { margin-top: 0; }
 /* Alto contraste: faixas pretas separadas por uma linha branca */
 body.hc .home-band { --band: #000000; --band-accent: #ffffff; }
 body.hc .home-band + .home-band { border-top: 2px solid #ffffff; }
-body.hc .band-perfis .perfil-badge-kicker,
 body.hc .band-perfis .perfil-nav-btn { background: #000; }
 
 @media (max-width: 640px) {

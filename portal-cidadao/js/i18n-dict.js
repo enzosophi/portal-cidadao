@@ -98,7 +98,6 @@ window.PC_I18N = {
   "Destaque anterior": ["Previous highlight", "Destacado anterior"],
   "Próximo destaque": ["Next highlight", "Siguiente destacado"],
   "Escolher destaque": ["Choose highlight", "Elegir destacado"],
-  "💼 Feito para você": ["💼 Made for you", "💼 Hecho para ti"],
   "Escolha um perfil e veja os serviços certos para você.": ["Pick a profile and see the right services for you.", "Elige un perfil y mira los servicios adecuados para ti."],
   "Perfil anterior": ["Previous profile", "Perfil anterior"],
   "Próximo perfil": ["Next profile", "Siguiente perfil"],
