@@ -46,8 +46,15 @@ body.hc .btn-outline:hover { background: var(--blue-l); }
 /* Marca */
 .brand { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: 1.25rem; color: var(--blue); text-decoration: none; letter-spacing: -.02em; }
 body.hc .brand { color: #fff; }
-.brand-mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--blue), #2d86e6); position: relative; display: inline-block; }
-.brand-mark::after { content: ""; position: absolute; right: -3px; bottom: -3px; width: 12px; height: 12px; border-radius: 50%; background: var(--yellow); border: 2px solid var(--card); }
+/* Logo gov.br + nome do portal (o tamanho acompanha o texto escolhido) */
+.brand-logo { display: block; height: 2rem; width: auto; flex: none; }
+.brand-sep { width: 1px; height: 1.5rem; background: var(--line); flex: none; }
+.brand-name { font-size: .95em; }
+/* No alto contraste e no rodapé escuro, o logo colorido fica num selo branco para continuar legível */
+body.hc .brand-logo,
+.brand-footer .brand-logo { background: #fff; border-radius: 6px; padding: .2rem .4rem; box-sizing: content-box; }
+.brand-footer { color: #fff; }
+.brand-footer .brand-sep { background: rgba(255, 255, 255, .35); }
 
 /* Card */
 .card {
