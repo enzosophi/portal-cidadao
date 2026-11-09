@@ -42,21 +42,6 @@ body.hc .btn-outline:hover { background: var(--blue-l); }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: .7; cursor: progress; }
 .link-btn { background: none; border: 0; color: var(--blue); font: inherit; text-decoration: underline; cursor: pointer; padding: .25rem 0; }
-.icon-btn {
-  background: none;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  min-width: 44px;
-  min-height: 44px;
-  cursor: pointer;
-  color: var(--ink);
-  font-size: 1.05rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s ease, border-color .2s ease;
-}
-.icon-btn:hover { background: var(--blue-l); border-color: var(--blue); }
 
 /* Marca */
 .brand { display: flex; align-items: center; gap: .5rem; font-weight: 800; font-size: 1.25rem; color: var(--blue); text-decoration: none; letter-spacing: -.02em; }
@@ -76,22 +61,6 @@ body.hc .brand { color: #fff; }
 /* Pílulas */
 .tag-pill { background: var(--blue-l); color: var(--blue); border-radius: 999px; padding: .15rem .7rem; font-size: .8rem; font-weight: 700; }
 body.hc .tag-pill { background: #000; color: #fff; border: 1px solid #fff; }
-.doc-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(11, 78, 162, 0.1);
-  color: var(--blue);
-}
-body.hc .doc-pill {
-  background: #000;
-  color: #fff;
-  border: 1px solid #fff;
-}
 
 /* Modal */
 .modal { position: fixed; inset: 0; background: rgba(5, 15, 35, .6); display: none; place-items: center; z-index: 200; padding: 1rem; }
@@ -154,7 +123,7 @@ body.hc .app-tooltip strong {
 }
 
 /* Assistente (criado pelo assistente.js) */
-.fab { position: fixed; right: 18px; bottom: 18px; width: 60px; height: 60px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.6rem; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); z-index: 150; transition: transform .2s ease, background .2s ease; }
+.fab { position: fixed; right: 18px; bottom: 18px; width: 3.75rem; height: 3.75rem; display: grid; place-items: center; line-height: 1; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 1.6rem; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); z-index: 150; transition: transform .2s ease, background .2s ease; }
 .fab:hover { background: var(--blue-d); transform: scale(1.06); }
 body.hc .fab { background: #fff; color: #000; border: 2px solid #fff; box-shadow: 0 0 0 3px #000, 0 0 0 5px #fff; }
 .assist { position: fixed; right: 18px; bottom: 90px; width: min(360px, 100% - 36px); max-height: min(560px, calc(100vh - 120px)); background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 36px rgba(0, 0, 0, .28); display: none; flex-direction: column; z-index: 150; overflow: hidden; }
@@ -183,3 +152,99 @@ body.hc .chip { border-color: #fff; color: #fff; }
 .assist-form input { flex: 1; min-width: 0; }
 body.hc .assist-form input { background: #000; border-color: #fff; color: #fff; }
 .assist-note { font-size: .72rem; color: var(--muted); padding: 0 .8rem .6rem; }
+
+/* ---------- Popup de correção (PC.dialog em js/main.js) ---------- */
+.pcd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(5, 15, 35, .55);
+  animation: pcdFade .15s ease;
+}
+.pcd {
+  --pcd: var(--danger);
+  width: min(460px, 100%);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 18px;
+  border-top: 6px solid var(--pcd);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .3);
+  padding: 1.25rem 1.35rem 1.35rem;
+  text-align: left;
+  animation: pcdPop .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pcd-warning { --pcd: #a15c00; }
+.pcd-info { --pcd: var(--blue); }
+.pcd-head { display: flex; align-items: center; gap: .7rem; }
+.pcd-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--pcd);
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.15rem;
+}
+.pcd-warning .pcd-ico { border-radius: 8px; }
+.pcd-warning .pcd-ico { font-size: 1.05rem; }
+.pcd-title { flex: 1; margin: 0; font-size: 1.2rem; line-height: 1.25; }
+.pcd-x {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.pcd-x:hover { background: var(--blue-l); color: var(--ink); }
+.pcd-msg { margin: .75rem 0 .5rem; color: var(--ink); line-height: 1.5; }
+.pcd-list { list-style: none; margin: .25rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.pcd-list li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  padding: .7rem .8rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--pcd);
+  background: var(--bg);
+}
+.pcd-item-text { flex: 1 1 12rem; min-width: 0; line-height: 1.4; font-weight: 600; }
+.pcd-fix {
+  flex: none;
+  min-height: 40px;
+  padding: 0 .85rem;
+  border: 2px solid var(--blue);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--blue);
+  font: 700 .9rem var(--font);
+  cursor: pointer;
+}
+.pcd-fix:hover { background: var(--blue-l); }
+.pcd-list li.done { border-left-color: var(--ok); opacity: .75; }
+.pcd-list li.done .pcd-item-text { text-decoration: line-through; }
+.pcd-done-tag { font-weight: 700; color: var(--ok); }
+.pcd-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.1rem; }
+.pcd-actions .btn { flex: 1 1 10rem; }
+body.hc .pcd { border: 2px solid #fff; border-top-width: 6px; }
+body.hc .pcd-ico { color: #000; }
+body.hc .pcd-fix { border-color: #fff; color: #fff; background: #000; }
+@keyframes pcdFade { from { opacity: 0; } }
+@keyframes pcdPop { from { opacity: 0; transform: translateY(12px) scale(.97); } }
+
+/* Busca: "Você quis dizer…?" */
+.suggest .suggest-hint { padding: .55rem .75rem; font-size: .9rem; color: var(--muted); border-bottom: 1px solid var(--line); margin-bottom: .25rem; }
+.suggest .suggest-hint strong { color: var(--ink); }

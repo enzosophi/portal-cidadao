@@ -16,7 +16,8 @@
 .crumbs-label { display: inline-flex; align-items: center; gap: .35rem; flex: none; color: var(--muted); font-weight: 600; }
 .crumbs-label .lc-i { color: var(--blue); }
 body.hc .crumbs-label .lc-i { color: #fff; }
-.crumbs-list { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+/* a trilha quebra linha em vez de rolar escondida (texto grande / outros idiomas) */
+.crumbs-list { display: flex; flex-wrap: wrap; align-items: center; row-gap: .3rem; list-style: none; margin: 0; padding: .35rem 0; min-width: 0; }
 .crumbs-list::-webkit-scrollbar { display: none; }
 .crumbs-list li { display: inline-flex; align-items: center; }
 .crumbs-list li + li::before {
@@ -63,7 +64,7 @@ body.hc .crumbs-list [aria-current="page"] { background: #fff; color: #000; }
 .svc-start .lc-i { transition: transform .2s ease; }
 .svc-start:hover .lc-i { transform: translateX(3px); }
 
-.svc-layout { display: grid; grid-template-columns: 1fr 270px; gap: 1.5rem; align-items: start; }
+.svc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 1.5rem; align-items: start; }
 
 /* Painéis */
 .panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.25rem 1.35rem; margin-bottom: 1rem; scroll-margin-top: 120px; }
@@ -322,20 +323,20 @@ body.hc .checklist-card.is-checked { background: rgba(56, 189, 248, 0.08); }
    Passo a passo: linha do tempo numerada
    ========================================================================= */
 .steps { list-style: none; margin: .25rem 0 0; padding: 0; }
-.step-item { position: relative; display: grid; grid-template-columns: 34px 1fr; gap: 1rem; padding-bottom: 1.1rem; }
+.step-item { position: relative; display: grid; grid-template-columns: 2.125rem minmax(0, 1fr); gap: 1rem; padding-bottom: 1.1rem; }
 .step-item:last-child { padding-bottom: 0; }
 .step-item:not(:last-child)::before {
   content: "";
   position: absolute;
-  left: 16px;
-  top: 36px;
+  left: calc(1.0625rem - 1px); /* meio do círculo, que cresce com o texto */
+  top: 2.25rem;
   bottom: 2px;
   width: 2px;
   background: var(--line);
 }
 .step-num {
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -355,7 +356,7 @@ body.hc .step-item:hover .step-num { background: #fff; color: #000; }
 
 /* Responsivo */
 @media (max-width: 900px) {
-  .svc-layout { grid-template-columns: 1fr; }
+  .svc-layout { grid-template-columns: minmax(0, 1fr); }
   .aside-box { position: static; }
   .toc { display: none; }
 }
@@ -374,4 +375,13 @@ body.hc .step-item:hover .step-num { background: #fff; color: #000; }
   body.has-cta .fab { bottom: 92px; }
   body.has-cta .assist { bottom: 164px; }
   .svc-head .btn-desktop { display: none; }
+}
+
+/* Celular com texto grande: resumo em uma coluna e botões da ouvidoria empilhados */
+@media (max-width: 420px) {
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .facts > div, .facts > div:nth-child(3n+1), .facts > div:nth-child(2n+1) { padding: .7rem 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  .facts > div:last-child { border-bottom: 0; }
+  .ouv-grid { grid-template-columns: minmax(0, 1fr); }
+  .panel { padding: 1rem; }
 }

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acessibilidade — Portal Cidadão (protótipo)</title>
+<script src="js/prefs.js"></script>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/alistamento.css">
+<link rel="stylesheet" href="css/acessibilidade.css">
+</head>
+<body data-page="acessibilidade">
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <nav class="tb-links" aria-label="Links institucionais">
+      <a href="#" data-soon>Acesso à informação</a>
+      <a href="#" data-soon>Legislação</a>
+      <a href="acessibilidade.html">Acessibilidade</a>
+    </nav>
+    <div class="tb-tools">
+      <div class="tb-item">
+        <button class="tb-trigger tb-lang" type="button" aria-expanded="false" aria-controls="dd-idioma" aria-label="Idioma: Português">
+          <span class="tb-lang-code" translate="no">PT</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown dd-right dd-small" id="dd-idioma">
+          <ul>
+            <li><a href="#" data-lang="pt" lang="pt" translate="no" aria-current="true">Português</a></li>
+            <li><a href="#" data-lang="en" lang="en" translate="no">English</a></li>
+            <li><a href="#" data-lang="es" lang="es" translate="no">Español</a></li>
+          </ul>
+        </div>
+      </div>
+      <span class="tb-sep" aria-hidden="true"></span>
+      <div class="tb-item">
+        <button class="tb-trigger tb-icon" type="button" aria-expanded="false" aria-controls="dd-cookies" aria-label="Preferências de cookies" data-tooltip="Preferências de cookies">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
+        </button>
+        <div class="dropdown dd-right dd-cookies" id="dd-cookies">
+          <p class="dd-text"><strong>Cookies</strong>Alguns cookies são necessários. Os de estatística são opcionais.</p>
+          <div class="dd-actions">
+            <button class="dd-btn" type="button" data-cookies="essenciais">Só essenciais</button>
+            <button class="dd-btn dd-btn-primary" type="button" data-cookies="todos">Aceitar todos</button>
+          </div>
+        </div>
+      </div>
+      <a class="tb-icon tb-a11y" href="acessibilidade.html" aria-label="Acessibilidade" data-tooltip="Ajustar texto, cores e idioma"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg></a>
+      <button class="tb-icon theme-toggle" type="button" data-hc aria-pressed="false" aria-label="Alto contraste" data-tooltip="Ligar ou desligar o alto contraste">
+        <svg class="ico i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="ico i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</div><!-- /topbar -->
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="home.html"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+
+    <nav class="nav-links" id="nav-links" aria-label="Principal">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-orgaos">Órgãos do governo<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown" id="dd-orgaos">
+            <ul>
+              <li><a href="#" data-soon>Presidência da República</a></li>
+              <li><a href="#" data-soon>Ministérios</a></li>
+              <li><a href="#" data-soon>Receita Federal</a></li>
+              <li><a href="#" data-soon>INSS — Previdência Social</a></li>
+              <li><a href="#" data-soon>Polícia Federal</a></li>
+              <li><a href="alistamento.html">Ministério da Defesa</a></li>
+              <li><a href="#" data-soon>Agências reguladoras</a></li>
+            </ul>
+            <a class="dd-all" href="#" data-soon>Ver todos os órgãos</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-servicos">Serviços<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown dd-wide" id="dd-servicos">
+            <div class="dd-cols">
+              <div>
+                <p class="dd-head">Por tema</p>
+                <ul>
+                  <li><a href="#" data-soon>Documentos e identidade</a></li>
+                  <li><a href="#" data-soon>Trabalho e previdência</a></li>
+                  <li><a href="#" data-soon>Saúde</a></li>
+                  <li><a href="#" data-soon>Educação</a></li>
+                  <li><a href="#" data-soon>Impostos e finanças</a></li>
+                  <li><a href="#" data-soon>Viagens e exterior</a></li>
+                </ul>
+              </div>
+              <div>
+                <p class="dd-head">Atalhos</p>
+                <ul>
+                  <li><a href="home.html#mais-acessados">Mais acessados</a></li>
+                  <li><a href="home.html#perfis">Serviços por perfil</a></li>
+                  <li><a href="alistamento.html">Alistamento militar</a></li>
+                  <li><a href="#" data-soon>Consultar CPF</a></li>
+                  <li><a href="#" data-soon>Carteira de Trabalho Digital</a></li>
+                </ul>
+              </div>
+            </div>
+            <a class="dd-all" href="#" data-soon>Ver todos os serviços</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-noticias">Notícias<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown" id="dd-noticias">
+            <ul>
+              <li><a href="#" data-soon>Últimas notícias</a></li>
+              <li><a href="home.html#destaques">Destaques da semana</a></li>
+              <li><a href="#" data-soon>Comunicados oficiais</a></li>
+              <li><a href="#" data-soon>Calendário de prazos</a></li>
+              <li><a href="#" data-soon>Notícias por órgão</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <button class="nav-trigger" type="button" aria-expanded="false" aria-controls="dd-ajuda">Ajuda<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="dropdown dd-right" id="dd-ajuda">
+            <ul>
+              <li><a href="home.html?assistente=1">Como usar o portal</a></li>
+              <li><a href="#" data-soon>Dúvidas frequentes</a></li>
+              <li><a href="acessibilidade.html">Acessibilidade</a></li>
+              <li><a href="#" data-soon>Contato e ouvidoria</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="nav-search" id="nav-search">
+      <form role="search" autocomplete="off">
+        <label class="sr-only" for="busca">Buscar serviços</label>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="busca" type="search" placeholder="Buscar serviço" aria-controls="suggest" aria-expanded="false">
+        <kbd aria-hidden="true">/</kbd>
+      </form>
+      <ul class="suggest" id="suggest" aria-label="Sugestões de serviços"></ul>
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-icon search-toggle" id="search-toggle" type="button" aria-label="Abrir busca" aria-expanded="false">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+      <a class="nav-login" id="btn-entrar" href="login.html">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-login-text">Entrar</span></a>
+      <button class="nav-icon menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+        <svg class="ico ico-menu" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+        <svg class="ico ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="crumbs-bar" aria-label="Você está em">
+  <div class="container crumbs">
+    <ol class="crumbs-list">
+      <li><a href="home.html">Início</a></li>
+      <li><span aria-current="page">Acessibilidade</span></li>
+    </ol>
+  </div>
+</nav>
+
+<main id="conteudo" class="container a11y-page">
+  <header class="a11y-head">
+    <h1>Acessibilidade</h1>
+    <p class="a11y-lead">Deixe o site do seu jeito. Suas escolhas ficam salvas neste aparelho e valem em todas as páginas.</p>
+  </header>
+
+  <div class="a11y-layout">
+    <div class="a11y-settings">
+
+      <!-- Tamanho do texto -->
+      <section class="a11y-card" aria-labelledby="t-texto">
+        <h2 id="t-texto"><span class="a11y-badge" aria-hidden="true">Aa</span>Tamanho do texto</h2>
+        <p class="a11y-help">Escolha o tamanho mais confortável para ler.</p>
+        <fieldset class="opt-grid opt-grid-4">
+          <legend class="sr-only">Tamanho do texto</legend>
+          <label class="opt"><input class="opt-input" type="radio" name="font" value="100" data-pref="font"><span class="opt-box"><span class="opt-sample" style="font-size:1rem">A</span><span class="opt-name">Normal</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="font" value="115" data-pref="font"><span class="opt-box"><span class="opt-sample" style="font-size:1.2rem">A</span><span class="opt-name">Grande</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="font" value="130" data-pref="font"><span class="opt-box"><span class="opt-sample" style="font-size:1.4rem">A</span><span class="opt-name">Maior</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="font" value="150" data-pref="font"><span class="opt-box"><span class="opt-sample" style="font-size:1.65rem">A</span><span class="opt-name">Muito grande</span></span></label>
+        </fieldset>
+      </section>
+
+      <!-- Daltonismo -->
+      <section class="a11y-card" aria-labelledby="t-cores">
+        <h2 id="t-cores"><span class="a11y-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>Cores para daltonismo</h2>
+        <p class="a11y-help">Troca as cores de aviso (certo, erro, atenção) por cores fáceis de diferenciar.</p>
+        <fieldset class="opt-grid opt-grid-cb">
+          <legend class="sr-only">Cores para daltonismo</legend>
+          <label class="opt"><input class="opt-input" type="radio" name="cb" value="none" data-pref="cb"><span class="opt-box opt-row"><span class="sw-dots" aria-hidden="true"><i style="background:#17784a"></i><i style="background:#b3261e"></i><i style="background:#f2b705"></i></span><span><span class="opt-name">Cores normais</span><small class="opt-desc">Sem ajuste</small></span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="cb" value="protan" data-pref="cb"><span class="opt-box opt-row"><span class="sw-dots" aria-hidden="true"><i style="background:#0072b2"></i><i style="background:#a84b00"></i><i style="background:#f2b705"></i></span><span><span class="opt-name">Dificuldade com vermelho</span><small class="opt-desc">Protanopia</small></span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="cb" value="deutan" data-pref="cb"><span class="opt-box opt-row"><span class="sw-dots" aria-hidden="true"><i style="background:#0072b2"></i><i style="background:#a84b00"></i><i style="background:#f2b705"></i></span><span><span class="opt-name">Dificuldade com verde</span><small class="opt-desc">Deuteranopia</small></span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="cb" value="tritan" data-pref="cb"><span class="opt-box opt-row"><span class="sw-dots" aria-hidden="true"><i style="background:#17784a"></i><i style="background:#b3261e"></i><i style="background:#c2185b"></i></span><span><span class="opt-name">Dificuldade com azul e amarelo</span><small class="opt-desc">Tritanopia</small></span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="cb" value="mono" data-pref="cb"><span class="opt-box opt-row"><span class="sw-dots" aria-hidden="true"><i style="background:#666"></i><i style="background:#222"></i><i style="background:#aaa"></i></span><span><span class="opt-name">Não vejo cores</span><small class="opt-desc">Tons de cinza</small></span></span></label>
+        </fieldset>
+      </section>
+
+      <!-- Contraste e leitura -->
+      <section class="a11y-card" aria-labelledby="t-leitura">
+        <h2 id="t-leitura"><span class="a11y-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span>Contraste e leitura</h2>
+        <div class="sw-list">
+          <label class="sw"><input class="sw-input" type="checkbox" role="switch" data-pref="hc"><span class="sw-text"><span class="opt-name">Alto contraste</span><small class="opt-desc">Fundo preto e letras brancas.</small></span><span class="sw-track" aria-hidden="true"></span></label>
+          <label class="sw"><input class="sw-input" type="checkbox" role="switch" data-pref="links"><span class="sw-text"><span class="opt-name">Sublinhar links</span><small class="opt-desc">Mostra os links sem depender da cor.</small></span><span class="sw-track" aria-hidden="true"></span></label>
+          <label class="sw"><input class="sw-input" type="checkbox" role="switch" data-pref="spacing"><span class="sw-text"><span class="opt-name">Mais espaço no texto</span><small class="opt-desc">Mais espaço entre linhas e letras. Ajuda quem tem dislexia.</small></span><span class="sw-track" aria-hidden="true"></span></label>
+          <label class="sw"><input class="sw-input" type="checkbox" role="switch" data-pref="motion"><span class="sw-text"><span class="opt-name">Reduzir animações</span><small class="opt-desc">Para o carrossel e os efeitos de movimento.</small></span><span class="sw-track" aria-hidden="true"></span></label>
+        </div>
+      </section>
+
+      <!-- Idioma -->
+      <section class="a11y-card" aria-labelledby="t-idioma">
+        <h2 id="t-idioma"><span class="a11y-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>Idioma</h2>
+        <p class="a11y-help">Escolha o idioma do site.</p>
+        <fieldset class="opt-grid opt-grid-3">
+          <legend class="sr-only">Idioma</legend>
+          <label class="opt"><input class="opt-input" type="radio" name="lang" value="pt" data-pref="lang"><span class="opt-box"><span class="opt-sample" aria-hidden="true">PT</span><span class="opt-name" lang="pt" translate="no">Português</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="lang" value="en" data-pref="lang"><span class="opt-box"><span class="opt-sample" aria-hidden="true">EN</span><span class="opt-name" lang="en" translate="no">English</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="lang" value="es" data-pref="lang"><span class="opt-box"><span class="opt-sample" aria-hidden="true">ES</span><span class="opt-name" lang="es" translate="no">Español</span></span></label>
+        </fieldset>
+      </section>
+    </div>
+
+    <aside class="a11y-aside">
+      <section class="a11y-card a11y-preview" aria-labelledby="t-previa">
+        <h2 id="t-previa">Prévia</h2>
+        <p class="a11y-help">Veja como o site fica com suas escolhas.</p>
+        <div class="prev-box">
+          <p class="prev-title">Consultar CPF</p>
+          <p class="prev-text">Veja se seu CPF está regular. <a href="#" data-soon>Saiba mais</a></p>
+          <p class="prev-msg prev-ok"><span aria-hidden="true">✓</span> Tudo certo</p>
+          <p class="prev-msg prev-err"><span aria-hidden="true">✕</span> CPF inválido</p>
+          <button class="btn btn-primary" type="button" data-soon-btn>Continuar</button>
+        </div>
+      </section>
+
+      <section class="a11y-card" aria-labelledby="t-outros">
+        <h2 id="t-outros">Outros recursos</h2>
+        <ul class="a11y-list">
+          <li><strong>Libras:</strong> toque no botão azul com as mãos, na direita da tela.</li>
+          <li><strong>Assistente:</strong> o balão no canto ajuda a achar serviços.</li>
+          <li><strong>Teclado:</strong> use Tab para andar pela página e "/" para buscar.</li>
+          <li><strong>Zoom:</strong> Ctrl e + aumenta a página inteira.</li>
+        </ul>
+      </section>
+
+      <button class="btn btn-outline btn-block" type="button" id="a11y-reset">Voltar ao padrão</button>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a class="brand" href="home.html" style="color:#fff"><span class="brand-mark" aria-hidden="true"></span>Portal Cidadão</a>
+        <p>Serviços públicos em um só lugar.</p>
+      </div>
+      <details class="f-col"><summary>Serviços</summary><ul>
+        <li><a href="#mais-acessados">Mais acessados</a></li><li><a href="#destaques">Destaques</a></li><li><a href="alistamento.html">Serviço militar</a></li></ul></details>
+      <details class="f-col"><summary>Ajuda</summary><ul>
+        <li><a href="#">Dúvidas frequentes</a></li><li><a href="#">Recuperar senha</a></li><li><a href="#">Contato e ouvidoria</a></li></ul></details>
+      <details class="f-col"><summary>Institucional</summary><ul>
+        <li><a href="acessibilidade.html">Acessibilidade</a></li><li><a href="#">Termos de uso</a></li><li><a href="#">Privacidade</a></li></ul></details>
+    </div>
+    <div class="f-bottom"><span>© 2026 Portal Cidadão</span><span>Redes: Instagram · YouTube · WhatsApp</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/acessibilidade.js"></script>
+<script src="js/assistente.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/vlibras.js"></script>
+</body>
+</html>

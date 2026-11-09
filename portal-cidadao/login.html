@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Entrar — Portal Cidadão (protótipo)</title>
+<script src="js/prefs.js"></script>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/login.css">
@@ -19,7 +20,17 @@
         <span class="brand-mark" aria-hidden="true"></span>Portal Cidadão
       </a>
 
-      <h1 class="login-main-title">Identifique-se no PDC</h1>
+      <div class="login-tools">
+        <label class="sr-only" for="lang-select">Idioma</label>
+        <select class="login-lang" id="lang-select" translate="no">
+          <option value="pt" lang="pt">PT · Português</option>
+          <option value="en" lang="en">EN · English</option>
+          <option value="es" lang="es">ES · Español</option>
+        </select>
+        <a class="login-a11y-link" href="acessibilidade.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg><span>Acessibilidade</span></a>
+      </div>
+
+      <h1 class="login-main-title">Entre na sua conta</h1>
 
       <form id="form-login" novalidate>
         <div class="field">
@@ -56,7 +67,7 @@
           <strong>Recuperar senha em 3 passos</strong>
           <ol>
             <li>Confirme seu CPF no campo acima.</li>
-            <li>Escolha onde receber o código (e-mail ou SMS).</li>
+            <li>Escolha receber o código por e-mail ou SMS.</li>
             <li>Digite o código e crie uma nova senha.</li>
           </ol>
           <button class="btn btn-outline" type="button" id="btn-enviar-codigo">Enviar código</button>
@@ -69,7 +80,7 @@
         <div class="status" id="status" role="status" aria-live="polite"></div>
       </form>
 
-      <div class="divider">ou acesse com biometria</div>
+      <div class="divider">ou entre com o rosto</div>
 
       <button class="login-alt-btn" type="button" id="btn-facial">
         <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
@@ -78,31 +89,31 @@
 
       <!-- Outras opções de identificação -->
       <nav class="login-alt" aria-labelledby="login-alt-title">
-        <h2 class="login-alt-title" id="login-alt-title">Outras opções de identificação</h2>
+        <h2 class="login-alt-title" id="login-alt-title">Outras formas de entrar</h2>
         <ul class="login-alt-list">
           <li>
-            <button class="login-alt-btn is-featured" type="button" data-alt="Login com seu banco" data-tooltip="Use o acesso do seu banco para entrar e elevar o nível da sua conta">
+            <button class="login-alt-btn is-featured" type="button" data-alt="Entrar pelo seu banco" data-tooltip="Use o login do seu banco. Isso libera mais serviços.">
               <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 20h18"/></svg>
-              <span>Login com seu banco</span>
-              <span class="alt-badge">Sua conta será prata</span>
+              <span>Entrar pelo seu banco</span>
+              <span class="alt-badge">Libera mais serviços</span>
             </button>
           </li>
           <li>
-            <button class="login-alt-btn" type="button" data-alt="Login com QR code" data-tooltip="Leia o QR code com o aplicativo no celular em que você já está conectado">
+            <button class="login-alt-btn" type="button" data-alt="Entrar com QR code" data-tooltip="Abra o app no celular e aponte a câmera para o código.">
               <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 21h1M21 14v1"/></svg>
-              <span>Login com QR code</span>
+              <span>Entrar com QR code</span>
             </button>
           </li>
           <li>
-            <button class="login-alt-btn" type="button" data-alt="Certificado digital" data-tooltip="Conecte seu token ou cartão com certificado digital ICP-Brasil">
+            <button class="login-alt-btn" type="button" data-alt="Certificado digital" data-tooltip="Use o certificado digital do cartão ou do pen drive (token).">
               <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="8" height="13" rx="2"/><path d="M10 8V3h4v5"/><path d="M12 12.5v4"/></svg>
-              <span>Seu certificado digital</span>
+              <span>Certificado digital</span>
             </button>
           </li>
           <li>
-            <button class="login-alt-btn" type="button" data-alt="Certificado digital em nuvem" data-tooltip="Entre com o certificado digital guardado em um provedor de nuvem">
+            <button class="login-alt-btn" type="button" data-alt="Certificado digital em nuvem" data-tooltip="Use o certificado digital guardado na internet.">
               <svg class="login-alt-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 19a4.5 4.5 0 0 1-.7-8.95A6 6 0 0 1 17.8 9 4.75 4.75 0 0 1 17.5 19z"/><path d="M9.5 14.5l2 2 3.5-3.5"/></svg>
-              <span>Seu certificado digital em nuvem</span>
+              <span>Certificado digital em nuvem</span>
             </button>
           </li>
         </ul>
@@ -166,30 +177,74 @@
               <div class="sensor-progress-wrap">
                 <div class="sensor-progress-fill"></div>
               </div>
-              <p class="sensor-prompt">Toque no sensor biométrico para entrar</p>
+              <p class="sensor-prompt">Toque aqui para entrar</p>
             </div>
           </div>
         </div>
 
         <svg class="character-vector" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M85 160L72 230L90 234L105 170" fill="#ffffff"/>
-          <path d="M105 160L125 220L145 210L120 155" fill="#ffffff"/>
-          <path d="M68 230L60 248C58 252 64 256 75 254L93 244L88 232Z" fill="#1e1b4b"/>
-          <path d="M60 250L75 255L92 246" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M125 218L138 238C142 242 150 240 154 234L150 216Z" fill="#1e1b4b"/>
-          <path d="M136 238L152 234" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M78 85C70 95 68 115 70 145C72 158 85 165 110 165C130 165 138 155 135 140L130 95C125 82 100 80 78 85Z" fill="#f59e0b"/>
-          <path d="M68 98L112 165" stroke="#1e1b4b" stroke-width="7" stroke-linecap="round"/>
-          <path d="M52 135C45 145 48 175 62 185C72 190 78 175 75 155C72 140 60 132 52 135Z" fill="#1e1b4b"/>
-          <circle cx="106" cy="58" r="14" fill="#fed7aa"/>
-          <path d="M96 52C94 40 108 34 118 38C124 41 126 50 122 55C118 52 110 50 106 54C102 58 100 62 96 52Z" fill="#1e1b4b"/>
-          <path d="M125 95C138 98 152 105 168 115C178 122 190 120 195 114" stroke="#f59e0b" stroke-width="14" stroke-linecap="round"/>
-          <path d="M188 116L198 110" stroke="#fed7aa" stroke-width="8" stroke-linecap="round"/>
+          <!-- sombra no chão -->
+          <ellipse cx="92" cy="271" rx="48" ry="6" fill="#0f172a" opacity="0.22"/>
+
+          <!-- pernas -->
+          <path d="M73 154C71 190 69 225 67 257L83 258C85 228 89 196 93 160Z" fill="#172554"/>
+          <path d="M88 156C92 190 97 225 100 256L116 255C114 222 110 188 108 154Z" fill="#1e3a8a"/>
+          <path d="M100 200L108 199" stroke="#172554" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+
+          <!-- tênis -->
+          <path d="M64 255H84V262Q84 267 79 267H55Q50 267 52 263Q55 258 64 255Z" fill="#f8fafc"/>
+          <path d="M52 266H82" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+          <path d="M99 254H117Q126 256 131 262Q133 267 127 267H99Z" fill="#ffffff"/>
+          <path d="M99 266H129" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+          <path d="M106 257L110 260M111 256L115 259" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round"/>
+
+          <!-- braço de trás -->
+          <path d="M67 92C58 112 56 135 59 156" stroke="#d97706" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="60" cy="161" r="7" fill="#e8b08a"/>
+
+          <!-- tronco: moletom -->
+          <path d="M62 98Q62 82 77 80H103Q117 82 116 98L112 160Q90 167 70 160Z" fill="#f59e0b"/>
+          <path d="M70 151Q90 158 112 151L112 161Q90 168 70 161Z" fill="#d97706"/>
+          <path d="M91 88V152" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+          <path d="M84 104V118M97 104V118" stroke="#fde68a" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+          <!-- pescoço e capuz -->
+          <rect x="83" y="62" width="13" height="20" rx="5" fill="#e8b08a"/>
+          <path d="M73 81Q89 96 106 81" stroke="#d97706" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- bolsa transversal -->
+          <path d="M109 84L70 146" stroke="#1e1b4b" stroke-width="5" stroke-linecap="round"/>
+          <rect x="52" y="139" width="28" height="23" rx="6" fill="#1e1b4b"/>
+          <path d="M52 147H80" stroke="#312e81" stroke-width="2"/>
+          <circle cx="66" cy="151" r="2" fill="#fbbf24"/>
+
+          <!-- cabeça -->
+          <circle cx="72" cy="48" r="5" fill="#e8b08a"/>
+          <circle cx="89" cy="45" r="20" fill="#f6c9a4"/>
+          <path d="M67 47C63 27 78 15 94 17C108 18 116 28 111 38C103 33 93 33 85 37C80 41 77 46 77 53L70 55Z" fill="#2b1d3a"/>
+          <path d="M86 20C92 12 104 12 108 20C102 18 95 18 86 20Z" fill="#2b1d3a"/>
+          <path d="M92 39Q95 37 98 39M101 39Q104 37 107 39" stroke="#2b1d3a" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="95.5" cy="45" r="2.3" fill="#1e1b4b"/>
+          <circle cx="104.5" cy="45" r="2.3" fill="#1e1b4b"/>
+          <circle cx="96.2" cy="44.2" r="0.7" fill="#ffffff"/>
+          <circle cx="105.2" cy="44.2" r="0.7" fill="#ffffff"/>
+          <path d="M106 46Q109 49 106 51" stroke="#d9966f" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M96 55Q101 59 106 55" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="92" cy="52" r="3" fill="#fb7185" opacity="0.3"/>
+
+          <!-- braço da frente tocando o sensor -->
+          <path d="M108 92L137 101" stroke="#f59e0b" stroke-width="14" stroke-linecap="round"/>
+          <path d="M137 101L158 73" stroke="#f59e0b" stroke-width="13" stroke-linecap="round"/>
+          <path d="M152 74L161 81" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="163" cy="66" r="7" fill="#f6c9a4"/>
+          <path d="M166 62L176 52" stroke="#f6c9a4" stroke-width="5" stroke-linecap="round"/>
+          <path d="M158 63L160 58" stroke="#f6c9a4" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="178" cy="50" r="6" fill="#ffffff" opacity="0.45"/>
         </svg>
       </div>
 
       <div class="visual-security-badge">
-        <span>🛡️ Autenticação biométrica segura Gov.br</span>
+        <span>🛡️ Entrada rápida e segura</span>
       </div>
     </div>
   </div>
@@ -200,16 +255,17 @@
   <div class="modal-box">
     <h2 id="t-facial" style="margin:0">Reconhecimento facial</h2>
     <div class="face" id="face" aria-hidden="true">🙂</div>
-    <p id="facial-status" role="status" aria-live="polite" style="margin:.25rem 0 1rem">Posicione o rosto dentro do círculo.</p>
+    <p id="facial-status" role="status" aria-live="polite" style="margin:.25rem 0 1rem">Coloque o rosto dentro do círculo.</p>
     <button class="btn btn-primary" type="button" id="facial-start">Iniciar verificação</button>
     <button class="btn btn-outline" type="button" id="facial-cancel">Cancelar</button>
-    <p style="font-size:.78rem;color:var(--muted);margin:1rem 0 0">Simulação de interface: nenhuma câmera é acessada.</p>
+    <p style="font-size:.78rem;color:var(--muted);margin:1rem 0 0">É só uma simulação: a câmera não é usada.</p>
   </div>
 </div>
 
 <script src="js/main.js"></script>
 <script src="js/login.js"></script>
 <script src="js/assistente.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/vlibras.js"></script>
 </body>
 </html>

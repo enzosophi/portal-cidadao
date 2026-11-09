@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Início — Portal Cidadão (protótipo)</title>
+<script src="js/prefs.js"></script>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -17,18 +18,18 @@
     <nav class="tb-links" aria-label="Links institucionais">
       <a href="#" data-soon>Acesso à informação</a>
       <a href="#" data-soon>Legislação</a>
-      <a href="#" data-soon>Acessibilidade</a>
+      <a href="acessibilidade.html">Acessibilidade</a>
     </nav>
     <div class="tb-tools">
       <div class="tb-item">
         <button class="tb-trigger tb-lang" type="button" aria-expanded="false" aria-controls="dd-idioma" aria-label="Idioma: Português">
-          PT<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          <span class="tb-lang-code" translate="no">PT</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="dropdown dd-right dd-small" id="dd-idioma">
           <ul>
-            <li><a href="#" aria-current="true">Português</a></li>
-            <li><a href="#" data-soon>English</a></li>
-            <li><a href="#" data-soon>Español</a></li>
+            <li><a href="#" data-lang="pt" lang="pt" translate="no" aria-current="true">Português</a></li>
+            <li><a href="#" data-lang="en" lang="en" translate="no">English</a></li>
+            <li><a href="#" data-lang="es" lang="es" translate="no">Español</a></li>
           </ul>
         </div>
       </div>
@@ -38,14 +39,15 @@
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
         </button>
         <div class="dropdown dd-right dd-cookies" id="dd-cookies">
-          <p class="dd-text"><strong>Cookies</strong>Usamos cookies essenciais para o portal funcionar. Os de estatística são opcionais e ajudam a melhorar o site.</p>
+          <p class="dd-text"><strong>Cookies</strong>Alguns cookies são necessários. Os de estatística são opcionais.</p>
           <div class="dd-actions">
             <button class="dd-btn" type="button" data-cookies="essenciais">Só essenciais</button>
             <button class="dd-btn dd-btn-primary" type="button" data-cookies="todos">Aceitar todos</button>
           </div>
         </div>
       </div>
-      <button class="tb-icon theme-toggle" type="button" data-hc aria-pressed="false" aria-label="Modo escuro" data-tooltip="Alternar entre modo claro e escuro">
+      <a class="tb-icon tb-a11y" href="acessibilidade.html" aria-label="Acessibilidade" data-tooltip="Ajustar texto, cores e idioma"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg></a>
+      <button class="tb-icon theme-toggle" type="button" data-hc aria-pressed="false" aria-label="Alto contraste" data-tooltip="Ligar ou desligar o alto contraste">
         <svg class="ico i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         <svg class="ico i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
       </button>
@@ -121,7 +123,7 @@
             <ul>
               <li><a href="home.html?assistente=1">Como usar o portal</a></li>
               <li><a href="#" data-soon>Dúvidas frequentes</a></li>
-              <li><a href="#" data-soon>Acessibilidade</a></li>
+              <li><a href="acessibilidade.html">Acessibilidade</a></li>
               <li><a href="#" data-soon>Contato e ouvidoria</a></li>
             </ul>
           </div>
@@ -144,9 +146,7 @@
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       </button>
       <a class="nav-login" id="btn-entrar" href="login.html">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Entrar
-      </a>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-login-text">Entrar</span></a>
       <button class="nav-icon menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
         <svg class="ico ico-menu" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
         <svg class="ico ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -156,14 +156,15 @@
 </header>
 
 <main id="conteudo" class="container">
-  <section class="section" id="destaques" aria-labelledby="t-dest">
+  <h1 class="sr-only">Portal Cidadão: início</h1>
+  <section class="section home-band band-destaques" id="destaques" aria-labelledby="t-dest">
     <h2 id="t-dest">Destaques</h2>
     <div class="carousel" id="carousel" role="region" aria-roledescription="carrossel" aria-label="Destaques do portal" tabindex="0">
       <div class="track" aria-live="off">
-        <article class="slide"><span class="tag">Finanças</span><h3>Entregue seu Imposto de Renda</h3><p>Veja o prazo, o que precisa ter em mãos e comece em poucos passos.</p><a class="btn" href="#mais-acessados">Ver serviço</a></article>
-        <article class="slide"><span class="tag">Novo · Finanças</span><h3>Renegociação de dívidas</h3><p>Condições para famílias organizarem as contas com mais tranquilidade.</p><a class="btn" href="#mais-acessados">Saiba mais</a></article>
-        <article class="slide"><span class="tag">Segurança</span><h3>Celular seguro</h3><p>Bloqueie o aparelho e registre ocorrência de forma rápida.</p><a class="btn" href="#mais-acessados">Acessar</a></article>
-        <article class="slide"><span class="tag">Novo · Assistência social</span><h3>Consulte seu benefício</h3><p>Acompanhe datas, valores e pendências em um só lugar.</p><a class="btn" href="#mais-acessados">Consultar</a></article>
+        <article class="slide"><span class="tag">Finanças</span><h3>Entregue seu Imposto de Renda</h3><p>Veja o prazo e o que você precisa.</p><a class="btn" href="#mais-acessados">Ver serviço</a></article>
+        <article class="slide"><span class="tag">Novo · Finanças</span><h3>Renegociação de dívidas</h3><p>Condições especiais para pagar suas dívidas.</p><a class="btn" href="#mais-acessados">Saiba mais</a></article>
+        <article class="slide"><span class="tag">Segurança</span><h3>Celular seguro</h3><p>Bloqueie o celular roubado e registre a ocorrência.</p><a class="btn" href="#mais-acessados">Acessar</a></article>
+        <article class="slide"><span class="tag">Novo · Assistência social</span><h3>Consulte seu benefício</h3><p>Veja datas, valores e pendências.</p><a class="btn" href="#mais-acessados">Consultar</a></article>
       </div>
       <button class="car-btn prev" type="button" aria-label="Destaque anterior">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -182,11 +183,11 @@
   <!-- =========================================================================
        SERVIÇOS DIGITAIS POR PERFIL (gov.br style)
        ========================================================================= -->
-  <section class="section perfil-section" id="perfis" aria-labelledby="t-perfis">
+  <section class="section perfil-section home-band band-perfis" id="perfis" aria-labelledby="t-perfis">
     <div class="perfil-heading-wrap">
-      <span class="perfil-badge-kicker">💼 Atendimento personalizado</span>
-      <h2 id="t-perfis">Serviços Digitais por Perfil</h2>
-      <p>Encontre os serviços e orientações específicos com base no seu perfil de acesso. Clique em qualquer perfil para ver as consultas sob medida:</p>
+      <span class="perfil-badge-kicker">💼 Feito para você</span>
+      <h2 id="t-perfis">Serviços por perfil</h2>
+      <p>Escolha um perfil e veja os serviços certos para você.</p>
     </div>
 
     <div class="perfil-carousel-wrap">
@@ -198,7 +199,7 @@
           <div class="perfil-item is-active" role="tab" aria-selected="true" data-perfil="agricultor" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">🌾</div>
             <span class="perfil-name">Agricultor</span>
-            <p class="perfil-tagline">Produtor rural e campo</p>
+            <p class="perfil-tagline">Trabalho no campo</p>
           </div>
 
           <!-- Item 2: Idoso -->
@@ -212,28 +213,28 @@
           <div class="perfil-item" role="tab" aria-selected="false" data-perfil="estudante" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">🎓</div>
             <span class="perfil-name">Estudante</span>
-            <p class="perfil-tagline">Educação e formação</p>
+            <p class="perfil-tagline">Estudos e bolsas</p>
           </div>
 
           <!-- Item 4: MEI -->
           <div class="perfil-item" role="tab" aria-selected="false" data-perfil="mei" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">💼</div>
             <span class="perfil-name">MEI</span>
-            <p class="perfil-tagline">Empreendedor individual</p>
+            <p class="perfil-tagline">Pequeno negócio</p>
           </div>
 
           <!-- Item 5: Trabalhador -->
           <div class="perfil-item" role="tab" aria-selected="false" data-perfil="trabalhador" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">👷</div>
             <span class="perfil-name">Trabalhador</span>
-            <p class="perfil-tagline">Emprego e carteira assinada</p>
+            <p class="perfil-tagline">Emprego e direitos</p>
           </div>
 
           <!-- Item 6: Turista -->
           <div class="perfil-item" role="tab" aria-selected="false" data-perfil="turista" tabindex="0">
             <div class="perfil-avatar-circle" aria-hidden="true">✈️</div>
             <span class="perfil-name">Turista & Exterior</span>
-            <p class="perfil-tagline">Viagens e consular</p>
+            <p class="perfil-tagline">Viagens e vida fora</p>
           </div>
         </div>
       </div>
@@ -255,8 +256,8 @@
   <!-- Modal Todos os Perfis -->
   <div class="modal" id="modal-todos-perfis" role="dialog" aria-modal="true" aria-labelledby="t-modal-perfis">
     <div class="modal-box" style="width:min(600px, 100%)">
-      <h2 id="t-modal-perfis" style="margin:0">Escolha o seu Perfil</h2>
-      <p style="color:var(--muted);margin:.3rem 0 1rem;font-size:.92rem">Selecione o perfil que mais combina com a sua consulta no Portal Cidadão:</p>
+      <h2 id="t-modal-perfis" style="margin:0">Escolha seu perfil</h2>
+      <p style="color:var(--muted);margin:.3rem 0 1rem;font-size:.92rem">Qual combina mais com você?</p>
       
       <div class="all-profiles-grid" id="modal-profiles-list">
         <!-- Renderizado dinamicamente -->
@@ -266,7 +267,7 @@
     </div>
   </div>
 
-  <section class="section" id="mais-acessados" aria-labelledby="t-mais">
+  <section class="section home-band band-mais" id="mais-acessados" aria-labelledby="t-mais">
     <h2 id="t-mais">Mais acessados</h2>
     <div class="svc-grid">
       <a class="card svc" href="alistamento.html">
@@ -316,6 +317,38 @@
       </a>
     </div>
   </section>
+
+  <!-- Aplicativos do governo: mesma cor de fundo da faixa de Destaques -->
+  <section class="section home-band band-apps" id="aplicativos" aria-labelledby="t-apps">
+    <h2 id="t-apps" class="apps-title">Você já conhece os aplicativos do governo?</h2>
+    <p class="apps-lead">Use os serviços públicos direto no celular.</p>
+    <ul class="apps-grid">
+      <li>
+        <a class="app-card" href="#" data-soon>
+          <span class="app-tile app-tile-img"><img src="img/apps/govbr.webp" alt="" width="220" height="220" loading="lazy"></span>
+          <span class="app-name">gov.br</span>
+          <span class="app-desc">Sua conta para entrar em todos os serviços.</span>
+        </a>
+      </li>
+      <li>
+        <a class="app-card" href="#" data-soon>
+          <span class="app-tile app-tile-img"><img src="img/apps/carteira-transito.webp" alt="" width="220" height="220" loading="lazy"></span>
+          <span class="app-name">Carteira Digital de Trânsito</span>
+          <span class="app-desc">Sua CNH e o documento do carro no celular.</span>
+        </a>
+      </li>
+      <li>
+        <a class="app-card" href="#" data-soon>
+          <span class="app-tile app-tile-img"><img src="img/apps/inss.webp" alt="" width="220" height="220" loading="lazy"></span>
+          <span class="app-name">Meu INSS</span>
+          <span class="app-desc">Aposentadoria, benefícios e extrato de pagamento.</span>
+        </a>
+      </li>
+    </ul>
+    <div class="apps-more">
+      <a class="apps-gallery" href="#" data-soon>Galeria de aplicativos</a>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
@@ -330,15 +363,15 @@
       <details class="f-col"><summary>Ajuda</summary><ul>
         <li><a href="#">Dúvidas frequentes</a></li><li><a href="#">Recuperar senha</a></li><li><a href="#">Contato e ouvidoria</a></li></ul></details>
       <details class="f-col"><summary>Institucional</summary><ul>
-        <li><a href="#">Acessibilidade</a></li><li><a href="#">Termos de uso</a></li><li><a href="#">Privacidade</a></li></ul></details>
+        <li><a href="acessibilidade.html">Acessibilidade</a></li><li><a href="#">Termos de uso</a></li><li><a href="#">Privacidade</a></li></ul></details>
     </div>
     <div class="f-bottom"><span>© 2026 Portal Cidadão</span><span>Redes: Instagram · YouTube · WhatsApp</span></div>
   </div>
 </footer>
 
-<script src="js/anime.umd.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/assistente.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/vlibras.js"></script>
 </body>
 </html>

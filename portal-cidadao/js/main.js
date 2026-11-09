@@ -13,6 +13,10 @@
   }
 
   window.PC = {
+    reduceMotion: function () {
+      return document.documentElement.classList.contains('reduce-motion') ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    },
     toast: function (text) {
       var t = document.getElementById('toast');
       if (!t) {
@@ -45,9 +49,111 @@
     }
   };
 
+  // ---------- Popup de correção (no lugar de alert/confirm do navegador) ----------
+  // PC.dialog({ type: 'error' | 'warning' | 'info', title, message,
+  //             items: [{ text, fix: 'rótulo do botão', onClick(li, ctl), keepOpen }],
+  //             actions: [{ label, value, primary }] })  -> Promise com o "value" escolhido
+  // Acessível: role="alertdialog", foco preso dentro, Esc fecha, o foco volta para onde estava.
+  var openDialog = null;
+  window.PC.dialog = function (o) {
+    return new Promise(function (resolve) {
+      if (openDialog) openDialog.close(null);
+      var prev = document.activeElement;
+      var type = o.type || 'error';
+      var icons = { error: '!', warning: '!', info: 'i' };
+
+      var overlay = document.createElement('div');
+      overlay.className = 'pcd-overlay';
+      var box = document.createElement('div');
+      box.className = 'pcd pcd-' + type;
+      box.setAttribute('role', 'alertdialog');
+      box.setAttribute('aria-modal', 'true');
+      box.setAttribute('aria-labelledby', 'pcd-title');
+      box.setAttribute('aria-describedby', 'pcd-msg');
+      box.innerHTML =
+        '<div class="pcd-head"><span class="pcd-ico" aria-hidden="true">' + icons[type] + '</span>' +
+        '<h2 class="pcd-title" id="pcd-title"></h2>' +
+        '<button class="pcd-x" type="button" aria-label="Fechar">×</button></div>' +
+        '<p class="pcd-msg" id="pcd-msg"></p><ul class="pcd-list"></ul><div class="pcd-actions"></div>';
+      box.querySelector('.pcd-title').textContent = o.title || '';
+      box.querySelector('.pcd-msg').textContent = o.message || '';
+
+      var done = false;
+      var ctl = {
+        close: function (v, keepFocus) {
+          if (done) return;
+          done = true;
+          overlay.remove();
+          document.removeEventListener('keydown', onKey, true);
+          openDialog = null;
+          if (!keepFocus && prev && prev.focus) { try { prev.focus(); } catch (e) {} }
+          resolve(v);
+        },
+        box: box
+      };
+
+      var list = box.querySelector('.pcd-list');
+      (o.items || []).forEach(function (it) {
+        var li = document.createElement('li');
+        var span = document.createElement('span');
+        span.className = 'pcd-item-text';
+        span.textContent = it.text;
+        li.appendChild(span);
+        if (it.fix) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'pcd-fix';
+          b.textContent = it.fix;
+          b.addEventListener('click', function () {
+            if (it.keepOpen) { it.onClick && it.onClick(li, ctl); return; }
+            ctl.close('fix', true);
+            if (it.onClick) it.onClick(li, ctl);
+          });
+          li.appendChild(b);
+        }
+        list.appendChild(li);
+      });
+      if (!list.children.length) list.remove();
+
+      var acts = box.querySelector('.pcd-actions');
+      (o.actions || [{ label: 'Entendi', value: 'ok', primary: true }]).forEach(function (a) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn ' + (a.primary ? 'btn-primary' : 'btn-outline');
+        b.textContent = a.label;
+        b.addEventListener('click', function () { ctl.close(a.value); });
+        acts.appendChild(b);
+      });
+
+      box.querySelector('.pcd-x').addEventListener('click', function () { ctl.close(o.cancelValue || null); });
+      overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) ctl.close(o.cancelValue || null); });
+
+      function onKey(e) {
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); ctl.close(o.cancelValue || null); return; }
+        if (e.key !== 'Tab') return;
+        var f = Array.prototype.filter.call(box.querySelectorAll('button, a[href], input'), function (x) { return !x.disabled && x.offsetParent !== null; });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        else if (!box.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      }
+      document.addEventListener('keydown', onKey, true);
+
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+      openDialog = ctl;
+      var start = box.querySelector('.pcd-fix') || box.querySelector('.pcd-actions .btn-primary') || box.querySelector('.pcd-x');
+      start.focus();
+    });
+  };
+
   // ---------- modo escuro / alto contraste (persistente) ----------
   var hcBtn = document.querySelectorAll('[data-hc]');
   if (store('pc-hc') === '1') document.body.classList.add('hc');
+  document.addEventListener('pc:hc', function (e) {
+    hcBtn.forEach(function (x) { x.setAttribute('aria-pressed', e.detail); });
+  });
   hcBtn.forEach(function (b) {
     b.setAttribute('aria-pressed', document.body.classList.contains('hc'));
     b.addEventListener('click', function () {
@@ -56,17 +162,38 @@
       hcBtn.forEach(function (x) {
         x.setAttribute('aria-pressed', on);
       });
+      document.dispatchEvent(new CustomEvent('pc:hc', { detail: on }));
     });
   });
 
   // ---------- menu / busca no mobile ----------
   var menuBtn = document.getElementById('menu-toggle');
   var links = document.getElementById('nav-links');
+  function setMenu(open, focusBtn) {
+    links.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+    menuBtn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    document.documentElement.classList.toggle('menu-open', open);
+    if (!open && focusBtn) menuBtn.focus();
+  }
   if (menuBtn && links) {
     menuBtn.addEventListener('click', function () {
-      var open = links.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', open);
-      menuBtn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      setMenu(!links.classList.contains('open'));
+    });
+    // fecha com Esc, ao tocar fora do cabeçalho ou ao escolher um link
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && links.classList.contains('open') &&
+          !document.querySelector('.nav-trigger[aria-expanded="true"]')) setMenu(false, true);
+    });
+    document.addEventListener('click', function (e) {
+      if (links.classList.contains('open') && !e.target.closest('.site-header')) setMenu(false);
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.closest('a[href]:not([data-soon])')) setMenu(false);
+    });
+    // se a tela voltar a ter espaço para o menu completo, fecha o painel do ☰
+    document.addEventListener('pc:layout', function () {
+      if (getComputedStyle(menuBtn).display === 'none' && links.classList.contains('open')) setMenu(false);
     });
   }
 
@@ -122,9 +249,13 @@
     });
   }
 
-  // idioma atual: só fecha o menu
-  document.querySelectorAll('#dd-idioma a[aria-current]').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); closeMenus(); });
+  // idioma: troca o idioma do site inteiro (js/i18n.js)
+  document.querySelectorAll('[data-lang]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      closeMenus();
+      if (window.PC.setLang) window.PC.setLang(a.getAttribute('data-lang'));
+    });
   });
 
   // preferências de cookies (guardadas só neste navegador)
@@ -133,7 +264,7 @@
       var v = b.getAttribute('data-cookies');
       store('pc-cookies', v);
       closeMenus();
-      window.PC.toast(v === 'todos' ? 'Preferência salva: todos os cookies aceitos.' : 'Preferência salva: apenas cookies essenciais.');
+      window.PC.toast(v === 'todos' ? 'Salvo: todos os cookies aceitos.' : 'Salvo: só os cookies necessários.');
     });
   });
 
@@ -142,7 +273,7 @@
     var a = e.target.closest('a[data-soon]');
     if (!a) return;
     e.preventDefault();
-    window.PC.toast('"' + a.textContent.trim() + '" é ilustrativo neste protótipo.');
+    window.PC.toast('Esta página ainda não existe no protótipo.');
   });
   var sBtn = document.getElementById('search-toggle');
   var sBox = document.getElementById('nav-search');
@@ -156,18 +287,20 @@
 
   // ---------- busca na navbar com sugestões ----------
   var SERVICOS = [
-    { t: 'Alistar-se no serviço militar', c: 'Serviço militar', u: 'alistamento.html' },
-    { t: 'Entregar Imposto de Renda', c: 'Finanças', u: 'home.html#destaques' },
-    { t: 'Consultar CPF', c: 'Documentos', u: 'home.html#mais-acessados' },
-    { t: 'Obter passaporte', c: 'Viagens', u: 'home.html#mais-acessados' },
-    { t: 'Emitir guia do MEI', c: 'Empresas', u: 'home.html#mais-acessados' },
-    { t: 'Bolsa Família', c: 'Assistência social', u: 'home.html#destaques' },
-    { t: 'Renegociação de dívidas', c: 'Finanças', u: 'home.html#destaques' },
-    { t: 'Celular seguro', c: 'Segurança', u: 'home.html#destaques' },
-    { t: 'Assinatura eletrônica', c: 'Documentos', u: 'home.html#mais-acessados' },
-    { t: 'Carteira de Trabalho Digital', c: 'Trabalho', u: 'home.html#mais-acessados' },
-    { t: 'Saúde digital (SUS)', c: 'Saúde', u: 'home.html#mais-acessados' },
-    { t: 'Benefícios sociais', c: 'Assistência social', u: 'home.html#mais-acessados' }
+    { t: 'Alistar-se no serviço militar', c: 'Serviço militar', u: 'alistamento.html', k: 'exercito quartel reservista 18 anos military army ejercito servicio' },
+    { t: 'Entregar Imposto de Renda', c: 'Finanças', u: 'home.html#destaques', k: 'ir declaracao leao restituicao receita tax income impuesto renta' },
+    { t: 'Consultar CPF', c: 'Documentos', u: 'home.html#mais-acessados', k: 'documento rg identidade situacao cadastral tax id' },
+    { t: 'Obter passaporte', c: 'Viagens', u: 'home.html#mais-acessados', k: 'viagem exterior viajar pasaporte passport travel viaje' },
+    { t: 'Emitir guia do MEI', c: 'Empresas', u: 'home.html#mais-acessados', k: 'das boleto cnpj empresa negocio business small' },
+    { t: 'Bolsa Família', c: 'Assistência social', u: 'home.html#destaques', k: 'auxilio beneficio cadunico ajuda aid family ayuda familia' },
+    { t: 'Renegociação de dívidas', c: 'Finanças', u: 'home.html#destaques', k: 'divida desenrola nome sujo serasa debt deuda' },
+    { t: 'Celular seguro', c: 'Segurança', u: 'home.html#destaques', k: 'roubo furto bloquear telefone phone stolen robo movil' },
+    { t: 'Assinatura eletrônica', c: 'Documentos', u: 'home.html#mais-acessados', k: 'assinar documento pdf sign firma firmar' },
+    { t: 'Carteira de Trabalho Digital', c: 'Trabalho', u: 'home.html#mais-acessados', k: 'ctps emprego fgts seguro desemprego job work empleo trabajo' },
+    { t: 'Saúde digital (SUS)', c: 'Saúde', u: 'home.html#mais-acessados', k: 'vacina exame consulta medico hospital health vaccine doctor salud vacuna' },
+    { t: 'Benefícios sociais', c: 'Assistência social', u: 'home.html#mais-acessados', k: 'aposentadoria inss aposentado idoso bpc pensao retirement pension senior jubilacion pension' },
+    { t: 'Carteira de identidade', c: 'Documentos', u: 'home.html#mais-acessados', k: 'rg cin identidade documento id card identidad' },
+    { t: 'Carteira de motorista', c: 'Trânsito', u: 'home.html#mais-acessados', k: 'cnh habilitacao dirigir carro detran driver license licencia conducir' }
   ];
   window.PC.SERVICOS = SERVICOS;
 
@@ -178,6 +311,52 @@
   var input = document.getElementById('busca');
   var list = document.getElementById('suggest');
   if (input && list) {
+    function search(q) {
+      var t = window.PC.t || function (x) { return x; };
+      return SERVICOS.filter(function (s) {
+        return norm(s.t + ' ' + s.c + ' ' + t(s.t) + ' ' + t(s.c) + ' ' + (s.k || '')).indexOf(q) > -1;
+      }).slice(0, 5);
+    }
+    // distância entre duas palavras (quantas letras trocar, tirar ou pôr)
+    function dist(a, b) {
+      var prev = [], cur, i, j;
+      for (j = 0; j <= b.length; j++) prev[j] = j;
+      for (i = 1; i <= a.length; i++) {
+        cur = [i];
+        for (j = 1; j <= b.length; j++) {
+          cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        }
+        prev = cur;
+      }
+      return prev[b.length];
+    }
+    var vocab = null;
+    function typoFix(q) {
+      if (!vocab) {
+        var t = window.PC.t || function (x) { return x; }, set = {};
+        SERVICOS.forEach(function (s) {
+          norm(s.t + ' ' + s.c + ' ' + t(s.t) + ' ' + (s.k || '')).split(/[^a-z0-9]+/).forEach(function (w) { if (w.length >= 3) set[w] = 1; });
+        });
+        vocab = Object.keys(set);
+      }
+      var changed = false;
+      var words = q.split(/\s+/).map(function (w) {
+        if (w.length < 3) return w;
+        var best = w, bestD = w.length <= 5 ? 2 : 3;
+        vocab.forEach(function (v) {
+          var d = dist(w, v);
+          // também aceita o começo de uma palavra digitado com erro ("pasap" -> "passaporte")
+          var dp = v.length > w.length ? dist(w, v.slice(0, w.length)) + 0.5 : 99;
+          var m = Math.min(d, dp);
+          if (m < bestD) { bestD = m; best = v; }
+        });
+        if (best !== w) changed = true;
+        return best;
+      });
+      return changed ? words.join(' ') : null;
+    }
+    document.addEventListener('pc:lang', function () { vocab = null; });
+
     function render() {
       var q = norm(input.value.trim());
       list.innerHTML = '';
@@ -186,11 +365,29 @@
         input.setAttribute('aria-expanded', 'false');
         return;
       }
-      var hits = SERVICOS.filter(function (s) {
-        return norm(s.t + ' ' + s.c).indexOf(q) > -1;
-      }).slice(0, 5);
+      var hits = search(q), fixed = null;
+      // nada encontrado: tenta corrigir erro de digitação ("passaporrte" -> "passaporte")
       if (!hits.length) {
-        list.innerHTML = '<li><span style="padding:.6rem .75rem;display:block">Nenhum serviço encontrado. Tente "CPF" ou "militar".</span></li>';
+        fixed = typoFix(q);
+        if (fixed) hits = search(fixed);
+      }
+      if (fixed && hits.length) {
+        var hint = document.createElement('li');
+        hint.className = 'suggest-hint';
+        hint.setAttribute('role', 'status');
+        hint.innerHTML = '<span>Mostrando resultados para</span> <strong translate="no"></strong>';
+        hint.querySelector('strong').textContent = '“' + fixed + '”';
+        list.appendChild(hint);
+      }
+      if (!hits.length) {
+        list.innerHTML = '<li class="suggest-hint" role="status"><span>Nada encontrado. Tente outra palavra, como "CPF" ou "saúde".</span></li>';
+        // atalhos para não deixar a pessoa sem saída
+        ['Consultar CPF', 'Saúde digital (SUS)', 'Alistar-se no serviço militar'].forEach(function (nome) {
+          var s = SERVICOS.filter(function (x) { return x.t === nome; })[0];
+          var li = document.createElement('li');
+          li.innerHTML = '<a href="' + s.u + '"><span>' + s.t + '</span><small>' + s.c + '</small></a>';
+          list.appendChild(li);
+        });
       } else {
         hits.forEach(function (s) {
           var li = document.createElement('li');
@@ -236,20 +433,28 @@
 
   // ---------- footer: acordeão no mobile, aberto no desktop ----------
   var cols = document.querySelectorAll('.f-col');
-  var mq = window.matchMedia('(max-width: 768px)');
+  // mesma regra do CSS (768px), já considerando o tamanho do texto escolhido
+  function footerNarrow() {
+    return window.PCPrefs ? window.PCPrefs.narrowerThan(768) : window.matchMedia('(max-width: 768px)').matches;
+  }
+  var footerWasNarrow = null;
   function footerMode() {
+    var narrow = footerNarrow();
+    if (narrow === footerWasNarrow) return;
+    footerWasNarrow = narrow;
     cols.forEach(function (d) {
-      d.open = !mq.matches;
+      d.open = !narrow;
     });
   }
   if (cols.length) {
     footerMode();
-    (mq.addEventListener ? mq.addEventListener('change', footerMode) : mq.addListener(footerMode));
+    window.addEventListener('resize', footerMode);
+    document.addEventListener('pc:layout', footerMode);
     cols.forEach(function (d) {
       var s = d.querySelector('summary');
       if (s) {
         s.addEventListener('click', function (e) {
-          if (!mq.matches) e.preventDefault();
+          if (!footerNarrow()) e.preventDefault();
         });
       }
     });
@@ -262,12 +467,8 @@
     var slides = car.querySelectorAll('.slide');
     var dotsBox = car.querySelector('.dots');
     var idx = 0, timer = null;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduce = window.PC.reduceMotion();
 
-    var animeLib = window.anime;
-    var animateFn = animeLib && typeof animeLib.animate === 'function' ? animeLib.animate : null;
-    var cubicBezierFn = animeLib && typeof animeLib.cubicBezier === 'function' ? animeLib.cubicBezier : null;
-    var carouselEase = cubicBezierFn ? cubicBezierFn(0.5, 0, 0.9, 0.3) : 'cubic-bezier(0.5, 0, 0.9, 0.3)';
 
     slides.forEach(function (s, i) {
       var d = document.createElement('button');
@@ -284,17 +485,9 @@
       idx = (i + slides.length) % slides.length;
       var targetX = (-100 * idx) + 'cqw';
 
-      if (reduce || instant) {
-        track.style.transform = 'translateX(' + targetX + ')';
-      } else if (animateFn) {
-        animateFn(track, {
-          x: targetX,
-          duration: 1000,
-          ease: carouselEase
-        });
-      } else {
-        track.style.transform = 'translateX(' + targetX + ')';
-      }
+      // deslize feito pelo próprio CSS (antes usava a biblioteca anime.js, de 118 KB, só para isto)
+      track.style.transition = (reduce || instant) ? 'none' : 'transform 1s cubic-bezier(0.5, 0, 0.9, 0.3)';
+      track.style.transform = 'translateX(' + targetX + ')';
 
       dots.forEach(function (d, k) {
         d.setAttribute('aria-current', k === idx);
@@ -437,271 +630,121 @@
     {
       id: 'agricultor',
       nome: 'Agricultor',
-      tagline: 'Produtor rural familiar e campo',
       icone: '🌾',
-      descricao: 'Serviços especializados para o trabalhador do campo, incentivo à produção rural e regularização fundiária e ambiental.',
+      descricao: 'Crédito, seguro e cadastros para quem trabalha no campo.',
       servicos: [
-        {
-          titulo: 'Cadastro Ambiental Rural (CAR)',
-          categoria: 'Meio Ambiente & Terra',
-          icone: '🗺️',
-          badge: '📄 Documento obrigatório',
-          desc: 'Inscrição de imóveis rurais para regularidade ambiental, obtenção de crédito e licenças.',
-          tooltip: 'Exige planta ou croqui do imóvel e documentos de posse/propriedade.',
-          link: '#'
-        },
-        {
-          titulo: 'Pronaf — Crédito Rural Familiar',
-          categoria: 'Financiamento Agro',
-          icone: '🚜',
-          badge: '💰 Juros reduzidos',
-          desc: 'Financiamento para custeio de safras, tratores, irrigação e infraestrutura da agricultura familiar.',
-          tooltip: 'Exige DAP ou CAF ativa e projeto simplificado de custeio/investimento.',
-          link: '#'
-        },
-        {
-          titulo: 'Declaração de Aptidão (DAP / CAF)',
-          categoria: 'Cadastro Oficial',
-          icone: '🌱',
-          badge: '📜 100% Online',
-          desc: 'Emissão e renovação do Cadastro Nacional da Agricultura Familiar no portal gov.br.',
-          tooltip: 'Comprova sua atividade rural perante bancos públicos e programas federais.',
-          link: '#'
-        },
-        {
-          titulo: 'Seguro da Agricultura Familiar (Proagro)',
-          categoria: 'Proteção de Safra',
-          icone: '🛡️',
-          badge: '☔ Cobertura climática',
-          desc: 'Proteção financeira em caso de perdas por seca, enchente, granizo ou geada.',
-          tooltip: 'Requer laudo de comprovação de perdas agronômicas e aviso imediato.',
-          link: '#'
-        }
+        { ic: 'map', titulo: 'Cadastro Ambiental Rural (CAR)', categoria: 'Meio ambiente', badge: 'Obrigatório',
+          desc: 'Registre seu imóvel rural. Ele é pedido para crédito e licenças.',
+          tooltip: 'Tenha o mapa ou desenho do terreno e o documento da terra.', link: '#' },
+        { ic: 'banknote', titulo: 'Pronaf: crédito rural', categoria: 'Financiamento', badge: 'Juros baixos',
+          desc: 'Dinheiro para safra, máquinas e irrigação da agricultura familiar.',
+          tooltip: 'Você precisa ter o CAF (cadastro da agricultura familiar).', link: '#' },
+        { ic: 'sprout', titulo: 'Cadastro da Agricultura Familiar (CAF)', categoria: 'Cadastro', badge: '100% online',
+          desc: 'Faça ou renove o cadastro que prova que você é agricultor familiar.',
+          tooltip: 'Bancos e programas do governo pedem esse cadastro.', link: '#' },
+        { ic: 'shieldCheck', titulo: 'Seguro da safra (Proagro)', categoria: 'Proteção', badge: 'Seca e chuva',
+          desc: 'Receba ajuda se perder a plantação por seca, enchente ou geada.',
+          tooltip: 'Avise a perda logo e guarde o laudo técnico.', link: '#' }
       ]
     },
     {
       id: 'idoso',
       nome: 'Idoso / Aposentado',
-      tagline: 'Previdência, gratuidades e saúde da pessoa idosa',
       icone: '🧓',
-      descricao: 'Acesso rápido a benefícios previdenciários, prova de vida digital, carteira interestadual e isenções tributárias.',
+      descricao: 'Aposentadoria, prova de vida, descontos e isenções.',
       servicos: [
-        {
-          titulo: 'Prova de Vida Digital pelo Celular',
-          categoria: 'Previdência (INSS)',
-          icone: '📱',
-          badge: '🙂 Reconhecimento facial',
-          desc: 'Faça a comprovação anual de vida sem sair de casa pelo aplicativo gov.br com biometria.',
-          tooltip: 'Basta ter câmera no celular e conta gov.br nível Prata ou Ouro.',
-          link: '#'
-        },
-        {
-          titulo: 'Extrato de Pagamento de Benefício',
-          categoria: 'INSS & Renda',
-          icone: '📑',
-          badge: '📄 Comprovante oficial',
-          desc: 'Consulte datas de pagamento, valores líquidos e informe de rendimentos para o Imposto de Renda.',
-          tooltip: 'Acesso imediato com CPF e senha. Aceito em bancos e órgãos oficiais.',
-          link: '#'
-        },
-        {
-          titulo: 'Carteira da Pessoa Idosa',
-          categoria: 'Transporte & Cidadania',
-          icone: '🪪',
-          badge: '🚌 Viagens gratuitas',
-          desc: 'Garante viagens gratuitas ou com 50% de desconto em linhas rodoviárias interestaduais.',
-          tooltip: 'Para idosos acima de 60 anos com renda até 2 salários mínimos no CadÚnico.',
-          link: '#'
-        },
-        {
-          titulo: 'Isenção de Imposto de Renda e IPTU',
-          categoria: 'Tributos & Direitos',
-          icone: '🏛️',
-          badge: '⚖️ Direito por lei',
-          desc: 'Orientações e solicitação de dispensa tributária por faixa etária ou laudo médico.',
-          tooltip: 'Exige certidão de nascimento/casamento ou laudo pericial oficial do SUS.',
-          link: '#'
-        }
+        { ic: 'smartphone', titulo: 'Prova de vida pelo celular', categoria: 'INSS', badge: 'Pelo rosto',
+          desc: 'Prove que está vivo sem sair de casa, usando a câmera do celular.',
+          tooltip: 'Precisa de celular com câmera e conta prata ou ouro.', link: '#' },
+        { ic: 'fileText', titulo: 'Extrato da aposentadoria', categoria: 'INSS', badge: 'Comprovante',
+          desc: 'Veja datas e valores de pagamento e o informe para o Imposto de Renda.',
+          tooltip: 'Entre só com CPF e senha. Vale em bancos.', link: '#' },
+        { ic: 'idCard', titulo: 'Carteira da Pessoa Idosa', categoria: 'Transporte', badge: 'Viagem grátis',
+          desc: 'Viaje de ônibus entre estados de graça ou com metade do preço.',
+          tooltip: 'Para quem tem 60 anos ou mais e renda de até 2 salários mínimos.', link: '#' },
+        { ic: 'landmark', titulo: 'Isenção de impostos', categoria: 'Direitos', badge: 'Direito por lei',
+          desc: 'Veja se você não precisa pagar Imposto de Renda ou IPTU.',
+          tooltip: 'Pode ser pela idade ou por laudo médico.', link: '#' }
       ]
     },
     {
       id: 'estudante',
       nome: 'Estudante',
-      tagline: 'Exames nacionais, bolsas universitárias e meia-entrada',
       icone: '🎓',
-      descricao: 'Tudo o que o estudante precisa para ingressar no ensino superior, obter bolsas e garantir descontos culturais.',
+      descricao: 'ENEM, bolsas de estudo e meia-entrada.',
       servicos: [
-        {
-          titulo: 'Inscrição no ENEM e Consulta de Notas',
-          categoria: 'Exames Nacionais',
-          icone: '📝',
-          badge: '🎯 Acesso Superior',
-          desc: 'Consulte o cronograma, faça a sua inscrição e veja o espelho da redação corrigida.',
-          tooltip: 'Requer CPF regular e cadastro unificado no Portal Cidadão / gov.br.',
-          link: '#'
-        },
-        {
-          titulo: 'Prouni e FIES — Bolsas e Financiamento',
-          categoria: 'Ensino Superior',
-          icone: '🏫',
-          badge: '✨ Bolsas 100% e 50%',
-          desc: 'Candidate-se a vagas em faculdades privadas utilizando as notas obtidas no ENEM.',
-          tooltip: 'Requer comprovação de renda familiar per capita e notas mínimas do exame.',
-          link: '#'
-        },
-        {
-          titulo: 'ID Jovem — Identidade Jovem Digital',
-          categoria: 'Cultura & Mobilidade',
-          icone: '🪪',
-          badge: '🎟️ Meia-entrada e viagem',
-          desc: 'Desconto de 50% em cinemas, teatros, jogos e 2 passagens gratuitas entre estados.',
-          tooltip: 'Destinado a jovens de 15 a 29 anos inscritos no Cadastro Único.',
-          link: '#'
-        },
-        {
-          titulo: 'Certificação do Encceja',
-          categoria: 'Conclusão de Estudos',
-          icone: '🎓',
-          badge: '📜 Certificado Ensino Médio',
-          desc: 'Obtenha a declaração parcial ou certificado de conclusão do Ensino Fundamental ou Médio.',
-          tooltip: 'Consulta pelo número de inscrição do Encceja e CPF.',
-          link: '#'
-        }
+        { ic: 'penLine', titulo: 'ENEM: inscrição e notas', categoria: 'Provas', badge: 'Faculdade',
+          desc: 'Faça a inscrição, veja as datas e confira sua nota.',
+          tooltip: 'Precisa de CPF e conta no portal.', link: '#' },
+        { ic: 'graduationCap', titulo: 'Prouni e Fies', categoria: 'Faculdade', badge: 'Bolsas',
+          desc: 'Use a nota do ENEM para ganhar bolsa ou financiar a faculdade.',
+          tooltip: 'É preciso comprovar a renda da família.', link: '#' },
+        { ic: 'ticket', titulo: 'ID Jovem', categoria: 'Cultura e viagem', badge: 'Meia-entrada',
+          desc: 'Pague metade em cinema e shows e viaje de graça entre estados.',
+          tooltip: 'Para jovens de 15 a 29 anos no Cadastro Único.', link: '#' },
+        { ic: 'award', titulo: 'Certificado do Encceja', categoria: 'Conclusão de estudos', badge: 'Diploma',
+          desc: 'Pegue o certificado do ensino fundamental ou médio.',
+          tooltip: 'Use o CPF e o número de inscrição.', link: '#' }
       ]
     },
     {
       id: 'mei',
-      nome: 'MEI (Microempreendedor)',
-      tagline: 'Formalização, emissão de DAS, notas fiscais e declaração',
+      nome: 'MEI (pequeno negócio)',
       icone: '💼',
-      descricao: 'Ferramentas descomplicadas para manter o seu CNPJ em dia, pagar tributos unificados e emitir notas fiscais.',
+      descricao: 'Abra seu MEI, pague a guia mensal e emita notas.',
       servicos: [
-        {
-          titulo: 'Emitir Guia DAS-MEI Mensal',
-          categoria: 'Tributos e INSS',
-          icone: '🧾',
-          badge: '💳 Pix ou Boleto',
-          desc: 'Gere a guia única de arrecadação do Simples Nacional em menos de 1 minuto sem burocracia.',
-          tooltip: 'Informe apenas o CNPJ. Mantém seu negócio e cobertura do INSS em dia.',
-          link: '#'
-        },
-        {
-          titulo: 'Declaração Anual (DASN-SIMEI)',
-          categoria: 'Prestação de Contas',
-          icone: '📊',
-          badge: '📅 Obrigatória anual',
-          desc: 'Envie o faturamento bruto anual da sua empresa sem custos adicionais.',
-          tooltip: 'Prazo até 31 de maio de cada ano. Mantém a regularidade fiscal do CNPJ.',
-          link: '#'
-        },
-        {
-          titulo: 'Formalização / Abrir MEI Grátis',
-          categoria: 'Registro de CNPJ',
-          icone: '🏢',
-          badge: '⚡ CNPJ em minutos',
-          desc: 'Abra sua empresa individual de forma 100% gratuita no portal oficial do empreendedor.',
-          tooltip: 'Tenha em mãos CPF, título de eleitor ou recibo do IRPF e comprovante de endereço.',
-          link: '#'
-        },
-        {
-          titulo: 'Emissão de NFS-e Nacional',
-          categoria: 'Notas Fiscais',
-          icone: '📝',
-          badge: '💻 Padrão Simplificado',
-          desc: 'Emita notas fiscais de prestação de serviços pelo emissor nacional unificado.',
-          tooltip: 'Requer cadastro no Emissor Nacional e certificado ou login gov.br.',
-          link: '#'
-        }
+        { ic: 'receipt', titulo: 'Guia mensal do MEI (DAS)', categoria: 'Impostos', badge: 'Pix ou boleto',
+          desc: 'Gere a guia do mês em menos de 1 minuto.',
+          tooltip: 'Basta o CNPJ. Pagar em dia garante seu INSS.', link: '#' },
+        { ic: 'chart', titulo: 'Declaração anual do MEI', categoria: 'Prestação de contas', badge: 'Todo ano',
+          desc: 'Informe quanto sua empresa ganhou no ano. É grátis.',
+          tooltip: 'O prazo é 31 de maio.', link: '#' },
+        { ic: 'building', titulo: 'Abrir MEI grátis', categoria: 'Abrir empresa', badge: 'Na hora',
+          desc: 'Abra sua empresa de graça e receba o CNPJ.',
+          tooltip: 'Tenha CPF, título de eleitor e comprovante de endereço.', link: '#' },
+        { ic: 'fileText', titulo: 'Nota fiscal de serviço', categoria: 'Notas fiscais', badge: 'Simples',
+          desc: 'Emita notas fiscais pelo emissor nacional.',
+          tooltip: 'Entre com sua conta do portal.', link: '#' }
       ]
     },
     {
       id: 'trabalhador',
       nome: 'Trabalhador',
-      tagline: 'Contratos CLT, carteira de trabalho, seguro e FGTS',
       icone: '👷',
-      descricao: 'Acompanhe seus contratos profissionais, solicite benefícios trabalhistas e consulte saldos do FGTS e PIS.',
+      descricao: 'Carteira de trabalho, FGTS, seguro-desemprego e abono.',
       servicos: [
-        {
-          titulo: 'Carteira de Trabalho Digital (CTPS)',
-          categoria: 'Contratos e Vínculos',
-          icone: '📘',
-          badge: '📲 No celular',
-          desc: 'Acompanhe anotações de salário, admissões, férias e histórico profissional completo.',
-          tooltip: 'Acesso imediato com CPF e senha gov.br. Substitui a carteira de papel.',
-          link: '#'
-        },
-        {
-          titulo: 'Solicitar Seguro-Desemprego',
-          categoria: 'Benefício ao Trabalhador',
-          icone: '🛡️',
-          badge: '💵 Auxílio temporário',
-          desc: 'Dê entrada no benefício após demissão sem justa causa de forma 100% online.',
-          tooltip: 'Requer número do Requerimento do Seguro-Desemprego entregue pelo empregador.',
-          link: '#'
-        },
-        {
-          titulo: 'Consultar Abono Salarial PIS/Pasep',
-          categoria: 'Benefício Anual',
-          icone: '💰',
-          badge: '🏦 Até 1 salário mínimo',
-          desc: 'Verifique se tem direito ao abono salarial, consulte valores e veja o calendário de pagamento.',
-          tooltip: 'Para quem trabalhou pelo menos 30 dias com carteira assinada no ano-base.',
-          link: '#'
-        },
-        {
-          titulo: 'Extrato e Saque do FGTS',
-          categoria: 'Fundo de Garantia',
-          icone: '🏛️',
-          badge: '🔒 Conta vinculada',
-          desc: 'Acompanhe depósitos mensais feitos pelo empregador e solicite saques autorizados.',
-          tooltip: 'Consulte saldo total por empresa e opção de Saque-Aniversário.',
-          link: '#'
-        }
+        { ic: 'briefcase', titulo: 'Carteira de Trabalho Digital', categoria: 'Emprego', badge: 'No celular',
+          desc: 'Veja seus empregos, salários e férias.',
+          tooltip: 'Entre com CPF e senha. Substitui a carteira de papel.', link: '#' },
+        { ic: 'shield', titulo: 'Seguro-desemprego', categoria: 'Benefício', badge: 'Ajuda temporária',
+          desc: 'Peça o benefício online se foi demitido sem justa causa.',
+          tooltip: 'Use o número que a empresa entregou na demissão.', link: '#' },
+        { ic: 'coins', titulo: 'Abono salarial (PIS)', categoria: 'Benefício anual', badge: 'Até 1 salário',
+          desc: 'Veja se tem direito, quanto vai receber e quando.',
+          tooltip: 'Para quem trabalhou de carteira assinada por 30 dias ou mais no ano.', link: '#' },
+        { ic: 'wallet', titulo: 'FGTS: saldo e saque', categoria: 'Fundo de garantia', badge: 'Seu dinheiro',
+          desc: 'Veja os depósitos da empresa e peça saques.',
+          tooltip: 'Mostra o saldo de cada empresa em que você trabalhou.', link: '#' }
       ]
     },
     {
       id: 'turista',
       nome: 'Turista & Exterior',
-      tagline: 'Passaporte, alistamento militar e controle aduaneiro',
       icone: '✈️',
-      descricao: 'Serviços essenciais para viajantes internacionais e cidadãos brasileiros residentes fora do país.',
+      descricao: 'Passaporte, vacinas e serviços para quem vive fora.',
       servicos: [
-        {
-          titulo: 'Obter Passaporte Brasileiro',
-          categoria: 'Polícia Federal',
-          icone: '🛂',
-          badge: '🌎 Documento de viagem',
-          desc: 'Preencha o formulário eletrônico, pague a taxa GRU e agende a coleta biométrica.',
-          tooltip: 'Requer documento de identidade, quitação eleitoral e alistamento militar em dia.',
-          link: '#'
-        },
-        {
-          titulo: 'Alistar-se no Serviço Militar no Exterior',
-          categoria: 'Consulado & Defesa',
-          icone: '🪖',
-          badge: '✅ 100% Online',
-          desc: 'Regularize sua obrigação militar residindo fora do Brasil com apoio consular.',
-          tooltip: 'Para jovens de 18 anos. Requer foto de identidade e comprovante no exterior.',
-          link: 'alistamento.html'
-        },
-        {
-          titulo: 'Declaração Eletrônica de Bens (e-DBV)',
-          categoria: 'Receita Federal & Alfândega',
-          icone: '🧳',
-          badge: '📋 Alfândega aeroporto',
-          desc: 'Declare bens e valores acima da cota ao entrar ou sair do território nacional.',
-          tooltip: 'Evite filas e multas declarando eletronicamente antes do embarque.',
-          link: '#'
-        },
-        {
-          titulo: 'Certificado de Vacinação (CIVP)',
-          categoria: 'Saúde Internacional',
-          icone: '💉',
-          badge: '🏥 Febre Amarela & Covid',
-          desc: 'Emita o certificado internacional exigido por diversos países para entrada de turistas.',
-          tooltip: 'Comprovação da vacina aplicada no SUS ou clínica credenciada pela Anvisa.',
-          link: '#'
-        }
+        { ic: 'plane', titulo: 'Tirar passaporte', categoria: 'Polícia Federal', badge: 'Viagem',
+          desc: 'Preencha o pedido, pague a taxa e marque o atendimento.',
+          tooltip: 'Leve identidade e título de eleitor em dia.', link: '#' },
+        { ic: 'shield', titulo: 'Alistamento militar no exterior', categoria: 'Defesa', badge: '100% online',
+          desc: 'Faça o alistamento morando fora do Brasil.',
+          tooltip: 'Para homens no ano em que fazem 18 anos.', link: 'alistamento.html' },
+        { ic: 'luggage', titulo: 'Declarar bens na viagem', categoria: 'Alfândega', badge: 'Aeroporto',
+          desc: 'Declare compras acima do limite ao entrar ou sair do Brasil.',
+          tooltip: 'Declarar antes evita filas e multas.', link: '#' },
+        { ic: 'syringe', titulo: 'Certificado de vacina internacional', categoria: 'Saúde', badge: 'Febre amarela',
+          desc: 'Emita o certificado que alguns países pedem na entrada.',
+          tooltip: 'Vale para vacinas tomadas no SUS ou em clínica autorizada.', link: '#' }
       ]
     }
   ];
@@ -726,7 +769,8 @@
     // contorna o avatar num círculo completo e segue em frente. Um trecho azul percorre
     // a linha até o perfil selecionado e fecha o círculo em volta dele.
     var SVGNS = 'http://www.w3.org/2000/svg';
-    var LOOP_R = 58;     // raio do laço (avatar tem 46px de raio + folga)
+    var LOOP_R = 58;     // raio do laço: metade do avatar + 12px de folga (recalculado em buildLine,
+                         // porque o avatar cresce quando o texto do site aumenta)
     var TAIL = 34;       // quanto do traço azul aparece antes/depois do laço
     var loopStarts = [], lineTotal = 0, lineDrawn = false;
     var lineSvg, lineBase, lineActive;
@@ -751,6 +795,8 @@
       // A linha corre na altura do meio dos avatares. Em cada perfil ela chega pela esquerda
       // do anel, passa por cima, por baixo e por cima de novo (uma volta e meia) e sai pela
       // direita, seguindo em frente. Visualmente: um círculo completo atravessado pela linha.
+      var firstAv = perfilItems[0] && perfilItems[0].querySelector('.perfil-avatar-circle');
+      if (firstAv && firstAv.offsetWidth) LOOP_R = firstAv.offsetWidth / 2 + 12;
       var R = LOOP_R, arc = ' A ' + R + ' ' + R + ' 0 0 1 ';
       var extra = 3 * Math.PI * R - 2 * R; // comprimento a mais que cada laço soma ao trecho reto
       var y = 0, d = '';
@@ -873,32 +919,6 @@
       info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
       chevronRight: '<path d="m9 18 6-6-6-6"/>'
     };
-    var SVC_ICON = {
-      'Cadastro Ambiental Rural (CAR)': 'map',
-      'Pronaf — Crédito Rural Familiar': 'banknote',
-      'Declaração de Aptidão (DAP / CAF)': 'sprout',
-      'Seguro da Agricultura Familiar (Proagro)': 'shieldCheck',
-      'Prova de Vida Digital pelo Celular': 'smartphone',
-      'Extrato de Pagamento de Benefício': 'fileText',
-      'Carteira da Pessoa Idosa': 'idCard',
-      'Isenção de Imposto de Renda e IPTU': 'landmark',
-      'Inscrição no ENEM e Consulta de Notas': 'penLine',
-      'Prouni e FIES — Bolsas e Financiamento': 'graduationCap',
-      'ID Jovem — Identidade Jovem Digital': 'ticket',
-      'Certificação do Encceja': 'award',
-      'Emitir Guia DAS-MEI Mensal': 'receipt',
-      'Declaração Anual (DASN-SIMEI)': 'chart',
-      'Formalização / Abrir MEI Grátis': 'building',
-      'Emissão de NFS-e Nacional': 'fileText',
-      'Carteira de Trabalho Digital (CTPS)': 'briefcase',
-      'Solicitar Seguro-Desemprego': 'shield',
-      'Consultar Abono Salarial PIS/Pasep': 'coins',
-      'Extrato e Saque do FGTS': 'wallet',
-      'Obter Passaporte Brasileiro': 'plane',
-      'Alistar-se no Serviço Militar no Exterior': 'shield',
-      'Declaração Eletrônica de Bens (e-DBV)': 'luggage',
-      'Certificado de Vacinação (CIVP)': 'syringe'
-    };
     function lucide(name, cls) {
       return '<svg class="' + (cls || 'lc') + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + (LUCIDE[name] || LUCIDE.fileText) + '</svg>';
     }
@@ -910,7 +930,7 @@
       var html = '';
       html += '<div class="pd-head">';
       html += '  <div>';
-      html += '    <p class="pd-eyebrow">Serviços para o perfil</p>';
+      html += '    <p class="pd-eyebrow">Serviços para você</p>';
       html += '    <h3 class="pd-title">' + p.nome + '</h3>';
       html += '    <p class="pd-desc">' + p.descricao + '</p>';
       html += '  </div>';
@@ -922,7 +942,7 @@
         var soon = s.link === '#' ? ' data-soon' : '';
         html += '<li style="--i:' + i + '">';
         html += '<a class="pd-item" href="' + s.link + '"' + soon + '>';
-        html += '  <span class="pd-ico">' + lucide(SVC_ICON[s.titulo]) + '</span>';
+        html += '  <span class="pd-ico">' + lucide(s.ic) + '</span>';
         html += '  <span class="pd-body">';
         html += '    <span class="pd-org">' + s.categoria + '</span>';
         html += '    <span class="pd-name">' + s.titulo + '</span>';
