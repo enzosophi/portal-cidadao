@@ -15,6 +15,7 @@
   inputs.forEach(function (i) {
     i.addEventListener('change', function () {
       var pref = i.getAttribute('data-pref');
+      if (pref === 'reader') return; // tratado por js/leitor.js (ele mesmo avisa em voz alta)
       if (pref === 'lang') {
         if (window.PC.setLang) window.PC.setLang(i.value);
       } else {
@@ -26,6 +27,7 @@
 
   document.getElementById('a11y-reset').addEventListener('click', function () {
     P.reset();
+    if (window.PC.reader) window.PC.reader.setOn(false, true);
     if (window.PC.setLang) window.PC.setLang('pt');
     sync();
     window.PC.toast('Tudo voltou ao padrão.');

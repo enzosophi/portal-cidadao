@@ -255,3 +255,68 @@ body.hc .pcd-fix { border-color: #fff; color: #fff; background: #000; }
 /* Busca: "Você quis dizer…?" */
 .suggest .suggest-hint { padding: .55rem .75rem; font-size: .9rem; color: var(--muted); border-bottom: 1px solid var(--line); margin-bottom: .25rem; }
 .suggest .suggest-hint strong { color: var(--ink); }
+
+/* ---------- Leitor de voz (js/leitor.js) ---------- */
+/* trecho sendo lido: contorno amarelo bem visível */
+.pc-reading { outline: 3px solid var(--yellow) !important; outline-offset: 4px; border-radius: 6px; background-color: rgba(242, 183, 5, .12); }
+
+.pc-reader-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 160;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .4rem;
+  max-width: calc(100% - 2rem);
+  padding: .45rem .55rem;
+  border-radius: 14px;
+  background: #0a2547;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+}
+.pc-reader-bar[hidden] { display: none; }
+.prb-title { display: inline-flex; align-items: center; gap: .35rem; font-weight: 700; font-size: .9rem; padding: 0 .35rem; }
+.prb-title svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.prb-btn, .prb-rate select {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 .75rem;
+  border: 1.5px solid rgba(255, 255, 255, .45);
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  font: 700 .9rem var(--font);
+  cursor: pointer;
+}
+.prb-btn:hover { background: rgba(255, 255, 255, .15); }
+.prb-read { background: #fff; color: #0a2547; border-color: #fff; }
+.prb-read:hover { background: #dbe7fa; }
+.prb-btn:disabled { opacity: .45; cursor: default; }
+.prb-rate select { padding: 0 .5rem; }
+.prb-rate select option { color: #000; }
+.pc-reader-bar :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+body.hc .pc-reader-bar { background: #000; border: 2px solid #fff; }
+/* com a barra aberta, os botões flutuantes sobem para não ficar por cima dela */
+html.reader-on .fab { bottom: 84px; }
+html.reader-on .assist { bottom: 156px; }
+
+/* botão de liga/desliga no topo e no login */
+.tb-reader.is-on, .login-reader.is-on { background: var(--blue); color: #fff; }
+body.hc .tb-reader.is-on, body.hc .login-reader.is-on { background: #fff; color: #000; }
+.login-reader {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--blue);
+  cursor: pointer;
+}
+.login-reader svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+body.hc .login-reader { color: #fff; }

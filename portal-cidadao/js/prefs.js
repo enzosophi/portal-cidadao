@@ -4,8 +4,8 @@
 (function () {
   'use strict';
 
-  var KEYS = { font: 'pc-font', cb: 'pc-cb', links: 'pc-links', spacing: 'pc-spacing', motion: 'pc-motion', lang: 'pc-lang', hc: 'pc-hc' };
-  var DEF = { font: '100', cb: 'none', links: '0', spacing: '0', motion: '0', lang: 'pt', hc: '0' };
+  var KEYS = { font: 'pc-font', cb: 'pc-cb', links: 'pc-links', spacing: 'pc-spacing', motion: 'pc-motion', lang: 'pc-lang', hc: 'pc-hc', reader: 'pc-reader', rate: 'pc-rate' };
+  var DEF = { font: '100', cb: 'none', links: '0', spacing: '0', motion: '0', lang: 'pt', hc: '0', reader: '0', rate: '1' };
   var FONTS = ['100', '115', '130', '150'];
   var CB = ['none', 'protan', 'deutan', 'tritan', 'mono'];
   var LANGS = { pt: 'pt-BR', en: 'en', es: 'es' };

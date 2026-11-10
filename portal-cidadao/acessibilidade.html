@@ -49,6 +49,7 @@
           </div>
         </div>
       </div>
+      <button class="tb-icon tb-reader" type="button" data-reader-toggle aria-pressed="false" aria-label="Leitor de voz" data-tooltip="Ouvir o site em voz alta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 18.4a9 9 0 0 0 0-12.8"/></svg></button>
       <a class="tb-icon tb-a11y" href="acessibilidade.html" aria-label="Acessibilidade" data-tooltip="Ajustar texto, cores e idioma"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg></a>
       <button class="tb-icon theme-toggle" type="button" data-hc aria-pressed="false" aria-label="Alto contraste" data-tooltip="Ligar ou desligar o alto contraste">
         <svg class="ico i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
@@ -214,6 +215,22 @@
         </div>
       </section>
 
+      <!-- Leitura em voz alta -->
+      <section class="a11y-card" aria-labelledby="t-voz">
+        <h2 id="t-voz"><span class="a11y-badge" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 18.4a9 9 0 0 0 0-12.8"/></svg></span>Leitura em voz alta</h2>
+        <p class="a11y-help">O site lê os textos, o item em que você está e os avisos. Use a tecla Tab para andar pela página.</p>
+        <div class="sw-list">
+          <label class="sw"><input class="sw-input" type="checkbox" role="switch" data-pref="reader"><span class="sw-text"><span class="opt-name">Leitor de voz</span><small class="opt-desc">Também liga no botão de alto-falante, no topo de todas as páginas.</small></span><span class="sw-track" aria-hidden="true"></span></label>
+        </div>
+        <fieldset class="opt-grid opt-grid-3 voz-rate">
+          <legend class="opt-legend">Velocidade da voz</legend>
+          <label class="opt"><input class="opt-input" type="radio" name="rate" value="0.8" data-pref="rate"><span class="opt-box"><span class="opt-name">Lenta</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="rate" value="1" data-pref="rate"><span class="opt-box"><span class="opt-name">Normal</span></span></label>
+          <label class="opt"><input class="opt-input" type="radio" name="rate" value="1.25" data-pref="rate"><span class="opt-box"><span class="opt-name">Rápida</span></span></label>
+        </fieldset>
+        <p class="a11y-note">Usa um leitor de tela como NVDA, VoiceOver ou TalkBack? O site também funciona com ele; deixe esta opção desligada para não ouvir duas vozes.</p>
+      </section>
+
       <!-- Idioma -->
       <section class="a11y-card" aria-labelledby="t-idioma">
         <h2 id="t-idioma"><span class="a11y-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>Idioma</h2>
@@ -277,6 +294,7 @@
 <script src="js/acessibilidade.js"></script>
 <script src="js/assistente.js"></script>
 <script src="js/i18n.js"></script>
+<script src="js/leitor.js"></script>
 <script src="js/vlibras.js"></script>
 </body>
 </html>

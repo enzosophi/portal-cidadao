@@ -385,3 +385,10 @@ body.hc .step-item:hover .step-num { background: #fff; color: #000; }
   .ouv-grid { grid-template-columns: minmax(0, 1fr); }
   .panel { padding: 1rem; }
 }
+
+/* Leitor de voz ligado no celular: a barra do leitor fica acima do botão "Iniciar serviço" */
+@media (max-width: 768px) {
+  html.reader-on body.has-cta .pc-reader-bar { bottom: 84px; }
+  html.reader-on body.has-cta .fab { bottom: 160px; }
+  html.reader-on body.has-cta .assist { bottom: 232px; }
+}

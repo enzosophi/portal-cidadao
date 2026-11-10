@@ -166,3 +166,9 @@ body.hc .sw-input:checked ~ .sw-track::after { background: #000; }
   .opt-grid-3 { grid-template-columns: 1fr; }
   .opt-grid-3 .opt-box { flex-direction: row; justify-content: flex-start; min-height: 56px; gap: .75rem; padding-left: 1rem; }
 }
+
+/* Leitura em voz alta */
+.voz-rate { margin-top: 1rem; }
+.opt-legend { font-weight: 700; margin-bottom: .5rem; padding: 0; }
+.voz-rate .opt-box { min-height: 52px; }
+.a11y-note { margin: 1rem 0 0; padding: .7rem .85rem; border-radius: 10px; background: var(--bg); color: var(--muted); font-size: .9rem; line-height: 1.45; }
