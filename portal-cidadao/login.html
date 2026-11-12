@@ -65,16 +65,65 @@
           <button class="link-btn forgot-link" type="button" id="btn-esqueci" aria-expanded="false" aria-controls="recover">Esqueceu a senha?</button>
         </div>
 
-        <!-- Recuperação inline (mantém todos os IDs) -->
+        <!-- Recuperação de senha na própria tela, com o andamento sempre visível -->
         <div class="recover" id="recover">
-          <strong>Recuperar senha em 3 passos</strong>
-          <ol>
-            <li>Confirme seu CPF no campo acima.</li>
-            <li>Escolha receber o código por e-mail ou SMS.</li>
-            <li>Digite o código e crie uma nova senha.</li>
+          <div class="rec-head">
+            <strong class="rec-title">Recuperar senha</strong>
+            <span class="rec-protocol" id="rec-protocol" hidden><span>Pedido nº</span> <b id="rec-num" translate="no"></b> <span class="rec-badge" id="rec-badge"></span></span>
+          </div>
+
+          <ol class="rec-steps" id="rec-steps" aria-label="Etapas da recuperação">
+            <li><span class="rec-dot" aria-hidden="true">1</span><span class="rec-step-name">Enviar código</span><span class="sr-only rec-step-state"></span></li>
+            <li><span class="rec-dot" aria-hidden="true">2</span><span class="rec-step-name">Confirmar código</span><span class="sr-only rec-step-state"></span></li>
+            <li><span class="rec-dot" aria-hidden="true">3</span><span class="rec-step-name">Nova senha</span><span class="sr-only rec-step-state"></span></li>
           </ol>
-          <button class="btn btn-outline" type="button" id="btn-enviar-codigo">Enviar código</button>
-          <div class="msg" id="recover-msg" aria-live="polite"></div>
+          <p class="rec-status" id="rec-status" role="status" aria-live="polite"></p>
+
+          <!-- Etapa 1: onde receber o código -->
+          <div class="rec-panel" data-panel="1">
+            <fieldset class="rec-choice">
+              <legend>Onde você quer receber o código?</legend>
+              <label class="rec-option"><input type="radio" name="rec-canal" value="sms" checked><span><b>SMS</b> no celular com final 4821</span></label>
+              <label class="rec-option"><input type="radio" name="rec-canal" value="email"><span><b>E-mail</b> j•••@email.com</span></label>
+            </fieldset>
+            <button class="btn btn-primary rec-btn" type="button" id="btn-enviar-codigo">Enviar código</button>
+            <div class="msg" id="recover-msg" aria-live="polite"></div>
+          </div>
+
+          <!-- Etapa 2: digitar o código -->
+          <div class="rec-panel" data-panel="2" hidden>
+            <p class="rec-text" id="rec-sent-to"></p>
+            <label class="rec-label" for="rec-code">Código de 6 números</label>
+            <input class="input rec-code" id="rec-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" aria-describedby="rec-code-msg rec-code-hint">
+            <div class="msg" id="rec-code-msg" aria-live="polite"></div>
+            <p class="rec-hint" id="rec-code-hint">Neste protótipo, use o código 123456.</p>
+            <div class="rec-actions">
+              <button class="btn btn-primary rec-btn" type="button" id="btn-confirmar-codigo">Confirmar código</button>
+              <button class="link-btn rec-link" type="button" id="btn-reenviar" disabled></button>
+            </div>
+            <button class="link-btn rec-link" type="button" id="btn-trocar-canal">Receber o código de outro jeito</button>
+          </div>
+
+          <!-- Etapa 3: criar a nova senha -->
+          <div class="rec-panel" data-panel="3" hidden>
+            <label class="rec-label" for="rec-pass">Nova senha</label>
+            <input class="input" id="rec-pass" type="password" autocomplete="new-password" aria-describedby="rec-rules">
+            <ul class="rec-rules" id="rec-rules" aria-label="A nova senha precisa ter">
+              <li data-rule="len"><span class="rec-rule-ico" aria-hidden="true"></span>Pelo menos 8 caracteres<span class="sr-only rec-rule-state"></span></li>
+              <li data-rule="letter"><span class="rec-rule-ico" aria-hidden="true"></span>Pelo menos uma letra<span class="sr-only rec-rule-state"></span></li>
+              <li data-rule="num"><span class="rec-rule-ico" aria-hidden="true"></span>Pelo menos um número<span class="sr-only rec-rule-state"></span></li>
+            </ul>
+            <label class="rec-label" for="rec-pass2">Repita a nova senha</label>
+            <input class="input" id="rec-pass2" type="password" autocomplete="new-password" aria-describedby="rec-pass2-msg">
+            <div class="msg" id="rec-pass2-msg" aria-live="polite"></div>
+            <button class="btn btn-primary rec-btn" type="button" id="btn-salvar-senha">Salvar nova senha</button>
+          </div>
+
+          <!-- Concluído -->
+          <div class="rec-panel rec-done" data-panel="4" hidden>
+            <p><b>Senha alterada com sucesso.</b> Seu pedido está concluído: não precisa abrir outra solicitação.</p>
+            <button class="btn btn-primary rec-btn" type="button" id="btn-voltar-login">Entrar com a nova senha</button>
+          </div>
         </div>
 
         <button class="btn btn-primary btn-block btn-login-submit" type="submit" id="btn-entrar">

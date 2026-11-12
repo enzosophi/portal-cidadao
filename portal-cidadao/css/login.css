@@ -231,10 +231,111 @@ body.hc .forgot-link {
   background: var(--blue-l);
   font-size: .9rem;
 }
-.login-form-pane .recover.open { display: block; }
-.login-form-pane .recover strong { display: block; margin-bottom: .4rem; color: var(--ink); }
-.login-form-pane .recover ol { margin: 0 0 .8rem; padding-left: 1.2rem; color: var(--muted); line-height: 1.55; }
-.login-form-pane .recover .btn { min-height: 42px; padding: .45rem 1.1rem; font-size: .92rem; }
+.login-form-pane .recover.open { display: block; animation: recIn .25s ease both; }
+@keyframes recIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Cabeçalho: título + número do pedido com o status atual */
+.rec-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .4rem .75rem; margin-bottom: .8rem; }
+.rec-title { font-size: 1rem; color: var(--ink); }
+.rec-protocol { display: inline-flex; align-items: center; flex-wrap: wrap; gap: .35rem; font-size: .82rem; color: var(--muted); }
+.rec-protocol b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.rec-badge {
+  padding: .1rem .55rem;
+  border-radius: 999px;
+  background: #fff4d6;
+  color: #7a4b00;
+  font-weight: 700;
+}
+.rec-protocol.is-done .rec-badge { background: #dcf3e6; color: #135c38; }
+body.hc .rec-badge { background: rgba(245, 158, 11, .18); color: #fbbf24; }
+body.hc .rec-protocol.is-done .rec-badge { background: rgba(16, 185, 129, .18); color: #34d399; }
+
+/* Etapas numeradas ligadas por uma linha */
+.rec-steps { list-style: none; display: flex; margin: 0 0 .7rem; padding: 0; }
+.rec-steps li { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; font-size: .8rem; font-weight: 600; color: var(--muted); }
+.rec-steps li + li::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.rec-steps li.is-done + li::before,
+.rec-steps li.is-done + li.is-current::before { background: var(--blue); }
+.rec-dot {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+  transition: background .25s ease, border-color .25s ease, color .25s ease;
+}
+.rec-steps li.is-current { color: var(--ink); }
+.rec-steps li.is-current .rec-dot { border-color: var(--blue); color: var(--blue); box-shadow: 0 0 0 4px rgba(11, 78, 162, .14); }
+.rec-steps li.is-done { color: var(--ink); }
+.rec-steps li.is-done .rec-dot { background: var(--blue); border-color: var(--blue); color: transparent; }
+.rec-steps li.is-done .rec-dot::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: translateY(-1px) rotate(-45deg);
+}
+body.hc .rec-steps li.is-current .rec-dot { border-color: #60a5fa; color: #60a5fa; }
+body.hc .rec-steps li.is-done .rec-dot { background: #2563eb; border-color: #2563eb; }
+
+/* Frase de status: diz sempre em que ponto a pessoa está */
+.rec-status { margin: 0 0 .85rem; padding: .55rem .75rem; border-radius: 8px; background: var(--card); color: var(--ink); font-size: .9rem; line-height: 1.45; }
+.rec-status.is-done { background: #dcf3e6; color: #135c38; font-weight: 700; }
+body.hc .rec-status.is-done { background: rgba(16, 185, 129, .16); color: #34d399; }
+
+.rec-panel { animation: recIn .25s ease both; }
+.rec-choice { border: 0; margin: 0 0 .75rem; padding: 0; }
+.rec-choice legend { margin-bottom: .4rem; padding: 0; font-weight: 700; color: var(--ink); }
+.rec-option {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 44px;
+  margin-bottom: .4rem;
+  padding: .5rem .75rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.rec-option:has(input:checked) { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11, 78, 162, .12); }
+.rec-option input { width: 18px; height: 18px; accent-color: var(--blue); }
+.rec-label { display: block; margin: .2rem 0 .35rem; font-weight: 700; color: var(--ink); }
+.rec-text { margin: 0 0 .6rem; color: var(--ink); line-height: 1.45; }
+.rec-code { letter-spacing: .35em; font-variant-numeric: tabular-nums; }
+.rec-hint { margin: .35rem 0 .75rem; font-size: .82rem; color: var(--muted); }
+.rec-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; margin-bottom: .4rem; }
+.rec-link { font-size: .88rem; font-weight: 600; }
+.rec-link:disabled { color: var(--muted); text-decoration: none; cursor: default; }
+.login-form-pane .recover .btn { min-height: 44px; padding: .45rem 1.1rem; font-size: .95rem; border-radius: 10px; }
+
+/* Requisitos da nova senha, marcados enquanto a pessoa digita */
+.rec-rules { list-style: none; margin: .5rem 0 .85rem; padding: 0; display: grid; gap: .25rem; font-size: .88rem; color: var(--muted); }
+.rec-rules li { display: flex; align-items: center; gap: .45rem; transition: color .2s ease; }
+.rec-rule-ico { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); position: relative; flex: none; transition: background .2s ease, border-color .2s ease; }
+.rec-rules li.is-ok { color: var(--ok); font-weight: 600; }
+.rec-rules li.is-ok .rec-rule-ico { background: var(--ok); border-color: var(--ok); }
+.rec-rules li.is-ok .rec-rule-ico::after { content: ""; position: absolute; left: 3px; top: 3px; width: 6px; height: 3px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg); }
+.rec-done p { margin: 0 0 .8rem; color: var(--ink); line-height: 1.5; }
 
 /* ---------- Botão entrar e status ---------- */
 .btn-login-submit {
